@@ -1,0 +1,79 @@
+{
+  "menu": [
+    {
+      "url": "javascript:void(0)",
+      "name": "Pages",
+      "i18n": "Pages",
+      "class": "collapsible-header waves-effect waves-cyan",
+      "slug": "pages",
+      "icon": "pages",
+      "submenu": [
+        {
+          "url": "/",
+          "name": "Page Blank",
+          "i18n": "Page Blank",
+          "slug": "page-blank"
+        },
+        {
+          "url": "page-collapse",
+          "name": "Page Collapse",
+          "i18n": "Page Collapse",
+          "slug": "page-collapse"
+        }
+      ]
+    },
+    {
+      "navheader": "Misc ",
+      "icon": "more_horiz"
+    },
+    {
+      "url": "javascript:void(0)",
+      "name": "Menu levels",
+      "i18n": "Menu levels",
+      "class": "collapsible-header waves-effect waves-cyan",
+      "icon": "photo_filter",
+      "slug": "",
+      "submenu": [
+        {
+          "url": "javascript:void(0)",
+          "name": "Second level",
+          "i18n": "Second level",
+          "slug": ""
+        },
+        {
+          "url": "javascript:void(0)",
+          "class": "collapsible-header waves-effect waves-cyan",
+          "name": "Second level child",
+          "i18n": "Second level child",
+          "slug": "",
+          "submenu": [
+            {
+              "url": "javascript:void(0)",
+              "name": "Third level",
+              "i18n": "Third level",
+              "slug": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "url": "https://pixinvent.com/materialize-material-design-admin-template/documentation/",
+      "name": "Documentation",
+      "i18n": "Documentation",
+      "class": "waves-effect waves-cyan",
+      "icon": "import_contacts",
+      "slug": "documentation",
+      "newTab": "_blank"
+    },
+    {
+      "url": "https://pixinvent.ticksy.com/",
+      "name": "Support",
+      "i18n": "Support",
+      "class": "waves-effect waves-cyan",
+      "icon": "help_outline",
+      "slug": "support",
+      "newTab": "_blank"
+    }
+  ]
+}

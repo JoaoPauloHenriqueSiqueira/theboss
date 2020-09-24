@@ -1,0 +1,1169 @@
+ /*----------------------------------------------------------------------------------------
+* Author        : Coderspoint
+* Template Name : Applan - One Page App Landing Page
+* File          : Applan main CSS file
+* Version       : 1.0
+* ---------------------------------------------------------------------------------------- */
+
+
+
+
+
+/* INDEX
+----------------------------------------------------------------------------------------
+
+01. General css
+
+02. Navigation area css
+
+03. Slider area css
+
+04. Hero area css
+
+05. Price area css
+
+06. Action area css
+
+07. Service area css
+
+08. Pricing area css
+
+09. Testimonial area css
+
+10. Why Choose area css
+
+11. Subscribe area css
+
+12. Client area css
+
+13. Contact area css
+
+14. Footer area css
+
+-------------------------------------------------------------------------------------- */
+
+
+
+
+/* Fonts 'Gotham Rounded' */
+@font-face {
+  font-family: 'GothamRounded-Book';
+  src: url('../fonts/GothamRounded-book.eot');
+  src: url('../fonts/GothamRounded-book.woff2') format('woff2'),
+       url('../fonts/GothamRounded-book.woff') format('woff'),
+       url('../fonts/GothamRounded-book.ttf') format('truetype'),
+       url('../fonts/GothamRounded-book.svg#GothamRounded-book') format('svg'),
+       url('../fonts/GothamRounded-book.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GothamRounded-Medium';
+  src: url('../fonts/GothamRounded-Medium.eot');
+  src: url('../fonts/GothamRounded-Medium.woff2') format('woff2'),
+       url('../fonts/GothamRounded-Medium.woff') format('woff'),
+       url('../fonts/GothamRounded-Medium.ttf') format('truetype'),
+       url('../fonts/GothamRounded-Medium.svg#GothamRounded-Medium') format('svg'),
+       url('../fonts/GothamRounded-Medium.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GothamRounded-Bold';
+  src: url('../fonts/GothamRounded-Bold.eot');
+  src: url('../fonts/GothamRounded-Bold.woff2') format('woff2'),
+       url('../fonts/GothamRounded-Bold.woff') format('woff'),
+       url('../fonts/GothamRounded-Bold.ttf') format('truetype'),
+       url('../fonts/GothamRounded-Bold.svg#GothamRounded-Bold') format('svg'),
+       url('../fonts/GothamRounded-Bold.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
+
+
+/* ----------------------------------------------------------------------------------------
+*                                       01. General css
+* -------------------------------------------------------------------------------------- */
+
+html,
+body {
+    height: 100%
+}
+
+body {
+    color: #777;
+    width: 100%;
+    height: 100%;
+    font-size: 15px;
+    line-height: 1.7;
+    margin-top: 70px;
+    font-family: 'GothamRounded-Book', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #555;
+    font-family: 'GothamRounded-Bold';
+}
+
+.subtitle {
+    font-size: 20px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    font-family: 'GothamRounded-Medium';
+}
+
+p {
+    letter-spacing: 0px;
+}
+
+a {
+    text-decoration: none;
+    transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+}
+
+a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+a:focus {
+    outline: none;
+    text-decoration: none;
+}
+
+ul,
+li {
+    margin: 0;
+    padding: 0;
+}
+
+fieldset {
+    border: 0 none;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.btn.active.focus,
+.btn.active:focus,
+.btn.focus,
+.btn.focus:active,
+.btn:active:focus,
+.btn:focus {
+    outline: none;
+}
+
+.btn, input[type='submit'] {
+    display: inline-block;
+    background: transparent;
+    padding: 10px 25px;
+    border-radius: 5px;
+    transition: 0.3s;
+    -moz-transition: 0.3s;
+    -webkit-transition: 0.3s;
+    letter-spacing: 1px;
+    border: none;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #fff;
+    background-color: #3f8ed9;
+}
+
+.btn:hover, input[type="submit"]:hover {
+    color: #fff;
+    background: #72849c;
+}
+
+.btn.btn-reverse {
+    background: #72849c;
+}
+
+.btn.btn-reverse:hover {
+    color: #555;
+    background-color: #fff;
+}
+
+.btn.btn-white {
+    color: #555;
+    background-color: #fff;
+}
+
+.btn.btn-white:hover {
+    color: #fff;
+    background: #72849c;
+}
+
+
+.btn.btn-lg {
+    height: 50px;
+    padding: 0 30px;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 50px;
+    border-radius: 7px;
+}
+
+
+.section-big {
+    padding: 80px 0px;
+}
+
+.section-small {
+    padding: 50px 0px;
+}
+
+.section-title {
+    margin: auto;
+    max-width: 800px;
+    margin-bottom: 60px;
+}
+
+.section-title.white h2 {
+    color: #fff;
+}
+
+.section-title h2 {
+    font-size: 40px;
+    margin-bottom: 25px;
+    line-height: 40px;
+    margin-top: 0;
+}
+
+.section-title p {
+    margin-top: 25px;
+}
+
+
+/* preloader css */
+
+#preloader {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99999;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    background-image: url(../img/preloader.gif);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #fff;
+}
+
+.table {
+    display: table;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+.table-cell {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
+img {
+    max-width: 100%;
+}
+
+.space {
+    height: 30px;
+}
+
+
+
+/* ----------------------------------------------------------------------------------------
+*                               02. Navigation area css
+* --------------------------------------------------------------------------------------- */
+.menu-area {
+    background: #fff;
+}
+.sticky-menu {
+    box-shadow: 0px 3px 4.7px 0.3px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+}
+
+.mainmenu {
+    margin-top: 10px;
+    transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+}
+
+.sticky-menu .mainmenu {
+    margin-top: 0px;
+}
+
+.navbar {
+    margin-bottom: 0;
+    border: 0px;
+}
+
+.navbar-brand {
+    display: block;
+    color: #3f8ed9;
+    text-transform: uppercase;
+    font-family: 'GothamRounded-Bold';
+    font-size: 36px;
+    padding: 15px 0;
+}
+.navbar-brand span {
+    color: #72849c;
+}
+.navbar-brand:hover {
+    color: #3f8ed9;
+}
+
+.navbar-nav  li {
+    float: none;
+    display: inline-block;
+}
+
+.navbar-nav li a {
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 1px;
+    color: #333;
+}
+
+.nav > li > a:hover,
+.nav > li > a:active,
+.nav > li > a:focus {
+    background: none;
+}
+
+.mainmenu .navbar-nav li.active a {
+    color: #3f8ed9;
+}
+
+
+/* Mobile Nav css */
+.navbar-toggle .icon-bar {
+    background: #3f8ed9;
+}
+
+
+/* ----------------------------------------------------------------------------------------
+*                               03. Slider area css
+* -------------------------------------------------------------------------------------- */
+
+.slider-area {
+    background: #3f8ed9;
+    min-height: 400px;
+}
+
+.slider-area .carousel,
+.slider-area .carousel-inner,
+.slider-area .item {
+    height: 100%;
+}
+
+@media (min-width: 992px) {
+    .slider-area {
+        height: 550px;
+    }
+}
+
+.intro-text {
+    text-align: left;
+    color: #fff;
+}
+
+.intro-text h1 {
+    color: inherit;
+    font-size: 47px;
+    font-weight: 600;
+    line-height: 50px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.intro-text p {
+    font-size: 24px;
+    color: inherit;
+}
+
+.line-through {
+    text-decoration: line-through;
+}
+
+
+
+.intro-text .dwnld-btn {
+    margin-top: 20px;
+    display: inline-block;
+    margin-right: 20px;
+}
+
+@media (min-width: 992px) {
+    .intro-text-box {
+        display: table;
+        transform: translate(0%, 50%);
+    }
+}
+
+.dwnld-btn img {
+    width: 150px;
+    height: auto;
+}
+
+.dwnld-btn.appstore img {
+    padding-top: 1px;
+}
+
+.intro-img {
+    text-align: center;
+}
+
+@media (max-width: 991px) {
+    .intro-text {
+        margin: 80px auto;
+        text-align: center;
+    }
+    .intro-img img {
+        margin-bottom: 30px;
+    }
+    .hero-overlay h2 {
+        margin-top: 0px;
+        font-size: 1.5em;
+    }
+}
+
+
+#carousel-example-generic .animated {
+    animation-delay: .5s;
+}
+
+
+
+
+/* ----------------------------------------------------------------------------------------
+*                               04. Hero area css
+* ---------------------------------------------------------------------------------------*/
+
+.hero-boxes {
+    padding-top: 50px;
+}
+
+.hero-box {
+    background: #f5f5f5;
+    background-color: #3f8ed9;
+    text-align: center;
+    position: relative;
+    margin-top: 30px;
+    padding: 50px;
+    border-radius: 10px;
+}
+
+.hero-box img {}
+.hero-overlay {
+    position: absolute;
+    padding: 30px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 0;
+    background-color: #72849c;
+    color: #fff;
+    border-radius: 10px;
+    opacity: 0;
+    transition: 0.5s cubic-bezier(0.250, 0.250, 0.115, 1.445);
+}
+.hero-overlay h2 {
+    color: #fff;
+}
+.hero-box:hover .hero-overlay {
+    opacity: 1;
+    height: 100%;
+}
+
+
+
+
+
+/* ----------------------------------------------------------------------------------------
+*                                   05. Price area css
+* --------------------------------------------------------------------------------------- */
+.price-item {
+    padding: 0 15px 30px;
+    margin: 0;
+    text-align: center;
+    position: relative;
+    transition: 0.3s ease-out;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+}
+
+.price-item ul {
+    margin-left: 0;
+    list-style: none;
+    padding-left: 0px;
+}
+
+.price-item .info {
+    border-radius: 10px 10px 0 0; 
+}
+
+.price-item.featured .info {
+    background: #3f8ed9;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.price-item p.level {
+    font-size: 30px;
+    padding-top: 20px;
+    letter-spacing: 1px;
+    font-family: 'GothamRounded-Medium';
+}
+
+.price-item p.desc {
+    font-size: 14px;
+    margin-bottom: 0px;
+}
+
+.price-item p.price {
+    font-size: 16px;
+    margin: 0;
+    padding-bottom: 10px;
+    color: #333;
+}
+
+.price-item p.price .dollar {
+    font-size: 30px;
+    position: relative;
+    top: -30px;
+}
+
+.price-item p.price .number {
+    font-size: 70px;
+    font-weight: 300;
+}
+
+.price-item .features {
+    margin: 30px 0;
+}
+
+.price-item.featured p.level,
+.price-item.featured p.price {
+    color: #fff;
+}
+
+.price-item .features li {
+    padding: 5px 0;
+}
+
+.price-item a.btn {
+    display: inline-block;
+}
+
+
+
+
+
+
+
+/* ----------------------------------------------------------------------------------------
+*                                   06. Action area css
+* --------------------------------------------------------------------------------------- */
+.action-area {
+    color: #fff;
+    position: relative;
+    background: #3f8ed9;
+}
+
+.action-area h2 {
+    color: #fff;
+    margin: 0;
+}
+
+
+
+
+
+
+/* ----------------------------------------------------------------------------------------
+*                                   07. Service area css
+* --------------------------------------------------------------------------------------- */
+
+.service-area {
+    padding-bottom: 30px;
+}
+
+.home-services .service-box {
+    -webkit-transform: translateZ(0);
+    text-align: center;
+    transition: 0.3s ease-out;
+    margin-bottom: 50px;
+}
+
+@media (min-width: 992px) {
+    .service-box {
+        padding: 0 20px;
+    }
+}
+
+.service-box p {
+    text-align: left;
+}
+
+.home-services .service-box i.fa {
+    color: #3f8ed9;
+    font-size: 50px;
+}
+
+.home-services .service-box h3 {
+    position: relative;
+    margin-top: 30px;
+}
+
+.home-services .service-box:hover i.fa:before {
+    -webkit-backface-visibility: visible;
+    -ms-backface-visibility: visible;
+    backface-visibility: visible;
+    -webkit-animation-name: flip;
+    animation-name: flip
+}
+
+.home-services .service-box:hover .read_service:before {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    margin-left: 0%
+}
+
+.feture-img {
+    text-align: center;
+}
+
+@media (max-width: 767px) {
+    .feture-img img {
+        margin-bottom: 30px;
+    }
+}
+
+
+
+
+
+
+/*----------------------------------------*/
+/*     Screenshot Area Css                  */
+/*----------------------------------------*/
+
+.screen {
+    margin: 0 15px;
+    overflow: hidden;
+    text-align: center;
+}
+
+
+
+
+/*----------------------------------------*/
+/*     Fun Fact Area Css                  */
+/*----------------------------------------*/
+.fun-fact-area {
+    color: #fff;
+    position: relative;
+    background: #3f8ed9;
+}
+
+.fun-fact {
+    background: #72b4e6;
+    text-align: center;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.fun-fact i.fa {
+    font-size: 50px;
+    color: inherit;
+}
+
+.fun-fact h3 {
+    color: inherit;
+}
+
+/* ----------------------------------------------------------------------------------------
+*                                08. Testimonial area css
+* --------------------------------------------------------------------------------------- */
+.testimonial-area {
+    position: relative;
+    background-color: #3f8ed9;
+}
+
+.testimonial-area .section-title h2,
+.testimonial-area .section-title p {
+    color: #fff;
+}
+
+.testimonial-content {
+    text-align: right;
+}
+
+.single-testimonial {
+    background-color: #72b4e6;
+    padding: 30px;
+    margin: 15px;
+    border-radius: 20px;
+    overflow: hidden;
+    color: #fff;
+}
+
+.ratings i.fa {
+    color: #ffce54;
+}
+
+.ratings {
+    margin-bottom: 20px;
+}
+
+.single-testimonial i.fa {
+    font-size: 20px;
+    display: inline-block;
+    float: left;
+    margin-right: 10px;
+}
+
+.testimonial-area .subtitle, 
+.testimonial-area h2 {
+    margin-top: 0px;
+    color: inherit;
+}
+
+.single-testimonial p {
+    line-height: 25px;
+}
+
+.single-testimonial img {
+    float: left;
+    margin-top: 20px;
+    margin-right: 20px;
+    border-radius: 10px;
+}
+
+.single-testimonial h4 {
+    margin-top: 40px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: inherit;
+}
+
+.single-testimonial .desg {
+    font-size: 14px;
+}
+
+.owl-theme .owl-controls {
+    margin-top: 30px;
+}
+
+.owl-theme .owl-controls .owl-page span {
+    display: block;
+    width: 20px;
+    height: 5px;
+    margin: 5px 7px;
+    filter: Alpha(Opacity=50);
+    opacity: .5;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    background: #333;
+}
+
+.owl-theme .owl-controls .owl-buttons div {
+    font-size: 25px;
+    background: none;
+    padding: 5px;
+}
+
+
+
+
+
+
+/* ----------------------------------------------------------------------------------------
+*                                   09. Why Choose area css
+* --------------------------------------------------------------------------------------- */
+
+.why-choose-area .container {
+    max-width: 1000px;
+}
+
+.choose-box {
+    margin-bottom: 30px;
+}
+
+.why-choose-area img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.choose-box i.fa {
+    position: relative;
+    font-size: 30px;
+    width: 45px;
+    text-align: center;
+    color: #3f8ed9;
+}
+
+.choose-box.left {
+    text-align: right;
+}
+
+.choose-box.left i.fa {
+    float: right;
+    margin-left: 20px;
+}
+
+.choose-box.right {
+    text-align: left;
+}
+
+.choose-box.right i.fa {
+    float: left;
+    margin-right: 20px;
+}
+
+.choose-content {
+    overflow: hidden;
+}
+
+.choose-content h3 {
+    position: relative;
+}
+
+
+
+
+/* ----------------------------------------------------------------------------------------
+*                                10. Subscribe area css
+* --------------------------------------------------------------------------------------- */
+.subscribe-area {
+    background: #3f8ed9;
+    color: #fff;
+}
+
+.subscribe-box {
+    text-align: center;
+    position: relative;
+}
+
+.subscribe-box h2 {
+    font-size: 40px;
+    margin-top: 0px;
+    margin-bottom: 30px;
+    color: #fff;
+}
+
+.subscribe-box p {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.newsletter-form {
+    max-width: 700px;
+    margin: auto;
+}
+
+.newsletter-form input{
+    display: inline-block;
+    height: 50px;
+    width: 100%;
+    padding: 5px 10px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.newsletter-form .btn {
+    height: 50px;
+    padding: 0 30px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    position: relative;
+    display: inline-block;
+    margin-top: 20px;
+    transition: 0.3s;
+    -moz-transition: 0.3s;
+    -webkit-transition: 0.3s;
+}
+
+.newsletter-form .btn i.fa {
+    margin-right: 20px;
+}
+.subscribe-area .error {
+    text-align: left;
+}
+
+.mailchimp-alerts {
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+
+.mailchimp-alerts div {
+    background: #f5f5f5;
+    margin-top: 15px;
+    line-height: 30px;
+    display: none;
+    padding: 0 20px;
+    position: relative;
+}
+
+.mailchimp-alerts div:before {
+    position: absolute;
+    content: '';
+    left: 17px;
+    top: -7px;
+    width: 15px;
+    height: 15px;
+    transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
+.mailchimp-submitting{}
+
+.mailchimp-success{
+    color: green;
+}
+
+.mailchimp-error{
+    color: red;
+}
+
+
+
+
+
+/* ----------------------------------------------------------------------------------------
+*                                   11. Client area css
+* --------------------------------------------------------------------------------------- */
+.faq-area {}
+
+.accordion .panel-heading {
+    background: #3f8ed9;
+    border-radius: 5px;
+}
+
+.accordion .panel-title {
+    line-height: 30px;
+    font-family: 'GothamRounded-Book', sans-serif;
+}
+
+.accordion .panel-heading a {
+    color: #fff;
+}
+
+.accordion .panel-heading i.fa {
+    float: left;
+    margin-right: 15px;
+    line-height: 30px;
+}
+
+.accordion .panel-heading a.collapsed i.fa:before {
+    content: "\f067";
+}
+
+.accordion .panel-body,
+.panel-group .panel+.panel {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* ----------------------------------------------------------------------------------------
+*                                   11. Client area css
+* --------------------------------------------------------------------------------------- */
+.client-area {
+    background: #f5f5f5;
+}
+
+.owl-client {}
+.owl-client .item {
+    margin: 0 7px;
+}
+.owl-client .item img {
+    width: auto;
+    max-width: 100%;
+    padding: 0 15px;
+}
+
+
+
+
+
+/* ----------------------------------------------------------------------------------------
+*                                   12. Contact area css
+* --------------------------------------------------------------------------------------- */
+.contact-form {
+    background-color: #f5f5f5;
+    padding: 30px;
+    padding-top: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.form-control {
+    display: block;
+    border: 0px;
+    width: 100%;
+    height: 45px;
+    padding: 5px 0px;
+    font-size: 16px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #f5f5f5;
+    background-image: none;
+    border-radius: 0px;
+    box-shadow: none;
+    margin-bottom: 5px;
+}
+
+.form-control:focus {
+    border-color: #333;
+    outline: 0;
+    box-shadow: none;
+}
+
+.contact-form .form-group {
+    position: relative;
+    padding-left: 35px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.contact-form .form-group:before {
+    position: absolute;
+    height: 45px;
+    font-family: FontAwesome;
+    top: 0;
+    left: 0;
+    width: 20px;
+    text-align: center;
+    line-height: 45px;
+    color: #3f8ed9;
+    font-size: 18px;
+}
+
+.in_name:before {content: '\f007';}
+.in_email:before {content: '\f1d8';}
+.in_message:before {content: '\f0e0';}
+
+.contact-form textarea#message {
+    padding-top: 10px;
+    height: 99px;
+}
+
+#submitButton {}
+
+.success {
+    background: #fff none repeat scroll 0 0;
+    color: #50B948;
+    font-weight: 700;
+    padding: 20px;
+    text-align: center;
+}
+
+.error {
+    background: #fff none repeat scroll 0 0;
+    color: #ff0000;
+    font-weight: 700;
+    padding: 20px;
+    text-align: center;
+}
+
+.contact-info {
+    margin-bottom: 30px;
+}
+
+.address {
+    padding: 30px;
+    background: #f5f5f5;
+    border-radius: 10px;
+}
+
+.address h3 {
+    margin-top: 0;
+}
+
+.address-box {
+    margin-bottom: 10px;
+}
+
+.address-box a:hover {
+    color: #72849c;
+}
+
+.address-box p, .address-box p a {
+    color: inherit;
+    margin: 0;
+}
+
+.social-links {
+    overflow: hidden;
+    margin-top: 30px;
+}
+
+.social-links li {
+    list-style: none;
+    float: left;
+    margin-right: 10px;
+}
+
+.social-links li a i {
+    width: 55px;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    transition: 0.3s;
+    -moz-transition: 0.3s;
+    -webkit-transition: 0.3s;
+    color: #fff;
+    background-color: #3f8ed9;
+    font-size: 25px;
+    border-radius: 5px;
+}
+
+.social-links li a:hover i {
+    background-color: #72849c;
+}
+
+
+
+
+
+
+
+
+
+/* ----------------------------------------------------------------------------------------
+*                                   13. Footer area css
+* --------------------------------------------------------------------------------------- */
+.footer-area {
+    background: #72849c;
+    color: #fff;
+    text-align: center;
+}
+.footer-area p {
+    margin: 0;
+    line-height: 60px;
+}
+
+
+
+/* ---------------------------------------------------
+  Gradient CSS
+------------------------------------------------------ */
+/*.slider-area {
+    background: -webkit-linear-gradient(to left, #f45811 , #3f8ed9);
+    background: linear-gradient(to left, #f45811 , #3f8ed9);
+}
