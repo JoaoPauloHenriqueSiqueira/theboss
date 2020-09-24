@@ -65,7 +65,7 @@ class RegisterController extends Controller
         $newData['cnpj'] = Format::extractNumbers(Arr::get($data, 'cnpj'));
         $newData['phone'] = Format::extractNumbers(Arr::get($data, 'phone'));
         $newData['email'] = Arr::get($data, 'email');
-        $newData['active'] = 0;
+        $newData['active'] = 1;
         return $newData;
     }
 
