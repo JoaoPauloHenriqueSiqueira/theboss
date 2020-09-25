@@ -57,7 +57,12 @@ class Products extends Model
         $totalCusto = $this->attributes['cost_value'];
         $totalVenda = $this->attributes['sale_value'];
         $lucro =  $totalVenda - $totalCusto;
-        return $this->porcentagem_nx($lucro, $totalVenda) . "%";
+
+        if($totalVenda > 0){
+            return $this->porcentagem_nx($lucro, $totalVenda) . "%";
+        }
+
+        return 0;
     }
 
     public function getProfitAttribute()
