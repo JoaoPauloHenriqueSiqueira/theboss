@@ -28,7 +28,7 @@ class Products extends FormRequest
     public function rules()
     {
         $valid = [
-            'name' => 'required|min:3|max:255',
+            'name' => 'required|min:1|max:255',
             'sale_value' => 'required',
             'cost_value' => 'required',
         ];
@@ -52,7 +52,7 @@ class Products extends FormRequest
     {
         return [
             'name.invalid' => "Apenas letras são aceitas",
-            'name.min' => 'Mínimo de 3 letras para um nome',
+            'name.min' => 'Mínimo de 1 letras para um nome',
             'name.max' => 'Máximo de 255 letras para um nome',
             'bar_code.min' => 'Mínimo de 3 letras para um código de barra',
             'bar_code.max' => 'Máximo de 255 letras para código de barra',
