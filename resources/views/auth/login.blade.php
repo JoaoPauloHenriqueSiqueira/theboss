@@ -23,8 +23,7 @@
             <div class="row margin">
                 <div class="input-field col s12">
                     <i class="material-icons prefix pt-2">person_outline</i>
-                    <input id="email" type="email" class=" @error('email') is-invalid @enderror" name="email"
-                        value="{{ old('email') }}" required autocomplete="email" autofocus>
+                    <input id="email" type="email" class=" @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                     <label for="email" class="center-align">{{ __('Usuário') }}</label>
                     @error('email')
                     <small class="red-text ml-10" role="alert">
@@ -36,8 +35,7 @@
             <div class="row margin">
                 <div class="input-field col s12">
                     <i class="material-icons prefix pt-2">lock_outline</i>
-                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
-                        name="password" required autocomplete="current-password">
+                    <input id="password" pattern=".{8,}" title="8 letras no mínimo" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                     <label for="password">{{ __('Senha') }}</label>
                     @error('password')
                     <small class="red-text ml-10" role="alert">
@@ -48,8 +46,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <button type="submit"
-                        class="btn waves-effect waves-light border-round gradient-45deg-purple-deep-orange col s12">Login
+                    <button type="submit" class="btn waves-effect waves-light border-round gradient-45deg-purple-deep-orange col s12">Login
                     </button>
                 </div>
             </div>

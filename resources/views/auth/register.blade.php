@@ -111,13 +111,27 @@
               </div>
             </li>
 
-
             <li class="step">
               <div class="step-title waves-effect waves-dark">Passo 3</div>
               <div class="step-content" style="">
                 <div class="row">
                   <div class="input-field col s12">
                     <button type="submit" class="btn waves-effect waves-light border-round gradient-45deg-purple-deep-orange col s12">Cadastrar</button>
+                  </div>
+                </div>
+
+                <div class="step-actions">
+                  <div class="row">
+                    <div class="col m6 s12 mb-6">
+                      <button class="red btn btn-reset" type="reset">
+                        <i class="material-icons center">clear</i>Reset
+                      </button>
+                    </div>
+                    <div class="col m6 s12 mb-6">
+                      <button class="btn btn-light previous-step">
+                        <i class="material-icons left">arrow_back</i>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

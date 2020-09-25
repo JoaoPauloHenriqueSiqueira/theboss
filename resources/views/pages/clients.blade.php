@@ -201,7 +201,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="cell_phone" value="{{ old('cell_phone') }}" placeholder="Celular" pattern=".{15,17}" title="11 dígitos requeridos" name="cell_phone" type="text" class="validate" required>
+                    <input id="cell_phone" value="{{ old('cell_phone') }}" placeholder="Celular" pattern=".{15,17}" title="11 dígitos requeridos" name="cell_phone" type="text" class="validate" >
                     <label for="disabled">Celular</label>
                 </div>
             </div>
