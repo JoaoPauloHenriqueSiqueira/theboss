@@ -68,7 +68,7 @@
     @foreach ($datas as $data)
     <li id="{{$data->id}}">
         <div class="collapsible-header">
-            {{$data->date_sale}} {{ $data->client ==  "" ? '' : ' - ' $data->client->name }}
+            {{$data->date_sale}} {{ $data->client ==  "" ? '' : $data->client->name }}
             <div class="second-content">
                 <a class="btn-small tooltipped" onclick="editSale('{{$data->sale_date_format}}','{{$data->sale_time_format}}',{{$data}},{{$data->products}})" data-position='left' data-delay='50' data-tooltip="Editar produto">
                     <i class="material-icons white-text">
