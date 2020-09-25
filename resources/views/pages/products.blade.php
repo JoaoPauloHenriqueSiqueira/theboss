@@ -223,16 +223,16 @@
                 <p>
                     <label>
 
-                        <input type="checkbox" placeholder="Notificar próximas compras" id="notifiable" name="notify" checked onclick="notifyParam()">
-                        <span for="notifiable">Notificar próximas compras</span>
+                        <input type="checkbox" placeholder="Notificar próximos atendimentos" id="notifiable" name="notify" checked onclick="notifyParam()">
+                        <span for="notifiable">Notificar próximos atendimentos</span>
                     </label>
                 </p>
             </div>
 
             <div class="row " id="notify_param">
                 <div class="input-field col s12">
-                    <input id="days_notify" placeholder="Dias para notificação de compra" name="days_notify" value="30" min="1" oninput="validity.valid||(value='');" type="number" value="{{ old('days_notify') }}" class="validate">
-                    <label for="disabled">Dias para notificação de compra</label>
+                    <input id="days_notify" placeholder="Dias para notificação de atendimento" name="days_notify" value="30" min="1" oninput="validity.valid||(value='');" type="number" value="{{ old('days_notify') }}" class="validate">
+                    <label for="disabled">Dias para notificação de atendimento</label>
                 </div>
 
             </div>
