@@ -85,10 +85,6 @@
         </div>
         <div class="collapsible-body white">
             <div class="row ">
-                <span class="span-body">
-                    <span class="green-text">Cliente:</span>
-                    {{ $data->client ==  "" ? '-' : $data->client->name }}
-                </span></br>
                 <!-- <span class="span-body">
                     <span class="green-text">Usuário:</span>
                     {{ $data->user ==  "" ? '-' : $data->user->name }}
