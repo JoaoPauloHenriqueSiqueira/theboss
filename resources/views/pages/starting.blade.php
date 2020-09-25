@@ -12,7 +12,7 @@
     <meta name="author" content="Coderspoint">
 
     <!-- Site title -->
-    <title>The boss -  gerencia suas vendas</title>
+    <title>The boss -  gerencie suas vendas</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('img/favicon.png')}}">
