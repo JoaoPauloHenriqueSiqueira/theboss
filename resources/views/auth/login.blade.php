@@ -2,7 +2,7 @@
 @extends('layouts.fullLayoutMaster')
 
 {{-- page title --}}
-@section('title','User Login')
+@section('title','Entrar')
 
 {{-- page style --}}
 @section('page-style')

@@ -12,7 +12,7 @@
     <meta name="author" content="Coderspoint">
 
     <!-- Site title -->
-    <title>Appslan - One Page App Landing Page</title>
+    <title>The boss -  gerencia suas vendas</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('img/favicon.png')}}">
@@ -52,7 +52,7 @@
                     <div class="mainmenu">
                         <div class="navbar navbar-nobg">
                             <div class="navbar-header">
-                                <a class="navbar-brand" href=""><span>Boss</span></a>
+                                <a class="navbar-brand" href=""><span>The Boss</span></a>
                                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                                     <span class="sr-only">Toggle navigation</span>
                                     <span class="icon-bar"></span>
