@@ -149,6 +149,8 @@ License: You must have a valid license purchased only from themeforest(the above
   $(document).ready(function() {
     $('.modal1').modal();
     $('#modalDelete').modal();
+    $('#modalPhotos').modal();
+
     document.querySelectorAll('.select-wrapper').forEach(t => t.addEventListener('click', e => e.stopPropagation()))
   });
 

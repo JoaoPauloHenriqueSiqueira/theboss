@@ -26,7 +26,7 @@ class CompanyRegister extends FormRequest
      */
     public function rules()
     {
-        $valid['email'] =  'required|unique:companies,email|max:255';
+        $valid['email'] =  'required|unique:users,email|max:255';
         $valid['password'] = 'required|min:8|confirmed';
         $cpfCnpj = is_null($this->request->get('cnpj'));
         if (!$cpfCnpj) {

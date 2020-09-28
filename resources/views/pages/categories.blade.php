@@ -67,15 +67,12 @@
 </ul>
 
 @if(count($datas) == 0)
-<h3 class="center">Não há Categorias cadastrados</h3>
+<h3 class="center">Não há Categorias cadastradas</h3>
 @endif
 <ul class="collapsible collection" data-collapsible="accordion">
     @foreach ($datas as $data)
     <li id="{{$data->id}}">
         <div class="collapsible-header">
-            <i class="material-icons">
-                {{ $data->type_id ==  1 ? 'store' : 'account_circle' }}
-            </i>
             {{$data->name}}
         </div>
         <div class="collapsible-body white">
@@ -85,7 +82,7 @@
                         edit
                     </i>
                 </a>
-                <a class="btn-small tooltipped" onclick="askDelete({{$data->id}})" data-position='right' data-delay='50' data-tooltip="Deletar Categoria">
+                <a class="btn-small tooltipped red" onclick="askDelete({{$data->id}})" data-position='right' data-delay='50' data-tooltip="Deletar Categoria">
                     <i class="material-icons white-text">
                         clear
                     </i>
@@ -99,7 +96,7 @@
 
 
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large red  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Criar Categoria" onclick="openModal()">
+    <a class="btn-floating btn-large green  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Criar Categoria" onclick="openModal()">
         <i class="large material-icons">add</i>
     </a>
 </div>
@@ -129,7 +126,7 @@
 <!-- Modal Structure -->
 <div id="modal" class="modal bottom-sheet">
     <div class="modal-content">
-        <h4 id="client" class="center red-text">Novo Categoria</h4>
+        <h4 id="client" class="center red-text">Nova Categoria</h4>
         <form class="col s12" method="POST" action="{{ URL::route('add_categories') }}" id="formCategory">
             <input type="hidden" id="old">
             <div class="row">
@@ -186,7 +183,7 @@
 
     function clean() {
         $('#formCategory').get(0).setAttribute('method', 'POST');
-        $("#client").html("Novo Categoria");
+        $("#client").html("Nova Categoria");
         $("#idCategory").remove();
     }
 

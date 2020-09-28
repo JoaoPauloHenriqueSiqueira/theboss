@@ -81,7 +81,7 @@
                         edit
                     </i>
                 </a>
-                <a class="btn-small tooltipped" onclick="askDelete({{$data->id}})" data-position='bottom' data-delay='50' data-tooltip="Deletar Usuário" {{ ($data->id ==  Auth::user()->id) ? 'disabled' : "" }}>
+                <a class="btn-small tooltipped red" onclick="askDelete({{$data->id}})" data-position='bottom' data-delay='50' data-tooltip="Deletar Usuário" {{ ($data->id ==  Auth::user()->id) ? 'disabled' : "" }}>
                     <i class="material-icons white-text">
                         clear
                     </i>
@@ -93,7 +93,7 @@
 </ul>
 
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large red  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Criar Usuário" onclick="openModal()">
+    <a class="btn-floating btn-large green  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Criar Usuário" onclick="openModal()">
         <i class="large material-icons">add</i>
     </a>
 </div>

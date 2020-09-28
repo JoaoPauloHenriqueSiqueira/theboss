@@ -85,6 +85,9 @@
         </div>
         <div class="collapsible-body white">
             <div class="row ">
+                <!-- <span class="span-body"> -->
+                    <!-- <a class="tooltipped right" onclick="photos({{$data->id}})" data-position='right' data-delay='50' data-tooltip="Adicionar fotos"><i class="material-icons">add_a_photo</i></a> -->
+                <!-- </span> -->
                 <span class="span-body">
                     <span class="green-text">Código:</span>
                     {{ $data->bar_code ==  "" ? '-' : $data->bar_code }}
@@ -113,37 +116,25 @@
                 </span>
 
                 @endif
-                <span class="span-body center">
+                <span class="span-body left">
                     @if(count($data->categories) > 0)
-                    <table class="bordered center">
-                        <thead>
-                            <tr>
-                                <th>Categoria(s)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data->categories as $category)
-                            <tr>
-                                <td>
-                                    <input placeholder="Nome" type="text" readonly disabled value="{{$category->name}}">
-                                    <label for="name">Nome</label>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <span class="green-text">Categoria(s):
+                    </span></br>
+                    @foreach ($data->categories as $category)
+                    {{$category->name}}</br>
+                    @endforeach
                     @endif
-
                 </span>
             </div>
             <hr>
             <div class="row center">
+
                 <a class="btn-small tooltipped" onclick="editProduct({{$data}},{{$data->categories}})" data-position='left' data-delay='50' data-tooltip="Editar produto">
                     <i class="material-icons white-text">
                         edit
                     </i>
                 </a>
-                <a class="btn-small tooltipped" onclick="askDelete({{$data->id}})" data-position='right' data-delay='50' data-tooltip="Deletar produto">
+                <a class="btn-small tooltipped red" onclick="askDelete({{$data->id}})" data-position='right' data-delay='50' data-tooltip="Deletar produto">
                     <i class="material-icons white-text">
                         clear
                     </i>
@@ -159,7 +150,7 @@
 
 
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large red  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Criar produto" onclick="openModal()">
+    <a class="btn-floating btn-large green  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Criar produto" onclick="openModal()">
         <i class="large material-icons">add</i>
     </a>
 </div>
@@ -187,6 +178,22 @@
 
 
 <!-- Modal Structure -->
+<div id="modalPhotos" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <div class="carousel">
+            <a class="carousel-item" href="#one!"><img src="https://lorempixel.com/250/250/nature/7"></a>
+            <a class="carousel-item" href="#two!"><img src="https://lorempixel.com/250/250/nature/2"></a>
+            <a class="carousel-item" href="#three!"><img src="https://lorempixel.com/250/250/nature/3"></a>
+            <a class="carousel-item" href="#four!"><img src="https://lorempixel.com/250/250/nature/4"></a>
+            <a class="carousel-item" href="#five!"><img src="https://lorempixel.com/250/250/nature/5"></a>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal Structure -->
 <div id="modal" class="modal bottom-sheet">
     <div class="modal-content">
         <h4 id="product" class="center red-text">Novo Produto</h4>
@@ -194,7 +201,7 @@
             <input type="hidden" id="old">
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="name" placeholder="Nome" name="name" pattern=".{3,}" title="3 letras no mínimo" type="text" class="validate" value="{{ old('name') }}" required>
+                    <input id="name" placeholder="Nome" name="name" pattern=".{1,}" title="1 letras no mínimo" type="text" class="validate" value="{{ old('name') }}" required>
                     <label for="disabled">Nome*</label>
                 </div>
             </div>
@@ -262,7 +269,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <input placeholder="Valor de custo" id="cost_value" name="cost_value" type="text" class="validate" value="{{ old('cost_value') }}">
+                    <input placeholder="Valor de custo" id="cost_value" name="cost_value" type="text" class="validate" value="{{ old('cost_value') }}" required>
                     <label for="disabled">Valor de custo*</label>
                 </div>
             </div>
@@ -290,6 +297,7 @@
 
 <script>
     $(document).ready(function() {
+        $('.carousel').carousel();
         maskFields();
         $(".select2").select2({
             dropdownAutoWidth: true,
@@ -303,7 +311,7 @@
         $notify = "<?= old('notify') ?>";
         if ($notify == "on") {
             $("#notifiable").prop('checked', true);
-            $("#notify_param").sjow();
+            $("#notify_param").show();
         } else {
             $("#notifiable").prop('checked', false);
             $("#notify_param").hide();
@@ -352,6 +360,7 @@
     }
 
     function openModal() {
+
         if ($("#old").val() != 1) {
             this.clean();
             this.cleanFields();
@@ -361,7 +370,6 @@
 
         $("#quantity_param").hide();
         $("#notify_param").hide();
-
         $('#modal').modal('open');
     }
 
@@ -370,10 +378,15 @@
         $('#modalDelete').modal('close');
     }
 
+    function photos() {
+        $("#modalPhotos").modal('open');
+    }
+
+
     function cleanFields() {
         $("#name").val('');
         $("#bar_code").val('');
-        $("#cost_value").val('');
+        $("#cost_value").val('0');
         $("#sale_value").val('');
         $("#quantity").val('');
         $("#days_notify").val('');
@@ -387,7 +400,8 @@
     }
 
     function selectCategory($category) {
-        $('#categories option[value="' + $category + '"]').attr("disabled", true);
+        console.log($category);
+        $('#categories option[value="' + $category + '"]').attr('selected', true);
         $('#categories').change();
         $('#categories').formSelect();
     }
@@ -399,11 +413,9 @@
     }
 
     function editProduct(product, categories) {
-
         categories.forEach(element => {
             this.selectCategory(element.id);
         });
-
 
         $("#idProduct").append(product['id']);
         $("#product").html("Editar Produto");

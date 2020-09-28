@@ -70,12 +70,12 @@
         <div class="collapsible-header">
             {{$data->date_sale}} {{ $data->client ==  "" ? '' : $data->client->name }}
             <div class="second-content">
-                <a class="btn-small tooltipped" onclick="editSale('{{$data->sale_date_format}}','{{$data->sale_time_format}}',{{$data}},{{$data->products}})" data-position='left' data-delay='50' data-tooltip="Editar produto">
+                <a class="btn-small tooltipped" onclick="editSale('{{$data->sale_date_format}}','{{$data->sale_time_format}}',{{$data}},{{$data->products}})" data-position='left' data-delay='50' data-tooltip="Editar Atendimento">
                     <i class="material-icons white-text">
                         edit
                     </i>
                 </a>
-                <a class="btn-small tooltipped" onclick="askDelete({{$data->id}})" data-position='right' data-delay='50' data-tooltip="Deletar atendimento">
+                <a class="btn-small tooltipped red" onclick="askDelete({{$data->id}})" data-position='right' data-delay='50' data-tooltip="Deletar atendimento">
                     <i class="material-icons white-text">
                         clear
                     </i>
@@ -140,7 +140,7 @@
 </ul>
 
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large red  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Novo atendimento" onclick="openModal()">
+    <a class="btn-floating btn-large green  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Novo atendimento" onclick="openModal()">
         <i class="large material-icons">add</i>
     </a>
 </div>
@@ -444,7 +444,10 @@
     function cleanFields() {
         $("#quantity").val("1");
         $("#sale_date").val("<?= $sale_date ?>");
-        $("#sale_time").val("<?= $sale_time ?>");
+        let $hour = new Date().getHours();
+        let $minutes = String(new Date().getMinutes()).padStart(2, "0");
+        $("#sale_time").val(`${$hour+":"+$minutes}`);
+
     }
 
     function cleanTableProducts() {

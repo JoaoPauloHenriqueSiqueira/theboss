@@ -28,7 +28,8 @@ class Sales extends FormRequest
     {
         $valid = [
             'amount_total' => 'required',
-            'amount_paid' => 'required'
+            'amount_paid' => 'required',
+            'products' => 'required'
         ];
 
         $client = is_null($this->request->get('client_id'));
@@ -47,8 +48,9 @@ class Sales extends FormRequest
     {
         return [
             'client_id.exists' => 'Cliente não encontrado na sua base',
-            'amount_paid.exists' => 'Valor pago é um campo obrigatório',
-            'amount_total.exists' => 'Valor total é um campo obrigatório',
+            'amount_paid.required' => 'Valor pago é um campo obrigatório',
+            'amount_total.required' => 'Valor total é um campo obrigatório',
+            'products.required' => 'Nenhum produto adicionado',
 
         ];
     }

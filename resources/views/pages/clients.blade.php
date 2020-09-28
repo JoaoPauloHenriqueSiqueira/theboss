@@ -129,7 +129,7 @@
                         edit
                     </i>
                 </a>
-                <a class="btn-small tooltipped" onclick="askDelete({{$data->id}})" data-position='right' data-delay='50' data-tooltip="Deletar Cliente">
+                <a class="btn-small tooltipped red" onclick="askDelete({{$data->id}})" data-position='right' data-delay='50' data-tooltip="Deletar Cliente">
                     <i class="material-icons white-text">
                         clear
                     </i>
@@ -143,7 +143,7 @@
 
 
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large red  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Criar Cliente" onclick="openModal()">
+    <a class="btn-floating btn-large green  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Criar Cliente" onclick="openModal()">
         <i class="large material-icons">add</i>
     </a>
 </div>
@@ -201,7 +201,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="cell_phone" value="{{ old('cell_phone') }}" placeholder="Celular" pattern=".{15,17}" title="11 dígitos requeridos" name="cell_phone" type="text" class="validate" >
+                    <input id="cell_phone" value="{{ old('cell_phone') }}" placeholder="Celular" pattern=".{15,17}" title="11 dígitos requeridos" name="cell_phone" type="text" class="validate">
                     <label for="disabled">Celular</label>
                 </div>
             </div>
