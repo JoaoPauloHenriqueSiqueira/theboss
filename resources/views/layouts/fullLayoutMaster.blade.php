@@ -28,7 +28,6 @@ License: You must have a valid license purchased only from themeforest(the above
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>@yield('title')</title>
-  <link rel="shortcut icon" type="image/x-icon" href="../../../images/favicon/favicon-32x32.png">
   <style>
     .material-icons,
     .icon-text {
