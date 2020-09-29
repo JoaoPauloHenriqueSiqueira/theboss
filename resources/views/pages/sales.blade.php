@@ -68,27 +68,29 @@
     @foreach ($datas as $data)
     <li id="{{$data->id}}">
         <div class="collapsible-header">
-            {{$data->date_sale}} {{ $data->client ==  "" ? '' : $data->client->name }}
+            <i class="material-icons green-text">
+                schedule
+            </i>
+            {{$data->date_sale}}
+
+            @if($data->client != "")
+            <a class="tooltipped" data-position='top' data-delay='50' data-tooltip="{{ $data->client->name }}">
+                <i class="material-icons green-text">
+                    face
+                </i>
+            </a>
+            @endif
+
             <div class="second-content">
-                <a class="btn-small tooltipped" onclick="editSale('{{$data->sale_date_format}}','{{$data->sale_time_format}}',{{$data}},{{$data->products}})" data-position='left' data-delay='50' data-tooltip="Editar Atendimento">
-                    <i class="material-icons white-text">
-                        edit
-                    </i>
-                </a>
-                <a class="btn-small tooltipped red" onclick="askDelete({{$data->id}})" data-position='right' data-delay='50' data-tooltip="Deletar atendimento">
-                    <i class="material-icons white-text">
-                        clear
-                    </i>
-                </a>
+                <i class="material-icons green-text">
+                    attach_money
+                </i>
+                {{$data->amount_total_value}}
             </div>
 
         </div>
         <div class="collapsible-body white">
             <div class="row ">
-                <!-- <span class="span-body">
-                    <span class="green-text">Usuário:</span>
-                    {{ $data->user ==  "" ? '-' : $data->user->name }}
-                </span></br> -->
                 <span class="span-body">
                     <span class="green-text">Valor Venda:</span>
                     {{ $data->amount_total ==  "" ? '-' : $data->amount_total_value }}
@@ -133,6 +135,22 @@
                     @endif
                 </span>
             </div></br>
+
+            <hr>
+            <div class="row center">
+
+                <a class="btn-small tooltipped" onclick="editSale('{{$data->sale_date_format}}','{{$data->sale_time_format}}',{{$data}},{{$data->products}})" data-position='left' data-delay='50' data-tooltip="Editar Atendimento">
+                    <i class="material-icons white-text">
+                        edit
+                    </i>
+                </a>
+                <a class="btn-small tooltipped red" onclick="askDelete({{$data->id}})" data-position='right' data-delay='50' data-tooltip="Deletar atendimento">
+                    <i class="material-icons white-text">
+                        clear
+                    </i>
+                </a>
+            </div>
+
 
         </div>
     </li>

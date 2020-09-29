@@ -30,8 +30,6 @@ License: You must have a valid license purchased only from themeforest(the above
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>@yield('title')</title>
-  <link rel="apple-touch-icon" href="../../images/favicon/apple-touch-icon-152x152.png">
-  <link rel="shortcut icon" type="image/x-icon" href="../../images/favicon/favicon-32x32.png">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
   <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet" type="text/css">

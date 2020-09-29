@@ -1,7 +1,7 @@
 @extends('layouts.contentLayoutMaster')
 
 {{-- page title --}}
-@section('title','Produtos')
+@section('title','Produtos/Serviços')
 
 @section('content')
 <ul class="collapsible " data-collapsible=" accordion">
@@ -128,7 +128,6 @@
             </div>
             <hr>
             <div class="row center">
-
                 <a class="btn-small tooltipped" onclick="editProduct({{$data}},{{$data->categories}})" data-position='left' data-delay='50' data-tooltip="Editar produto">
                     <i class="material-icons white-text">
                         edit
