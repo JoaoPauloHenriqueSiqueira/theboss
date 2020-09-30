@@ -35,9 +35,9 @@
     <li class="sales">
       <a class="tooltipped" href="{{ URL::route('sales') }}" data-position='right' data-delay='50' data-tooltip="Lista todos os Atendimentos">Atendimentos</a>
     </li>
-    <!-- <li class="users">
-      <a class="tooltipped" href="" data-position='right' data-delay='50' data-tooltip="CRUD para as USUÁRIOS">Usuários</a>
-    </li> -->
+    <li class="users">
+      <a class="tooltipped" href="{{ URL::route('users') }}" data-position='right' data-delay='50' data-tooltip="Lista todos os Usuários que terão acesso ao sistema">Usuários</a>
+    </li>
     <li class="clients search_clients">
       <a class="tooltipped" href="{{ URL::route('clients') }}" data-position='right' data-delay='50' data-tooltip="Lista todos os Clientes">Clientes</a>
     </li>

@@ -73,14 +73,6 @@
             </i>
             {{$data->date_sale}}
 
-            @if($data->client != "")
-            <a class="tooltipped" data-position='top' data-delay='50' data-tooltip="{{ $data->client->name }}">
-                <i class="material-icons green-text">
-                    face
-                </i>
-            </a>
-            @endif
-
             <div class="second-content">
                 <i class="material-icons green-text">
                     attach_money
@@ -91,6 +83,17 @@
         </div>
         <div class="collapsible-body white">
             <div class="row ">
+                <span class="span-body">
+                    <span class="green-text">Usuário:</span>
+                    {{ $data->user->name }}
+                </span></br>
+                @if($data->client != "")
+                <span class="span-body">
+                    <span class="green-text">Cliente:</span>
+                    {{ $data->client->name }}
+                </span></br>
+                @endif
+
                 <span class="span-body">
                     <span class="green-text">Valor Venda:</span>
                     {{ $data->amount_total ==  "" ? '-' : $data->amount_total_value }}

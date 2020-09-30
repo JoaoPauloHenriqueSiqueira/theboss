@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -26,6 +27,15 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($query) {
+            $query->company_id = Auth::user()->company_id;
+        });
+    }
 
 
     public function company()

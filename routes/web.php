@@ -58,14 +58,14 @@ Route::group(['middleware' => 'auth'], function () {
             Route::delete('/', 'ProductController@delete')->name('delete_products');
         });
 
-        // Route::group(['prefix' => 'users'], function () {
-        //     Route::get('/', 'UserController@index')->name('users');
-        //     Route::get('/search', 'UserController@index');
-        //     Route::post('/search', 'UserController@search')->name('search_users');
-        //     Route::post('/', 'UserController@create');
-        //     Route::put('/', 'UserController@update');
-        //     Route::delete('/', 'UserController@delete');
-        // });
+        Route::group(['prefix' => 'users'], function () {
+            Route::get('/', 'UserController@index')->name('users');
+            Route::get('/search', 'UserController@index');
+            Route::post('/search', 'UserController@search')->name('search_users');
+            Route::post('/', 'UserController@create');
+            Route::put('/', 'UserController@update');
+            Route::delete('/', 'UserController@delete');
+        });
 
         Route::group(['prefix' => 'categories'], function () {
             Route::get('/', 'CategoryController@index')->name('categories');

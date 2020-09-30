@@ -79,17 +79,16 @@ class UserService
      * @param [type] $request
      * @return void
      */
-    public function save($request, $valid)
+    public function save($request)
     {
-        if (!$valid) {
-            return $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request);
-        }
-
         if ($request->validated()) {
-            $request['password'] = bcrypt(Arr::get($request, "password"));
             $update = Arr::get($request, "id", false);
             if ($update) {
                 $request = $this->verifyUpdate($request, $this->find($update));
+            }
+
+            if (!$update) {
+                $request['password'] = bcrypt(Arr::get($request, "password"));
             }
 
             $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());

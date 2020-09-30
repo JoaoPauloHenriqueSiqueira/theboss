@@ -210,7 +210,7 @@
             <input type="hidden" id="old">
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="name" placeholder="Nome" name="name" pattern=".{1,}" title="1 letras no mínimo" type="text" class="validate" value="{{ old('name') }}" required>
+                    <input id="name" placeholder="Nome" name="name" pattern=".{1,}" title="1 letra no mínimo" type="text" class="validate" value="{{ old('name') }}" required>
                     <label for="disabled">Nome*</label>
                 </div>
             </div>
@@ -388,8 +388,8 @@
             $("#old").val(0);
         }
 
-        $("#quantity_param").hide();
-        $("#notify_param").hide();
+        quantityParam();
+        notifyParam();
         $('#modal').modal('open');
     }
 

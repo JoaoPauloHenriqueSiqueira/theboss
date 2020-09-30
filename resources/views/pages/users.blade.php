@@ -125,34 +125,25 @@
     <div class="modal-content">
         <h4 id="user" class="center red-text">Novo Usuário</h4>
         <form class="col s12" method="POST" action="users" id="formUser">
+            <input type="hidden" id="old">
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="nameUser" placeholder="Nome" name="name" type="text" class="validate">
+                    <input id="nameUser" placeholder="Nome" pattern=".{1,}" title="1 letra no mínimo" name="name" type="text" class="validate" required value="{{ old('name') }}">
                     <label for="disabled">Nome</label>
                 </div>
             </div>
 
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="emailUser" placeholder="Email" name="email" type="text" class="validate">
-                    <label for="disabled">Email</label>
+                    <input id="emailUser" placeholder="Email" pattern=".{7,}" title="7 letras no mínimo" name="email" type="text" class="validate" required value="{{ old('email') }}">
+                    <label for="disabled">Email (utilizado para acessar</label>
                 </div>
             </div>
 
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="passwordUser" placeholder="Senha" name="password" type="text" class="validate">
+                    <input id="passwordUser" placeholder="Senha" pattern=".{7,}" title="7 letras no mínimo" name="password" type="text" class="validate">
                     <label for="disabled">Senha</label>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="input-field col s12">
-                    <select name="type_id" id="typeUser" required>
-                        <option value="1">Gerente</option>
-                        <option value="2">Funcionário</option>
-                    </select>
-                    <label>Tipo</label>
                 </div>
             </div>
     </div>
@@ -170,10 +161,23 @@
 @endif
 
 @endsection
+<script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
 
 <script>
+    $(document).ready(function() {
+        $old = "<?= old('name') ?>";
+        if ($old != "") {
+            $("#old").val(1);
+            openModal();
+        }
+    });
+
     function openModal() {
-        this.clean();
+        if ($("#old").val() != 1) {
+            this.clean();
+        } else {
+            $("#old").val(0);
+        }
         $('#modal').modal('open');
     }
 
@@ -199,11 +203,9 @@
         $("#nameUser").val(user['name']);
         $("#emailUser").val(user['email']);
         $("#passwordUser").attr('disabled', true);
-        $("#typeUser").val(user['type_id']);
-        $("#typeUser").formSelect();
         $('<input>').attr({
             type: 'hidden',
-            user_id: 'idUser',
+            id: 'idUser',
             name: 'id',
             value: user['id']
         }).appendTo('#formUser');
@@ -228,6 +230,14 @@
         $("#search_email").val('');
     }
 
+    function closeCleanModal(id, $data) {
+        $("#" + id).remove();
+        M.toast({
+            html: $data
+        }, 5000);
+        $("#modalDelete").modal("close");
+        $("#deleteInput").val('');
+    }
 
     function deleteUser() {
         let id = $("#deleteInput").val();
@@ -237,18 +247,11 @@
             data: {
                 "id": id
             },
-            success: function($data) {
-                $("#" + id).remove();
-                $('.grid').masonry('reloadItems');;
-                $('.grid').masonry({
-                    itemSelector: '.grid-item',
-                    columnWidth: 50
-                });
-                M.toast({
-                    html: $data
-                }, 5000);
-                $("#modalDelete").modal("close");
-                $("#deleteInput").val('');
+            success: function(data) {
+                closeCleanModal(id, data);
+            },
+            error: function(data) {
+                closeCleanModal(id, data.responseText);
             }
         });
     }
