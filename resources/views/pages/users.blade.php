@@ -142,7 +142,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="passwordUser" placeholder="Senha" pattern=".{7,}" title="7 letras no mínimo" name="password" type="text" class="validate">
+                    <input id="passwordUser" placeholder="Senha" pattern=".{8,}" title="8 letras no mínimo" name="password" type="text" class="validate">
                     <label for="disabled">Senha</label>
                 </div>
             </div>
