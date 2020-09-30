@@ -56,7 +56,7 @@
                 </div>
                 <div class="input-field col s6 m6 l6">
                     <p class="margin right-align medium-small">
-                       <a href="{{ route('password.request') }}">Esqueceu a senha?</a> 
+                        <a href="{{ route('password.request') }}">Esqueceu a senha?</a>
                     </p>
                 </div>
             </div>
@@ -64,3 +64,16 @@
     </div>
 </div>
 @endsection
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JY6683E5F0"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-JY6683E5F0');
+</script>

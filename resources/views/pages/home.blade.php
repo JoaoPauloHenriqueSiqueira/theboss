@@ -95,7 +95,18 @@
 @endsection
 <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0RDMX1LEHW"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
 
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-0RDMX1LEHW');
+</script>
 <script>
     $(document).ready(function() {});
 </script>
