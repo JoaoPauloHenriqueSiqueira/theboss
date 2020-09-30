@@ -128,23 +128,16 @@ class ProductService
             if ($productId) {
                 $product = $this->repository->find($productId);
                 $product->categories()->detach();
+                $product->providers()->detach();
             }
 
             $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
 
-            $arrCategories = [];
             $categories = Arr::get($request, "categories", []);
+            $providers = Arr::get($request, "providers", []);
 
-            foreach ($categories as $category) {
-                $newCategory = [];
-                $newCategory["product_id"] = $response->id;
-                $newCategory["category_id"] = $category;
-                array_push($arrCategories, $newCategory);
-            }
-
-            $response->categories()->attach(
-                $arrCategories
-            );
+            $this->addCategories($categories,$response);
+            $this->addProviders($providers, $response);
 
             if ($response) {
                 return redirect()->back()->with('message', 'Registro criado/atualizado!');
@@ -152,6 +145,39 @@ class ProductService
         }
         return redirect()->back()->with('message', 'Ocorreu algum erro');
     }
+
+    private function addCategories($categories, $response)
+    {
+        $arrCategories = [];
+
+        foreach ($categories as $category) {
+            $newCategory = [];
+            $newCategory["product_id"] = $response->id;
+            $newCategory["category_id"] = $category;
+            array_push($arrCategories, $newCategory);
+        }
+
+        return $response->categories()->attach(
+            $arrCategories
+        );
+    }
+
+    private function addProviders($providers, $response)
+    {
+        $arrProviders = [];
+
+        foreach ($providers as $provider) {
+            $newProvider = [];
+            $newProvider["product_id"] = $response->id;
+            $newProvider["provider_id"] = $provider;
+            array_push($arrProviders, $newProvider);
+        }
+
+        return $response->providers()->attach(
+            $arrProviders
+        );
+    }
+
 
     public function update($request)
     {

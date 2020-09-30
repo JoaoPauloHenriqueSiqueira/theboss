@@ -47,6 +47,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Contracts\CategoryRepositoryInterface',
             'App\Repositories\CategoryRepository'
         );
+
+        $this->app->bind(
+            'App\Repositories\Contracts\ProviderRepositoryInterface',
+            'App\Repositories\ProviderRepository'
+        );
     }
 
     /**

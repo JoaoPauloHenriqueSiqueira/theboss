@@ -86,7 +86,7 @@
         <div class="collapsible-body white">
             <div class="row ">
                 <!-- <span class="span-body"> -->
-                    <!-- <a class="tooltipped right" onclick="photos({{$data->id}})" data-position='right' data-delay='50' data-tooltip="Adicionar fotos"><i class="material-icons">add_a_photo</i></a> -->
+                <!-- <a class="tooltipped right" onclick="photos({{$data->id}})" data-position='right' data-delay='50' data-tooltip="Adicionar fotos"><i class="material-icons">add_a_photo</i></a> -->
                 <!-- </span> -->
                 <span class="span-body">
                     <span class="green-text">Código:</span>
@@ -128,7 +128,7 @@
             </div>
             <hr>
             <div class="row center">
-                <a class="btn-small tooltipped" onclick="editProduct({{$data}},{{$data->categories}})" data-position='left' data-delay='50' data-tooltip="Editar produto">
+                <a class="btn-small tooltipped" onclick="editProduct({{$data}})" data-position='left' data-delay='50' data-tooltip="Editar produto">
                     <i class="material-icons white-text">
                         edit
                     </i>
@@ -205,7 +205,6 @@
                 </div>
             </div>
             <div class="row">
-
                 <div class="input-field col s12">
                     <select class="select2 browser-default" id="categories" name="categories[]" multiple>
                         @foreach ($categories as $category)
@@ -215,6 +214,18 @@
                         @endforeach
                     </select>
                     <label class="active" for="categories">Categorias</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <select class="select2 browser-default" id="providers" name="providers[]" multiple>
+                        @foreach ($providers as $provider)
+                        <option value="{{$provider->id}}">
+                            {{$provider->name}}
+                        </option>
+                        @endforeach
+                    </select>
+                    <label class="active" for="categories">Fornecedores</label>
                 </div>
             </div>
 
@@ -399,10 +410,15 @@
     }
 
     function selectCategory($category) {
-        console.log($category);
         $('#categories option[value="' + $category + '"]').attr('selected', true);
         $('#categories').change();
         $('#categories').formSelect();
+    }
+
+    function selectProvider($provider) {
+        $('#providers option[value="' + $provider + '"]').attr('selected', true);
+        $('#providers').change();
+        $('#providers').formSelect();
     }
 
     function cleanCategoryField() {
@@ -411,10 +427,24 @@
         $('#categories').formSelect();
     }
 
-    function editProduct(product, categories) {
-        categories.forEach(element => {
-            this.selectCategory(element.id);
-        });
+    function editProduct(product) {
+
+        let categories = product.categories;
+        console.log(categories);
+        if (categories !== undefined) {
+            categories.forEach(element => {
+                this.selectCategory(element.id);
+            });
+        }
+
+        let providers = product.providers;
+        console.log(providers);
+
+        if (providers !== undefined) {
+            providers.forEach(element => {
+                this.selectProvider(element.id);
+            });
+        }
 
         $("#idProduct").append(product['id']);
         $("#product").html("Editar Produto");

@@ -67,7 +67,7 @@
 </ul>
 
 @if(count($datas) == 0)
-<h3 class="center">Não há Fornecedores cadastradas</h3>
+<h3 class="center">Não há Fornecedores cadastrados</h3>
 @endif
 <ul class="collapsible collection" data-collapsible="accordion">
     @foreach ($datas as $data)
@@ -76,6 +76,18 @@
             {{$data->name}}
         </div>
         <div class="collapsible-body white">
+
+            <div class="row ">
+                <span class="span-body">
+                    <span class="green-text">Telefone</span>
+                    {{ $data->phone_number ==  "" ? '-' : $data->phone_number }}
+                </span></br>
+                <span class="span-body">
+                    <span class="green-text">Email</span>
+                    {{ $data->email ==  "" ? '-' : $data->email }}
+                </span></br>
+            </div>
+            <hr>
             <div class="row center">
                 <a class="btn-small tooltipped" onclick="editprovider({{$data}})" data-position='left' data-delay='50' data-tooltip="Editar Fornecedor">
                     <i class="material-icons white-text">
@@ -135,6 +147,20 @@
                     <label for="disabled">Nome</label>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="phone_number" value="{{ old('phone_number') }}" placeholder="Telefone" pattern=".{15,17}" title="11 dígitos requeridos" name="phone_number" type="text" class="validate">
+                    <label for="disabled">Telefone</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="email" placeholder="Email" pattern=".{3,}" title="3 letras no mínimo" name="email" type="text" class="validate" required value="{{ old('email') }}">
+                    <label for="disabled">Email</label>
+                </div>
+            </div>
     </div>
 
     <div class="modal-footer">
@@ -159,6 +185,8 @@
 <script>
     $(document).ready(function() {
         M.updateTextFields();
+        maskFields();
+
     });
 
     function openModal() {
@@ -170,6 +198,10 @@
         }
 
         $('#modal').modal('open');
+    }
+
+    function maskFields() {
+        $('#phone_number').mask('(00) 00000-0000');
     }
 
     function closeModal() {
@@ -191,6 +223,8 @@
         $("#idprovider").append(provider['id']);
         $("#provider").html("Editar Fornecedor");
         $("#name").val(provider['name']);
+        $("#email").val(provider['email']);
+        $("#phone_number").val(provider['phone_number']);
 
         $('<input>').attr({
             type: 'hidden',
