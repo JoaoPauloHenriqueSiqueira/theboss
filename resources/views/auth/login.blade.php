@@ -56,7 +56,7 @@
                 </div>
                 <div class="input-field col s6 m6 l6">
                     <p class="margin right-align medium-small">
-                        <!-- <a href="{{ route('password.request') }}">Esqueceu a senha?</a> -->
+                       <a href="{{ route('password.request') }}">Esqueceu a senha?</a>
                     </p>
                 </div>
             </div>

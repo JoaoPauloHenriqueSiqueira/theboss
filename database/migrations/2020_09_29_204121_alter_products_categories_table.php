@@ -16,7 +16,8 @@ class AlterProductsCategoriesTable extends Migration
         Schema::table('products_categories', function (Blueprint $table) {
             $table->dropForeign('products_categories_product_id_foreign');
             $table->dropForeign('products_categories_category_id_foreign');
-            $table->dropColumn(['product_id', 'category_id']);  
+            $table->dropColumn('product_id');
+            $table->dropColumn('category_id');
         });
 
 
