@@ -125,6 +125,16 @@
                     @endforeach
                     @endif
                 </span>
+
+                <span class="span-body left">
+                    @if(count($data->providers) > 0)
+                    <span class="green-text">Fornecedor(es):
+                    </span></br>
+                    @foreach ($data->providers as $provider)
+                    {{$provider->name}}</br>
+                    @endforeach
+                    @endif
+                </span>
             </div>
             <hr>
             <div class="row center">
@@ -401,6 +411,8 @@
         $("#quantity").val('');
         $("#days_notify").val('');
         cleanCategoryField();
+        cleanProviderField();
+
     }
 
     function clean() {
@@ -427,10 +439,15 @@
         $('#categories').formSelect();
     }
 
+    function cleanProviderField() {
+        $('#providers option').prop('selected', false);
+        $('#providers').change();
+        $('#providers').formSelect();
+    }
+
     function editProduct(product) {
 
         let categories = product.categories;
-        console.log(categories);
         if (categories !== undefined) {
             categories.forEach(element => {
                 this.selectCategory(element.id);
@@ -438,8 +455,6 @@
         }
 
         let providers = product.providers;
-        console.log(providers);
-
         if (providers !== undefined) {
             providers.forEach(element => {
                 this.selectProvider(element.id);
@@ -455,6 +470,7 @@
         $("#days_notify").val(product['days_notify']);
         $("#quantity").val(product['quantity']);
 
+
         notifiable = product['notifiable'];
         if (notifiable) {
             $("#notifiable").prop('checked', true);
@@ -469,7 +485,8 @@
             $("#control_quantity").prop('checked', false);
         }
 
-
+        quantityParam();
+        notifyParam();
 
         $('<input>').attr({
             type: 'hidden',

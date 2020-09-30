@@ -138,7 +138,7 @@
 <!-- Modal Structure -->
 <div id="modal" class="modal bottom-sheet">
     <div class="modal-content">
-        <h4 id="client" class="center red-text">Nova Fornecedor</h4>
+        <h4 id="client" class="center red-text">Novo Fornecedor</h4>
         <form class="col s12" method="POST" action="{{ URL::route('add_providers') }}" id="formprovider">
             <input type="hidden" id="old">
             <div class="row">
@@ -186,7 +186,11 @@
     $(document).ready(function() {
         M.updateTextFields();
         maskFields();
-
+        $old = "<?= old('name') ?>";
+        if ($old != "") {
+            $("#old").val(1);
+            openModal();
+        }
     });
 
     function openModal() {
@@ -215,7 +219,7 @@
 
     function clean() {
         $('#formprovider').get(0).setAttribute('method', 'POST');
-        $("#client").html("Nova Fornecedor");
+        $("#client").html("Novo Fornecedor");
         $("#idprovider").remove();
     }
 
