@@ -79,9 +79,15 @@ class UserService
      * @param [type] $request
      * @return void
      */
-    public function save($request)
+    public function save($request,$valid = true)
     {
+        if(!$valid){
+            return $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request);
+        }
+
         if ($request->validated()) {
+            $request['company_id'] = Auth::user()->company_id;
+
             $update = Arr::get($request, "id", false);
             if ($update) {
                 $request = $this->verifyUpdate($request, $this->find($update));

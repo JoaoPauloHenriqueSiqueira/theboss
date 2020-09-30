@@ -28,16 +28,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($query) {
-            $query->company_id = Auth::user()->company_id;
-        });
-    }
-
-
     public function company()
     {
         return $this->belongsTo(Company::class);
