@@ -462,10 +462,13 @@
     function cleanFields() {
         $("#quantity").val("1");
         $("#sale_date").val("<?= $sale_date ?>");
-        let $hour = new Date().getHours();
+        addTime();
+    }
+
+    function addTime() {
+        let $hour = String(new Date().getHours()).padStart(2, "0");
         let $minutes = String(new Date().getMinutes()).padStart(2, "0");
         $("#sale_time").val(`${$hour+":"+$minutes}`);
-
     }
 
     function cleanTableProducts() {
