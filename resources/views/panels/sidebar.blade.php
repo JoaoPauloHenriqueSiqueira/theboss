@@ -50,6 +50,11 @@
       <a class="tooltipped" href="{{ URL::route('categories') }}" data-position='right' data-delay='50' data-tooltip="Lista todas Categorias de Produtos/Serviços">Categorias</a>
     </li>
 
+    <li class="providers search_providers">
+      <a class="tooltipped" href="{{ URL::route('providers') }}" data-position='right' data-delay='50' data-tooltip="Lista todos Fornecedores de Produtos/Serviços">Fornecedores</a>
+    </li>
+
+
   </ul>
   <div class="navigation-background"></div>
   <a class="sidenav-trigger btn-sidenav-toggle btn-floating btn-medium waves-effect waves-light hide-on-large-only" href="#" data-target="slide-out"><i class="material-icons">menu</i></a>

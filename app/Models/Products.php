@@ -32,6 +32,11 @@ class Products extends Model
         return $this->belongsToMany(Categories::class, 'products_categories', 'product_id', 'category_id');
     }
 
+    public function providers()
+    {
+        return $this->belongsToMany(Providers::class, 'products_providers', 'product_id', 'provider_id');
+    }
+    
     protected static function boot()
     {
         parent::boot();

@@ -74,5 +74,13 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/', 'CategoryController@createOrUpdate')->name('add_categories');
             Route::delete('/', 'CategoryController@delete')->name('delete_categories');;
         });
+
+        Route::group(['prefix' => 'providers'], function () {
+            Route::get('/', 'ProviderController@index')->name('providers');
+            Route::get('/search', 'ProviderController@index');
+            Route::post('/search', 'ProviderController@search')->name('search_providers');
+            Route::post('/', 'ProviderController@createOrUpdate')->name('add_providers');
+            Route::delete('/', 'ProviderController@delete')->name('delete_providers');;
+        });
     });
 });

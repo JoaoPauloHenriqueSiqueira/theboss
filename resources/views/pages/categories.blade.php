@@ -131,7 +131,7 @@
             <input type="hidden" id="old">
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="name" placeholder="Nome" pattern=".{3,}" title="3 letras no mínimo" name="name" type="text" class="validate" required value="{{ old('name') }}">
+                    <input id="name" placeholder="Nome" pattern=".{1,}" title="1 letras no mínimo" name="name" type="text" class="validate" required value="{{ old('name') }}">
                     <label for="disabled">Nome</label>
                 </div>
             </div>

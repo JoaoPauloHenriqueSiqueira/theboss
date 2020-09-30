@@ -6,6 +6,7 @@ use App\Http\Requests\Products;
 use App\Services\CategoryService;
 use App\Services\ClientService;
 use App\Services\ProductService;
+use App\Services\ProviderService;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -13,6 +14,7 @@ class ProductController extends Controller
 {
     protected $service;
     protected $categoryService;
+    protected $providerService;
 
     /**
      * Construct function
@@ -21,10 +23,13 @@ class ProductController extends Controller
      */
     public function __construct(
         ProductService $service,
-        CategoryService $categoryService
+        CategoryService $categoryService,
+        ProviderService $providerService
+
     ) {
         $this->service = $service;
         $this->categoryService = $categoryService;
+        $this->providerService = $providerService;
     }
 
     /**
@@ -36,11 +41,14 @@ class ProductController extends Controller
     {
         try {
             $categories = $this->categoryService->get();
+            $providers = $this->providerService->get();
+
             $pageConfigs = ['pageHeader' => true];
             return view('pages.products', 
             ["datas" => $this->service->get(), 
             "search" => [],
             "categories" => $categories,
+            "providers" => $providers,
             'pageConfigs' => $pageConfigs], 
             ['breadcrumbs' => []]);
         } catch (Exception $e) {
