@@ -21,11 +21,11 @@ class CreateProductsCategoriesTable extends Migration
         });
 
         Schema::table('products_categories', function ($table) {
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');;
+            $table->foreign('product_id')->references('id')->on('products');
         });
 
         Schema::table('products_categories', function ($table) {
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');;
+            $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 
