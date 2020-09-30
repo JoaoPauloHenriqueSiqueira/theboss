@@ -18,7 +18,7 @@ class UsersTablesSeeder extends Seeder
                 'name' => "João Siqueira",
                 'email' => 'joao.jp9307@gmail.com',
                 'company_id' => 1,
-                'password' => bcrypt('123456'),
+                'password' => bcrypt('123123123'),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
