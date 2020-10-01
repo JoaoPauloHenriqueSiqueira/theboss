@@ -64,6 +64,7 @@
     </li>
 </ul>
 
+<h5>Total: <span class="right">{{$total_sales}}</span></h5>
 <ul class="collapsible collection" id="list" data-collapsible="accordion">
     @foreach ($datas as $data)
     <li id="{{$data->id}}">
@@ -362,7 +363,7 @@
         $name = $("#product_selected").find(':selected').data('name');
 
         if ($product && $quantity) {
-            let $element = createSaleRow($product, $quantity, $saleValue, $name);
+            let $element = createSaleRow($product, $quantity, $saleValueNumber, $name);
             $("#sale_form").append($element);
             sumTotalValue();
             this.selectProduct(true, $product);
@@ -416,6 +417,9 @@
     function removeProductSale($product, $saleValueNumber) {
         $quantityProductRemoved = $("#qtde" + $product).val();
         $subtotal = parseFloat($("#amount_total").val().toString().replace(/[.,\s]/g, ''));
+        if ($saleValueNumber.length == 2) {
+            $saleValueNumber = parseFloat($saleValueNumber).toFixed(2);
+        }
         $total = $subtotal - parseFloat($saleValueNumber.toString().replace(/[.,\s]/g, '') * $quantityProductRemoved);
         this.addValueInputs($total);
         $(`#rowproduct${$product}`).remove();

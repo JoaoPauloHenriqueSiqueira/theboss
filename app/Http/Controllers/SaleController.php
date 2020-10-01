@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Sales;
+use App\Library\Format;
 use App\Services\ClientService;
 use App\Services\ProductService;
 use App\Services\SaleService;
@@ -47,12 +48,15 @@ class SaleController extends Controller
             $saleTime = Arr::get($request, "sale_date", Carbon::now()->format('H:i'));
             $clients = $this->clientService->get();
             $products = $this->productService->getFull();
+            $sales = $this->saleService->get($saleDate);
+
             return view('pages.sales', [
                 "search" => [],
                 "sale_date" => $saleDate->format('Y-m-d'),
                 "sale_date_format" => $saleDateFormat->format('d/m/Y'),
                 "sale_time" => $saleTime,
-                "datas" => $this->saleService->get($saleDate),
+                "datas" => $sales->paginate(10),
+                "total_sales" => Format::money($sales->sum('amount_total')),
                 "clients" => $clients,
                 "products" => $products,
                 'pageConfigs' => $pageConfigs
@@ -71,12 +75,15 @@ class SaleController extends Controller
             $saleTime = Arr::get($request, "sale_date", Carbon::now()->format('H:i'));
             $clients = $this->clientService->get();
             $products = $this->productService->getFull();
+            $sales = $this->saleService->search($saleDate);
+
             return view('pages.sales', [
                 "search" => $request->all(),
                 "sale_date" => $saleDate->format('Y-m-d'),
                 "sale_date_format" => $saleDateFormat->format('d/m/Y'),
                 "sale_time" => $saleTime,
-                "datas" => $this->saleService->search($request),
+                "datas" => $sales->paginate(10),
+                "total_sales" => Format::money($sales->sum('amount_total')),
                 "clients" => $clients,
                 "products" => $products,
                 'pageConfigs' => $pageConfigs

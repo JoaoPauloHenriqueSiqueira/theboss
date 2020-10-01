@@ -55,9 +55,11 @@ class SaleService
             return $query->whereBetween('date_sale', [$start, $finish])->where($filterColumns)->orderBy('date_sale', 'DESC');
         });
 
-
+        return $list;
+        $list->sum('amount_total');
         return $list->paginate(10);
     }
+
 
     public function searchDate($dateFilter, $isMonth)
     {
@@ -89,7 +91,7 @@ class SaleService
                 return $query->where($filterColumns)->orderBy('created_at', 'DESC');
             });
 
-            return $list->paginate(10);
+            return $list;
         }
 
         $dateFilter = $this->carbon->parse($dateFilter);
@@ -101,7 +103,7 @@ class SaleService
             return $query->whereBetween('date_sale', [$start, $finish])->where($filterColumns)->orderBy('created_at', 'DESC');
         });
 
-        return $list->paginate(10);
+        return $list;
     }
 
     private function makeParamsFilter($request)
