@@ -373,6 +373,10 @@
     }
 
     function createSaleRow($product, $quantity, $saleValue, $name) {
+        if (String($saleValue).length == 2) {
+            $saleValue = parseFloat($saleValue).toFixed(2);
+        }
+        
         return $(`<tr id="rowproduct${$product}">
                             <td>
                                 <input type="hidden"  name="products[]"  value="${$product}">
