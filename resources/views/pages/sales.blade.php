@@ -376,7 +376,6 @@
         if (String($saleValue).length == 2) {
             $saleValue = parseFloat($saleValue).toFixed(2);
         }
-        
         return $(`<tr id="rowproduct${$product}">
                             <td>
                                 <input type="hidden"  name="products[]"  value="${$product}">
@@ -404,6 +403,10 @@
     }
 
     function addValueInputs($total) {
+        if (String($total).length == 2) {
+            $total = parseFloat($total).toFixed(2);
+        }
+
         $("#amount_total").val($total);
         $("#amount_paid").val($total);
         $("#amount_paid").maskMoney('mask', $total);
@@ -516,6 +519,15 @@
         $("#idSale").append(sale['id']);
         $("#sale_date").val(dateSale);
         $("#sale_time").val(timeSale);
+
+        if (String(sale['amount_total']).length == 2) {
+            sale['amount_total'] = parseFloat(sale['amount_total']).toFixed(2);
+        }
+
+        if (String(sale['amount_paid']).length == 2) {
+            sale['amount_paid'] = parseFloat(sale['amount_paid']).toFixed(2);
+        }
+
         $("#amount_total").val(sale['amount_total']);
         $("#amount_paid").val(sale['amount_paid']);
         selectClient(sale['client_id'], '#client_id');
