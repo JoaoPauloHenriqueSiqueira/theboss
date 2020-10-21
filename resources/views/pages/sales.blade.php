@@ -1,7 +1,7 @@
 @extends('layouts.contentLayoutMaster')
 
 {{-- page title --}}
-@section('title',"Atendimentos - $sale_date_format")
+@section('title',"Atendimentos: $sale_date_format")
 
 @section('content')
 <ul class="collapsible " data-collapsible=" accordion">
@@ -23,7 +23,8 @@
                 <thead>
                     <tr>
                         <th>Nome Cliente</th>
-                        <th>Data</th>
+                        <th>De</th>
+                        <th>Até</th>
                         <th>Limpar</th>
                         <th></th>
                     </tr>
@@ -43,8 +44,12 @@
                                 </div>
                             </td>
                             <td>
-                                <input placeholder="Procurar" id="sale_date_search" name="search_sale_date" type="date" class="validate" value="{{Arr::get($search,'search_sale_date')}}">
-                                <label for="procurar_data_venda">Data</label>
+                                <input placeholder="Procurar" id="sale_date_search_start" name="search_sale_date_start" type="date" class="validate" value="{{Arr::get($search,'sale_date_start')}}" required>
+                                <label for="procurar_data_venda_inicial">De</label>
+                            </td>
+                            <td>
+                                <input placeholder="Procurar" id="sale_date_search_end" name="search_sale_date_end" type="date" class="validate" value="{{Arr::get($search,'sale_date_end')}}" required>
+                                <label for="procurar_data_venda_final">Até</label>
                             </td>
                             <td>
                                 <a class="btn red" onclick="clearSearch()">
@@ -316,7 +321,8 @@
     });
 
     function clearSearch() {
-        $("#sale_date_search").val('');
+        $("#sale_date_search_start").val('');
+        $("#sale_date_search_end").val('');
         $('#search_client_id').prop('selected', false).find('option:first').prop('selected', true);
         $('#search_client_id').change();
         $('#search_client_id').formSelect();
@@ -475,7 +481,7 @@
 
     function cleanFields() {
         $("#quantity").val("1");
-        $("#sale_date").val("<?= $sale_date ?>");
+        $("#sale_date").val("<?= $sale_date_start ?>");
         addTime();
     }
 

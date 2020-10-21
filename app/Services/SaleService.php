@@ -68,7 +68,7 @@ class SaleService
         $start = $dateFilter->copy()->startOfDay()->startOfDay();
         $finish = $dateFilter->copy()->endOfDay()->endOfDay();
 
-        if($isMonth){
+        if ($isMonth) {
             $start = $dateFilter->copy()->startOfDay()->startOfMonth();
             $finish = $dateFilter->copy()->endOfDay()->endOfMonth();
         }
@@ -79,6 +79,23 @@ class SaleService
         });
 
         return $list->get();
+    }
+
+    public function searchBetweenDates($request, $dateStartFilter, $dateEndFilter)
+    {
+        $dateStartFilter = $this->carbon->parse($dateStartFilter);
+        $dateEndFilter = $this->carbon->parse($dateEndFilter);
+
+        $start = $dateStartFilter->copy()->startOfDay()->startOfDay();
+        $finish = $dateEndFilter->copy()->endOfDay()->endOfDay();
+
+        $filterColumns = $this->makeParamsFilter($request);
+
+        $list = $this->repository->scopeQuery(function ($query) use ($filterColumns, $start, $finish) {
+            return $query->whereBetween('date_sale', [$start, $finish])->where($filterColumns)->orderBy('date_sale', 'DESC');
+        });
+
+        return $list;
     }
 
     public function search($request)
@@ -113,6 +130,7 @@ class SaleService
         if (Arr::get($request, 'search_client_id')) {
             array_push($filterColumns, ['client_id', '=',  Arr::get($request, 'search_client_id')]);
         }
+        
 
         return  $filterColumns;
     }

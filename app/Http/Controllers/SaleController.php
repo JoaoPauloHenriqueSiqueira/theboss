@@ -43,18 +43,21 @@ class SaleController extends Controller
     {
         try {
             $pageConfigs = ['pageHeader' => true];
-            $saleDate = Arr::get($request, "sale_date", Carbon::now());
-            $saleDateFormat = $saleDate->copy();
-            $saleTime = Arr::get($request, "sale_date", Carbon::now()->format('H:i'));
+            $saleDateStart = Arr::get($request, "sale_date_start", Carbon::now());
+            $saleDateFormat = $saleDateStart->copy();
             $clients = $this->clientService->get();
             $products = $this->productService->getFull();
-            $sales = $this->saleService->get($saleDate);
+            $sales = $this->saleService->get($saleDateStart);
+
+            $search = [];
+            $search['sale_date_start'] = $saleDateStart->format('Y-m-d');
+            $search['sale_date_end'] = $saleDateStart->format('Y-m-d');
 
             return view('pages.sales', [
-                "search" => [],
-                "sale_date" => $saleDate->format('Y-m-d'),
+                "search" => $search,
+                "sale_date_start" => $saleDateStart->format('Y-m-d'),
+                "sale_date_end" => $saleDateStart->format('Y-m-d'),
                 "sale_date_format" => $saleDateFormat->format('d/m/Y'),
-                "sale_time" => $saleTime,
                 "datas" => $sales->paginate(10),
                 "total_sales" => Format::money($sales->sum('amount_total')),
                 "clients" => $clients,
@@ -70,18 +73,31 @@ class SaleController extends Controller
     {
         try {
             $pageConfigs = ['pageHeader' => true];
-            $saleDate = Carbon::parse(Arr::get($request, "search_sale_date", Carbon::now()));
-            $saleDateFormat = $saleDate->copy();
-            $saleTime = Arr::get($request, "sale_date", Carbon::now()->format('H:i'));
+            $saleDate = Carbon::parse(Arr::get($request, "search_sale_date_start", Carbon::now()));
+            $saleDateEnd = Carbon::parse(Arr::get($request, "search_sale_date_end", Carbon::now()));
+
+            $saleDateFormat = Carbon::parse($saleDate->copy())->format('d/m/Y');
+            $saleDateEndFormat = Carbon::parse($saleDateEnd->copy())->format('d/m/Y');
+
             $clients = $this->clientService->get();
             $products = $this->productService->getFull();
-            $sales = $this->saleService->search($saleDate);
+            $sales = $this->saleService->searchBetweenDates($request, $saleDate, $saleDateEnd);
+            $saleTitle = $saleDateFormat;
+            if ($saleDate != $saleDateEnd) {
+                $saleTitle = "$saleDateFormat - $saleDateEndFormat";
+            }
+
+
+            $search = [];
+            $search['sale_date_start'] = $saleDate->format('Y-m-d');
+            $search['sale_date_end'] = $saleDateEnd->format('Y-m-d');
+            $search['search_client_id'] = Arr::get($request, "search_client_id");
 
             return view('pages.sales', [
-                "search" => $request->all(),
-                "sale_date" => $saleDate->format('Y-m-d'),
-                "sale_date_format" => $saleDateFormat->format('d/m/Y'),
-                "sale_time" => $saleTime,
+                "search" => $search,
+                "sale_date_start" => $saleDate->format('Y-m-d'),
+                "sale_date_end" => $saleDateEnd->format('Y-m-d'),
+                "sale_date_format" => $saleTitle,
                 "datas" => $sales->paginate(10),
                 "total_sales" => Format::money($sales->sum('amount_total')),
                 "clients" => $clients,
