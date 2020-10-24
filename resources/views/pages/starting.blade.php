@@ -15,6 +15,8 @@
     <title>The boss - gerencie suas vendas</title>
 
     <!-- favicon -->
+    <link src="{{asset('img/favicon.ico')}}" rel="icon">
+
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/normalize.css') }}" rel="stylesheet" type="text/css">
