@@ -14,7 +14,7 @@ class Products extends Model
     protected $fillable = [
         'name', 'bar_code', 'cost_value',
         'sale_value', 'quantity', 'notifiable',
-        'days_notify', 'control_quantity'
+        'days_notify', 'control_quantity','is_active'
     ];
 
     public function company()
@@ -35,6 +35,11 @@ class Products extends Model
     public function providers()
     {
         return $this->belongsToMany(Providers::class, 'products_providers', 'product_id', 'provider_id');
+    }
+
+    public function photos()
+    {
+        return $this->belongsToMany(Photos::class, 'products_photos', 'product_id','photo_id');
     }
     
     protected static function boot()

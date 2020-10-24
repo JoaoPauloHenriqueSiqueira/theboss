@@ -43,6 +43,12 @@ class CompanyService
         return $this->repository->find($userId)->toArray();
     }
 
+    public function isApi()
+    {
+        $company = $this->repository->find(Auth::user()->company_id);
+        return $company->is_api;
+    }
+
     public function active($request)
     {
         $company = $this->repository->find(Auth::user()->company_id);

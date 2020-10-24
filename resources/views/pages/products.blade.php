@@ -1,6 +1,8 @@
 @extends('layouts.contentLayoutMaster')
 
 {{-- page title --}}
+
+
 @section('title','Produtos/Serviços')
 
 @section('content')
@@ -85,9 +87,11 @@
         </div>
         <div class="collapsible-body white">
             <div class="row ">
-                <!-- <span class="span-body"> -->
-                <!-- <a class="tooltipped right" onclick="photos({{$data->id}})" data-position='right' data-delay='50' data-tooltip="Adicionar fotos"><i class="material-icons">add_a_photo</i></a> -->
-                <!-- </span> -->
+                <span class="span-body">
+                    @if(count($data->photos) > 0)
+                    <a class=" right" onclick="photos({{$data->id}})"><i class="material-icons">add_a_photo</i></a>
+                    @endif
+                </span>
                 <span class="span-body">
                     <span class="green-text">Código:</span>
                     {{ $data->bar_code ==  "" ? '-' : $data->bar_code }}
@@ -155,15 +159,11 @@
     @endforeach
 </ul>
 
-
-
-
 <div class="fixed-action-btn">
     <a class="btn-floating btn-large green  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Criar produto" onclick="openModal()">
         <i class="large material-icons">add</i>
     </a>
 </div>
-
 
 <!-- Modal Structure -->
 <div id="modalDelete" class="modal modal-fixed-footer">
@@ -185,33 +185,80 @@
     </div>
 </div>
 
-
 <!-- Modal Structure -->
-<div id="modalPhotos" class="modal modal-fixed-footer">
+<div id="modalDeletePhoto" class="modal modal-fixed-footer">
     <div class="modal-content">
-        <div class="carousel">
-            <a class="carousel-item" href="#one!"><img src="https://lorempixel.com/250/250/nature/7"></a>
-            <a class="carousel-item" href="#two!"><img src="https://lorempixel.com/250/250/nature/2"></a>
-            <a class="carousel-item" href="#three!"><img src="https://lorempixel.com/250/250/nature/3"></a>
-            <a class="carousel-item" href="#four!"><img src="https://lorempixel.com/250/250/nature/4"></a>
-            <a class="carousel-item" href="#five!"><img src="https://lorempixel.com/250/250/nature/5"></a>
+        <h4 class="center red-text row">Deletar foto?</h4><br>
+        <div class="row center">
+            <input type="hidden" id="deleteInputPhoto">
+            <a class="btn-flat tooltipped" onclick="deleteproductphoto()" data-position='left' data-delay='50' data-tooltip="Sim">
+                <i class="material-icons blue-text">
+                    done
+                </i>
+            </a>
+            <a class="btn-flat tooltipped" onclick="closeModal()" data-position='right' data-delay='50' data-tooltip="Não">
+                <i class="material-icons red-text">
+                    close
+                </i>
+            </a>
+        </div>
+        <br>
+        <div class="row center">
+            <div class=" preloader-wrapper big active center" style="display:none;" id="indeterminate">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-
+<!-- Modal Structure -->
+<div id="modalPhotos" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <ul class="collection with-header">
+            <li class="collection-header">
+                <h6>Fotos cadastradas</h6>
+            </li>
+            <div id="photosProduct">
+            </div>
+        </ul>
+    </div>
+</div>
+</div>
 
 
 <!-- Modal Structure -->
 <div id="modal" class="modal bottom-sheet">
     <div class="modal-content">
         <h4 id="product" class="center red-text">Novo Produto</h4>
-        <form class="col s12" method="POST" action="products" id="formProduct">
+        <form class="col s12" method="POST" action="products" id="formProduct" enctype="multipart/form-data">
             <input type="hidden" id="old">
             <div class="row">
                 <div class="input-field col s12">
                     <input id="name" placeholder="Nome" name="name" pattern=".{1,}" title="1 letra no mínimo" type="text" class="validate" value="{{ old('name') }}" required>
                     <label for="disabled">Nome*</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <div class="file-field input-field">
+                        <div class="btn">
+                            <span>Fotos</span>
+                            <input type="file" multiple name="fotos[]" accept="image/*">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -318,6 +365,8 @@
 <script>
     $(document).ready(function() {
         $('.carousel').carousel();
+        $('.materialboxed').materialbox();
+
         maskFields();
         $(".select2").select2({
             dropdownAutoWidth: true,
@@ -398,10 +447,35 @@
         $('#modalDelete').modal('close');
     }
 
-    function photos() {
-        $("#modalPhotos").modal('open');
+    function closeModalPhoto() {
+        this.clean();
+        $('#modalDeletePhoto').modal('close');
     }
 
+    function photos(product) {
+        let $url = "<?= URL::route('get_product_photos') ?>";
+        $.ajax({
+            type: 'POST',
+            url: $url,
+            data: {
+                "id": product
+            },
+            success: function(photos) {
+                $("#photosProduct").empty();
+                if (photos !== undefined) {
+                    photos.forEach(element => {
+                        let row = createRowPhoto(element);
+                        $("#photosProduct").append(row);
+                    });
+                }
+                $('.materialboxed').materialbox();
+                $("#modalPhotos").modal('open');
+            },
+            error: function(data) {
+                closeCleanPhotoModal(id, data.responseText);
+            }
+        });
+    }
 
     function cleanFields() {
         $("#name").val('');
@@ -443,6 +517,21 @@
         $('#providers option').prop('selected', false);
         $('#providers').change();
         $('#providers').formSelect();
+    }
+
+    function createRowPhoto(photo) {
+        let $urls3 = "<?= $urlS3 ?>";
+        return $(`
+            <li class="collection-item" id="photo${photo.id}">
+                <div class="row" >
+                    <div class="input-field col s9">
+                        <img class="materialboxed responsive-img" width="450" src="${$urls3}${photo.path}"/>
+                    </div>
+                    <div class="input-field col s3">
+                        <a class="secondary-content" onclick="askDeletePhoto(${photo.id})"><i class="red-text material-icons">delete</i></a>
+                    </div>
+                </div>
+            </li>`);
     }
 
     function editProduct(product) {
@@ -505,6 +594,21 @@
         $("#deleteInput").val(id);
     }
 
+    function askDeletePhoto(id) {
+        $('#modalDeletePhoto').modal('open');
+        $("#deleteInputPhoto").val(id);
+    }
+
+    function closeCleanPhotoModal( $data) {
+        $("#indeterminate").hide();
+        M.toast({
+            html: $data
+        }, 5000);
+        $('#modalDeletePhoto').modal('close');
+        $("#deleteInputPhoto").val('');
+    }
+
+
     function closeCleanModal(id, $data) {
         $("#" + id).remove();
         M.toast({
@@ -520,6 +624,26 @@
         $("#search_cost_value").val('');
         $("#search_sale_value").val('');
         $("#search_quantity").val('');
+    }
+
+    function deleteproductphoto() {
+        $("#indeterminate").show();
+        let id = $("#deleteInputPhoto").val();
+        let $url = "<?= URL::route('delete_product_photo') ?>";
+        $.ajax({
+            type: 'DELETE',
+            url: $url,
+            data: {
+                "id": id
+            },
+            success: function(data) {
+                $("#photo" + id).remove();
+                closeCleanPhotoModal(data);
+            },
+            error: function(data) {
+                closeCleanPhotoModal(data.responseText);
+            }
+        });
     }
 
     function deleteproduct() {

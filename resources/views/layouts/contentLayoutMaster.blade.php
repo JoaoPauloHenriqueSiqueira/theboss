@@ -40,8 +40,9 @@ License: You must have a valid license purchased only from themeforest(the above
       background-color: #eceff1;
     }
 
-    #modalDelete {
-      max-height: 30%;
+    #modalDelete,
+    #modalDeletePhoto {
+      max-height: 50%;
     }
 
     #modal {
@@ -84,8 +85,9 @@ License: You must have a valid license purchased only from themeforest(the above
       height: 55% !important;
     }
 
-    #modalDelete {
-      height: 25% !important;
+    #modalDelete,
+    #modalDeletePhoto {
+      height: 45% !important;
     }
 
     .material-icons {
@@ -147,6 +149,8 @@ License: You must have a valid license purchased only from themeforest(the above
   $(document).ready(function() {
     $('.modal1').modal();
     $('#modalDelete').modal();
+    $('#modalDeletePhoto').modal();
+
     $('#modalPhotos').modal();
 
     document.querySelectorAll('.select-wrapper').forEach(t => t.addEventListener('click', e => e.stopPropagation()))

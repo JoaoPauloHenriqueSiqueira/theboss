@@ -44,6 +44,11 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            'App\Repositories\Contracts\PhotoRepositoryInterface',
+            'App\Repositories\PhotoRepository'
+        );
+
+        $this->app->bind(
             'App\Repositories\Contracts\CategoryRepositoryInterface',
             'App\Repositories\CategoryRepository'
         );

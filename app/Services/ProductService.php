@@ -3,13 +3,18 @@
 namespace App\Services;
 
 use App\Library\Format;
+use App\Library\Upload;
+use App\Repositories\Contracts\PhotoRepositoryInterface;
 use App\Repositories\Contracts\ProductRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 
 class ProductService
 {
     protected $repository;
+    protected $photoRepository;
+    public $uploadPlugin;
 
     /**
      * Create a new controller instance.
@@ -17,9 +22,14 @@ class ProductService
      * @return void
      */
     public function __construct(
-        ProductRepositoryInterface $repository
+        ProductRepositoryInterface $repository,
+        PhotoRepositoryInterface $photoRepository,
+        Upload $uploadPlugin
+
     ) {
         $this->repository = $repository;
+        $this->photoRepository = $photoRepository;
+        $this->uploadPlugin = $uploadPlugin;
     }
 
     /**
@@ -47,6 +57,16 @@ class ProductService
 
         return $list->paginate(10);
     }
+
+    public function getPhotos($request)
+    {
+
+        $id = Arr::get($request, 'id');
+        // $list = $this->repository->scopeQuery(function ($query) use ($id) {
+        //     return $query->where('id', $id)->first()->pivot->get();
+        // });
+        return $this->repository->find($id)->photos;
+     }
 
     public function getFull()
     {
@@ -136,14 +156,34 @@ class ProductService
             $categories = Arr::get($request, "categories", []);
             $providers = Arr::get($request, "providers", []);
 
-            $this->addCategories($categories,$response);
+            $this->addCategories($categories, $response);
             $this->addProviders($providers, $response);
+            $this->addPhotos($request, $response);
 
             if ($response) {
                 return redirect()->back()->with('message', 'Registro criado/atualizado!');
             }
         }
         return redirect()->back()->with('message', 'Ocorreu algum erro');
+    }
+
+    private function addPhotos($request, $response)
+    {
+        $fotos = $request->file('fotos');
+        $arrFotos = [];
+        $companyId = Auth::user()->company_id;
+        $path = "photos/company/$companyId/product/$response->id";
+        foreach ($fotos as $foto) {
+            $newPhoto = [];
+            $photoId = $this->photoRepository->updateOrCreate(['path' => $this->uploadPlugin->upload($foto, $path)]);
+            $newPhoto["photo_id"] = $photoId->id;
+            $newPhoto["product_id"] = $response->id;
+            array_push($arrFotos, $newPhoto);
+        }
+
+        return $response->photos()->attach(
+            $arrFotos
+        );
     }
 
     private function addCategories($categories, $response)
@@ -217,11 +257,36 @@ class ProductService
         return response('Ocorreu algum erro ao remover', 422);
     }
 
-    public function checkCompany($productId)
+    public function deletePhoto($request)
+    {
+        $photo = Arr::get($request, "id");
+        $photo = $this->checkCompany($photo, true);
+        if (!$photo) {
+            return response('Sem permissão para essa empresa', 422);
+        }
+
+        $this->uploadPlugin->remove(Arr::get($photo, "path"));
+        $response = $this->photoRepository->delete((Arr::get($photo, "id")));
+
+        if ($response) {
+            return response('Removido com sucesso', 200);
+        }
+
+        return response('Ocorreu algum erro ao remover', 422);
+    }
+
+    public function checkCompany($productId, $photo = false)
     {
         if ($productId) {
             $companyId = Auth::user()->company_id;
-            $client = $this->repository->find($productId);
+
+            if ($photo) {
+                return $this->photoRepository->find($productId);
+            }
+
+            if (!$photo) {
+                $client = $this->repository->find($productId);
+            }
 
             if ($companyId != Arr::get($client, "company_id")) {
                 return false;

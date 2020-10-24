@@ -16,6 +16,7 @@
         "laravel/framework": "^7.0",
         "laravel/passport": "^8.4",
         "laravel/tinker": "^2.0",
+        "league/flysystem-aws-s3-v3": "^1.0",
         "nesbot/carbon": "^2.28",
         "prettus/l5-repository": "^2.6"
     },
