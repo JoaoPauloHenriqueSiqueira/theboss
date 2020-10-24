@@ -86,6 +86,8 @@ class RegisterController extends Controller
         $newData['max_attempts'] = 6;
         $newData['company_id'] = $company->id;
         $newData['token'] = mt_rand(100000, 999999);
+        $newData['api_token'] = md5(uniqid(""));
+
         return $newData;
     }
 

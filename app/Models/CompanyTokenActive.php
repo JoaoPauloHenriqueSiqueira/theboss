@@ -14,7 +14,7 @@ class CompanyTokenActive extends Model
      * @var array
      */
     protected $fillable = [
-        'attempts', 'max_attempts', 'company_id', 'token'
+        'attempts', 'max_attempts', 'company_id', 'token', 'api_token'
     ];
 
 
