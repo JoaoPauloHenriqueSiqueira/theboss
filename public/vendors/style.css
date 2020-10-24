@@ -174,7 +174,7 @@ fieldset {
     text-transform: uppercase;
     font-weight: 600;
     color: #fff;
-    background-color: #3f8ed9;
+    background-color: #fe61a6;
 }
 
 .btn:hover, input[type="submit"]:hover {
@@ -310,7 +310,7 @@ img {
 
 .navbar-brand {
     display: block;
-    color: #3f8ed9;
+    color: #fe61a6;
     text-transform: uppercase;
     font-family: 'GothamRounded-Bold';
     font-size: 36px;
@@ -320,7 +320,7 @@ img {
     color: #72849c;
 }
 .navbar-brand:hover {
-    color: #3f8ed9;
+    color: #fe61a6;
 }
 
 .navbar-nav  li {
@@ -342,13 +342,13 @@ img {
 }
 
 .mainmenu .navbar-nav li.active a {
-    color: #3f8ed9;
+    color: #fe61a6;
 }
 
 
 /* Mobile Nav css */
 .navbar-toggle .icon-bar {
-    background: #3f8ed9;
+    background: #fe61a6;
 }
 
 
@@ -357,7 +357,7 @@ img {
 * -------------------------------------------------------------------------------------- */
 
 .slider-area {
-    background: #3f8ed9;
+    background: #fe61a6;
     min-height: 400px;
 }
 
@@ -456,7 +456,7 @@ img {
 
 .hero-box {
     background: #f5f5f5;
-    background-color: #3f8ed9;
+    background-color: #fe61a6;
     text-align: center;
     position: relative;
     margin-top: 30px;
@@ -514,7 +514,7 @@ img {
 }
 
 .price-item.featured .info {
-    background: #3f8ed9;
+    background: #fe61a6;
     margin-left: -15px;
     margin-right: -15px;
 }
@@ -578,7 +578,7 @@ img {
 .action-area {
     color: #fff;
     position: relative;
-    background: #3f8ed9;
+    background: #fe61a6;
 }
 
 .action-area h2 {
@@ -617,7 +617,7 @@ img {
 }
 
 .home-services .service-box i.fa {
-    color: #3f8ed9;
+    color: #fe61a6;
     font-size: 50px;
 }
 
@@ -674,7 +674,7 @@ img {
 .fun-fact-area {
     color: #fff;
     position: relative;
-    background: #3f8ed9;
+    background: #fe61a6;
 }
 
 .fun-fact {
@@ -698,7 +698,7 @@ img {
 * --------------------------------------------------------------------------------------- */
 .testimonial-area {
     position: relative;
-    background-color: #3f8ed9;
+    background-color: #fe61a6;
 }
 
 .testimonial-area .section-title h2,
@@ -811,7 +811,7 @@ img {
     font-size: 30px;
     width: 45px;
     text-align: center;
-    color: #3f8ed9;
+    color: #fe61a6;
 }
 
 .choose-box.left {
@@ -847,7 +847,7 @@ img {
 *                                10. Subscribe area css
 * --------------------------------------------------------------------------------------- */
 .subscribe-area {
-    background: #3f8ed9;
+    background: #fe61a6;
     color: #fff;
 }
 
@@ -951,7 +951,7 @@ img {
 .faq-area {}
 
 .accordion .panel-heading {
-    background: #3f8ed9;
+    background: #fe61a6;
     border-radius: 5px;
 }
 
@@ -1050,7 +1050,7 @@ img {
     width: 20px;
     text-align: center;
     line-height: 45px;
-    color: #3f8ed9;
+    color: #fe61a6;
     font-size: 18px;
 }
 
@@ -1128,7 +1128,7 @@ img {
     -moz-transition: 0.3s;
     -webkit-transition: 0.3s;
     color: #fff;
-    background-color: #3f8ed9;
+    background-color: #fe61a6;
     font-size: 25px;
     border-radius: 5px;
 }
@@ -1164,6 +1164,6 @@ img {
   Gradient CSS
 ------------------------------------------------------ */
 /*.slider-area {
-    background: -webkit-linear-gradient(to left, #f45811 , #3f8ed9);
-    background: linear-gradient(to left, #f45811 , #3f8ed9);
+    background: -webkit-linear-gradient(to left, #f45811 , #fe61a6);
+    background: linear-gradient(to left, #f45811 , #fe61a6);
 }

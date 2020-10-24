@@ -20,11 +20,7 @@
         @endif
         @endif
         <span class="logo-text hide-on-med-and-down">
-          @if(!empty ($configData['templateTitle']) && isset($configData['templateTitle']))
-          {{$configData['templateTitle']}}
-          @else
-          Materialize
-          @endif
+          <img class="logo" width="140px" src="{{asset('img/logo-text.png')}}" alt="">
         </span>
       </a>
   </div>

@@ -12,7 +12,7 @@
     <meta name="author" content="Coderspoint">
 
     <!-- Site title -->
-    <title>The boss -  gerencie suas vendas</title>
+    <title>The boss - gerencie suas vendas</title>
 
     <!-- favicon -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
@@ -32,7 +32,17 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .logo {
+            max-width: 160px;
+            margin-top: -15px;
+        }
 
+        .slider-area {
+            background: #3f8ed9;
+            min-height: 400px;
+        }
+    </style>
 </head>
 
 <body>
@@ -51,7 +61,11 @@
                     <div class="mainmenu">
                         <div class="navbar navbar-nobg">
                             <div class="navbar-header">
-                                <a class="navbar-brand" href=""><span>The Boss</span></a>
+                                <a class="navbar-brand" href="">
+                                    <span>
+                                        <img class="logo" src="{{asset('img/logo-text.png')}}" alt="">
+                                    </span>
+                                </a>
                                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                                     <span class="sr-only">Toggle navigation</span>
                                     <span class="icon-bar"></span>
@@ -212,22 +226,17 @@
 
                     <div class="address">
                         <h3 class="subtitle">Informações de contato</h3>
-                        <!-- <div class="address-box clearfix">
-                            <p>1502 N Elm St, Fairmont, MN, 56031 <br>United States</p>
-                        </div> -->
                         <div class="address-box clearfix">
-                            <p><a href="tel:5514996350585">55 (14) 99635-0585</a></p>
+                            <p><a href="tel:5514996350585">+55 14 99736-1227</a></p>
                         </div>
                         <div class="address-box clearfix">
-                            <p><a href="mailto:joao.henriquesiqueirati@gmail.com">joao.henriquesiqueirati@gmail.com</a></p>
+                            <p><a href="mailto:adm@inn9.net">adm@inn9.net</a></p>
                         </div>
-                        <!-- <ul class="social-links">
-                            <li><a href=""><i class="fa fa-facebook"></i></a></li>
-                            <li><a href=""><i class="fa fa-twitter"></i></a></li>
-                            <li><a href=""><i class="fa fa-google-plus"></i></a></li>
-                            <li><a href=""><i class="fa fa-youtube"></i></a></li>
-                            <li><a href=""><i class="fa fa-pinterest"></i></a></li>
-                        </ul> -->
+                        <ul class="social-links">
+                            <li><a target="_blank" href="https://www.facebook.com/inn9.chatbots/"><i class="fa fa-facebook"></i></a></li>
+                            <li><a target="_blank" href="https://api.whatsapp.com/send?phone=5514997361227&amp;text=Ol%C3%A1,%20vim%20pelo%20site%20de%20voc%C3%AAs..."><i class="fa fa-whatsapp"></i> </a></li>
+                            <li><a target="_blank" href="https://www.instagram.com/inn9bots"><i class="fa fa-instagram"></i> </a> </li>
+                        </ul>
                     </div>
 
                 </div>
@@ -244,7 +253,8 @@
     <!-- Footer area starts -->
     <footer class="footer-area">
         <div class="container">
-            <p>&copy; 2020 Copyright </p>
+            <p class="text-white">&copy; 2020. Feito com <i class="fa fa-heart"></i> por <a style="color:white!important" href="https://inn9.net" target="_blank">Inn9</p>
+
         </div>
     </footer>
     <!-- Footer area ends -->
