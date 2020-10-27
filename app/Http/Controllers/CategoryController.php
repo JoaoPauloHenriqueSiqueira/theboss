@@ -63,6 +63,12 @@ class CategoryController extends Controller
         }
     }
 
+    public function getList(Request $request)
+    {
+        return $this->service->listApi($request);
+    }
+
+
     /**
      * Deleta dado do banco
      *

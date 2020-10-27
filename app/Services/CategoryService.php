@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Library\Format;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
-use App\Repositories\Contracts\ClientRepositoryInterface;
+use App\Transformers\CategorieTransformer;
+use App\Transformers\CategoryTransformer;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
@@ -93,6 +93,25 @@ class CategoryService
     {
         return $this->repository->find($taskId)->toArray();
     }
+
+    public function listApi($request)
+    {
+        $filterColumns = ['company_id' => $request->header('Company')];
+
+        $paginate = $request->query('paginate');
+        if(!$paginate){
+            $paginate = 10;
+        }
+
+        $list = $this->repository->scopeQuery(function ($query) use ($filterColumns) {
+            return $query->where($filterColumns)->orderBy('name', 'ASC');
+        });
+
+        $list = $list->paginate($paginate);
+        return (new CategoryTransformer)->transform($list);
+
+    }
+
 
     /**
      * Save a task with a validation

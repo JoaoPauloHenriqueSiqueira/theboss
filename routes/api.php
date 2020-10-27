@@ -13,15 +13,21 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group([
-    'prefix' => 'auth'
-  ], function () {
-    Route::post('register','AuthController@register');
-    Route::post('login','AuthController@login');
-    Route::post('forgetpassword','AuthController@forgetPassword');
+// Route::group([
+//     'prefix' => 'auth'
+//   ], function () {
+//     Route::post('register','AuthController@register');
+//     Route::post('login','AuthController@login');
+//     Route::post('forgetpassword','AuthController@forgetPassword');
 
-    Route::group(['middleware' => 'auth:api'], function () {
-        Route::get('user','AuthController@user');
-        Route::get('logout','AuthController@logout');
-    });
+//     Route::group(['middleware' => 'auth:api'], function () {
+//         Route::get('user','AuthController@user');
+//         Route::get('logout','AuthController@logout');
+//     });
+// });
+
+Route::group(['prefix' => 'admin', 'middleware' => 'check_api_token'], function () {
+  Route::post('/categories', 'CategoryController@getList');
+  Route::post('/products', 'ProductController@search');
+
 });

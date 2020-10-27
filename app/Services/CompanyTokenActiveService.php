@@ -26,6 +26,15 @@ class CompanyTokenActiveService
         return $this->repository->find($userId)->toArray();
     }
 
+    public function where($search)
+    {
+       $list = $this->repository->scopeQuery(function ($query) use ($search) {
+            return $query->where($search);
+        });
+
+        return $list->all();
+    }
+
     /**
      * Salva/atualiza registro no banco
      *

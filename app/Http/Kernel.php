@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'check_active_company' => \App\Http\Middleware\CheckActiveCompanyRole::class,
         'check_company_already_active' => \App\Http\Middleware\CheckCompanyAlreadyActiveRole::class,
+        'check_api_token' => \App\Http\Middleware\CheckCompanyApiToken::class,
 
     ];
 

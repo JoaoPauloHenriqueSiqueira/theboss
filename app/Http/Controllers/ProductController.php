@@ -77,6 +77,10 @@ class ProductController extends Controller
         }
     }
 
+    public function getList(Request $request){
+        
+    }
+
     public function getPhotos(Request $request)
     {
         try {
