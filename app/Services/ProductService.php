@@ -66,7 +66,7 @@ class ProductService
         //     return $query->where('id', $id)->first()->pivot->get();
         // });
         return $this->repository->find($id)->photos;
-     }
+    }
 
     public function getFull()
     {
@@ -156,9 +156,9 @@ class ProductService
             $categories = Arr::get($request, "categories", []);
             $providers = Arr::get($request, "providers", []);
 
-            $this->addCategories($categories, $response);
-            $this->addProviders($providers, $response);
-            $this->addPhotos($request, $response);
+            $response = $this->addCategories($categories, $response);
+            $response = $this->addProviders($providers, $response);
+            $response = $this->addPhotos($request, $response);
 
             if ($response) {
                 return redirect()->back()->with('message', 'Registro criado/atualizado!');
@@ -173,49 +173,57 @@ class ProductService
         $arrFotos = [];
         $companyId = Auth::user()->company_id;
         $path = "photos/company/$companyId/product/$response->id";
-        foreach ($fotos as $foto) {
-            $newPhoto = [];
-            $photoId = $this->photoRepository->updateOrCreate(['path' => $this->uploadPlugin->upload($foto, $path)]);
-            $newPhoto["photo_id"] = $photoId->id;
-            $newPhoto["product_id"] = $response->id;
-            array_push($arrFotos, $newPhoto);
-        }
 
-        return $response->photos()->attach(
-            $arrFotos
-        );
+        if ($path && $fotos) {
+            foreach ($fotos as $foto) {
+                $newPhoto = [];
+                $photoId = $this->photoRepository->updateOrCreate(['path' => $this->uploadPlugin->upload($foto, $path)]);
+                $newPhoto["photo_id"] = $photoId->id;
+                $newPhoto["product_id"] = $response->id;
+                array_push($arrFotos, $newPhoto);
+            }
+
+            $response->photos()->attach(
+                $arrFotos
+            );
+        }
+        return $response;
     }
 
     private function addCategories($categories, $response)
     {
         $arrCategories = [];
+        if ($categories && count($categories) > 0) {
+            foreach ($categories as $category) {
+                $newCategory = [];
+                $newCategory["product_id"] = $response->id;
+                $newCategory["category_id"] = $category;
+                array_push($arrCategories, $newCategory);
+            }
 
-        foreach ($categories as $category) {
-            $newCategory = [];
-            $newCategory["product_id"] = $response->id;
-            $newCategory["category_id"] = $category;
-            array_push($arrCategories, $newCategory);
+            $response->categories()->attach(
+                $arrCategories
+            );
         }
-
-        return $response->categories()->attach(
-            $arrCategories
-        );
+        return $response;
     }
 
     private function addProviders($providers, $response)
     {
         $arrProviders = [];
+        if ($providers && count($providers) > 0) {
+            foreach ($providers as $provider) {
+                $newProvider = [];
+                $newProvider["product_id"] = $response->id;
+                $newProvider["provider_id"] = $provider;
+                array_push($arrProviders, $newProvider);
+            }
 
-        foreach ($providers as $provider) {
-            $newProvider = [];
-            $newProvider["product_id"] = $response->id;
-            $newProvider["provider_id"] = $provider;
-            array_push($arrProviders, $newProvider);
+            $response->providers()->attach(
+                $arrProviders
+            );
         }
-
-        return $response->providers()->attach(
-            $arrProviders
-        );
+        return $response;
     }
 
 
