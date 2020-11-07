@@ -177,7 +177,11 @@ class ProductService
         if ($path && $fotos) {
             foreach ($fotos as $foto) {
                 $newPhoto = [];
-                $photoId = $this->photoRepository->updateOrCreate(['path' => $this->uploadPlugin->upload($foto, $path)]);
+                $pathPhoto = $this->uploadPlugin->upload($foto, $path);
+                if (!$pathPhoto) {
+                    return;
+                }
+                $photoId = $this->photoRepository->updateOrCreate(["id" => Arr::get($request, "id"), 'path' => $pathPhoto]);
                 $newPhoto["photo_id"] = $photoId->id;
                 $newPhoto["product_id"] = $response->id;
                 array_push($arrFotos, $newPhoto);
