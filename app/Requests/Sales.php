@@ -27,7 +27,6 @@ class Sales extends FormRequest
     public function rules()
     {
         $valid = [
-            'amount_total' => 'required',
             'amount_paid' => 'required',
             'products' => 'required'
         ];
@@ -58,6 +57,7 @@ class Sales extends FormRequest
     public function getValidatorInstance()
     {
         $this->extractNumbersValue();
+        $this->setUserCompany();
         return parent::getValidatorInstance();
     }
 
@@ -78,5 +78,20 @@ class Sales extends FormRequest
                 $amount
             ]);
         }
+    }
+
+    protected function setUserCompany()
+    {
+        $this->merge([
+            'user_id'
+            =>
+            Auth::user()->id
+        ]);
+
+        $this->merge([
+            'company_id'
+            =>
+            Auth::user()->company_id
+        ]);
     }
 }

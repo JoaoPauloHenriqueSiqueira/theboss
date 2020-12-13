@@ -100,6 +100,16 @@
                 </span></br>
                 @endif
 
+                <span class="span-body ">
+                    @if(count($data->status) > 0)
+                    <span class="green-text">Status:
+                    </span></br>
+                    @foreach ($data->status as $status)
+                    {{$status->name}}</br>
+                    @endforeach
+                    @endif
+                </span><br>
+
                 <span class="span-body">
                     <span class="green-text">Valor Venda:</span>
                     {{ $data->amount_total ==  "" ? '-' : $data->amount_total_value }}
@@ -209,6 +219,19 @@
             </div>
 
             <div class="row">
+                <div class="input-field col s12">
+                    <select class="select2 browser-default" id="status" name="statuses[]" multiple>
+                        @foreach ($statuses as $status)
+                        <option value="{{$status->id}}">
+                            {{$status->name}}
+                        </option>
+                        @endforeach
+                    </select>
+                    <label class="active" for="status">Status</label>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="input-field  col m12 s12">
                     <select class="select2 browser-default" id="client_id" name="client_id">
                         <option value="" disabled selected>Selecione o cliente</option>
@@ -248,12 +271,12 @@
 
             <div class="row">
                 <div class="input-field col m6 s6">
-                    <input id="amount_total" name="amount_total" required placeholder="Valor Total" type="text" class="validate" value="0">
+                    <input id="amount_total" name="amount_total" required placeholder="Valor Total" type="text" class="validate" value="0" disabled>
                     <label class="active">Valor Total</label>
                 </div>
 
                 <div class="input-field col m6 s6">
-                    <input id="amount_paid" name="amount_paid" required placeholder="Valor pago" type="text" class="validate" value="0">
+                    <input id="amount_paid" name="amount_paid" required placeholder="Valor pago" type="text" class="validate" value="0" onchange="verifyValuePaid()">
                     <label class="active">Valor pago</label>
                 </div>
             </div>
@@ -264,7 +287,7 @@
                         <tr>
                             <th>Produto</th>
                             <th>Valor</th>
-                            <th>Qtde</th>
+                            <th>Quantidade</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -340,6 +363,24 @@
             thousands: '.',
             decimal: ','
         });
+    }
+
+    function verifyValuePaid() {
+        let paid = $("#amount_paid").val();
+        let total = $("#amount_total").val();
+
+        paid = paid.replace(/[^\w\s]/gi, '');
+        total = total.replace(/[^\w\s]/gi, '');
+
+        if (paid > total) {
+            M.toast({
+                html: "Valor pago não pode ser maior que o valor total"
+            }, 5000);
+            $("#amount_paid").val(total);
+            $("#amount_paid").maskMoney('mask', total);
+
+        }
+
     }
 
     function validProductAdd() {
@@ -482,8 +523,18 @@
     function cleanFields() {
         $("#quantity").val("1");
         $("#sale_date").val("<?= $sale_date_start ?>");
+
+        cleanStatusField();
+
         addTime();
     }
+
+    function cleanStatusField() {
+        $('#status option').prop('selected', false);
+        $('#status').change();
+        $('#status').formSelect();
+    }
+
 
     function addTime() {
         let $hour = String(new Date().getHours()).padStart(2, "0");
@@ -514,6 +565,13 @@
         $('#product_selected').formSelect();
     }
 
+    function selectStatus($status) {
+        $('#status option[value="' + $status + '"]').attr('selected', true);
+        $('#status').change();
+        $('#status').formSelect();
+    }
+
+
     function editSale(dateSale, timeSale, sale, products) {
         products.forEach(element => {
             let newRow = createSaleRow(element.id, element.pivot.quantity, element.pivot.sale_value, element.name);
@@ -522,20 +580,32 @@
             $("#tableProducts").removeClass('hide');
         });
 
+        let statuses = sale.status;
+        if (statuses !== undefined) {
+            statuses.forEach(element => {
+                this.selectStatus(element.id);
+            });
+        }
+
         $("#idSale").append(sale['id']);
         $("#sale_date").val(dateSale);
         $("#sale_time").val(timeSale);
 
-        if (String(sale['amount_total']).length == 2) {
-            sale['amount_total'] = parseFloat(sale['amount_total']).toFixed(2);
-        }
+        sale['amount_total'] = parseFloat(sale['amount_total']).toFixed(2);
+        sale['amount_paid'] = parseFloat(sale['amount_paid']).toFixed(2);
 
-        if (String(sale['amount_paid']).length == 2) {
-            sale['amount_paid'] = parseFloat(sale['amount_paid']).toFixed(2);
-        }
+        let totalSale = String(sale['amount_total']);
+        totalSale = totalSale.replace(/[^\w\s]/gi, '');
 
-        $("#amount_total").val(sale['amount_total']);
+        let totalPaid = String(sale['amount_paid']);
+        totalPaid = totalPaid.replace(/[^\w\s]/gi, '');
+
+        $("#amount_total").val(totalSale);
+        $("#amount_total").maskMoney('mask', totalSale);
+
         $("#amount_paid").val(sale['amount_paid']);
+        $("#amount_paid").maskMoney('mask', totalPaid);
+
         selectClient(sale['client_id'], '#client_id');
         $('<input>').attr({
             type: 'hidden',

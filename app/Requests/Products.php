@@ -73,7 +73,7 @@ class Products extends FormRequest
     {
         if ($this->request->has('sale_value')) {
             $this->merge([
-                'sale_value' => str_replace(",", '.', $this->request->get('sale_value'))
+                'sale_value' => str_replace(",", '.',  str_replace(".", '', $this->request->get('sale_value')))
             ]);
         }
 
@@ -81,7 +81,7 @@ class Products extends FormRequest
             $this->merge([
                 'cost_value'
                 =>
-                str_replace(",", '.', $this->request->get('cost_value'))
+                str_replace(",", '.',  str_replace(".", '', $this->request->get('cost_value')))
             ]);
         }
     }

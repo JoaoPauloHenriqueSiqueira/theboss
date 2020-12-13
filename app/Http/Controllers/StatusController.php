@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Category;
-use App\Http\Requests\Clients;
-use App\Services\CategoryService;
+use App\Http\Requests\Status;
 use App\Services\ClientService;
+use App\Services\StatusService;
 use Exception;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class StatusController extends Controller
 {
     protected $service;
 
@@ -18,7 +17,7 @@ class CategoryController extends Controller
      *
      * @param ClientService $service
      */
-    public function __construct(CategoryService $service)
+    public function __construct(StatusService $service)
     {
         $this->service = $service;
     }
@@ -32,7 +31,7 @@ class CategoryController extends Controller
     {
         try {
             $pageConfigs = ['pageHeader' => true];
-            return view('pages.categories', ["datas" => $this->service->get(), "search" => [], 'pageConfigs' => $pageConfigs], ['breadcrumbs' => []]);
+            return view('pages.status', ["datas" => $this->service->get(), "search" => [], 'pageConfigs' => $pageConfigs], ['breadcrumbs' => []]);
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -42,7 +41,7 @@ class CategoryController extends Controller
     {
         try {
             $pageConfigs = ['pageHeader' => true];
-            return view('pages.categories', ["datas" => $this->service->search($request), "search" => $request->all(), 'pageConfigs' => $pageConfigs], ['breadcrumbs' => []])->withInput($request->all());
+            return view('pages.status', ["datas" => $this->service->search($request), "search" => $request->all(), 'pageConfigs' => $pageConfigs], ['breadcrumbs' => []])->withInput($request->all());
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -54,7 +53,7 @@ class CategoryController extends Controller
      * @param TaskPost $request
      * @return void
      */
-    public function createOrUpdate(Category $request)
+    public function createOrUpdate(Status $request)
     {
         try {
             return $this->service->save($request);

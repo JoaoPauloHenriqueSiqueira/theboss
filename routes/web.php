@@ -51,7 +51,7 @@ Route::group(['middleware' => 'auth'], function () {
         });
 
         Route::group(['prefix' => 'products'], function () {
-            
+
             Route::get('/', 'ProductController@index')->name('products');
             Route::get('/search', 'ProductController@index');
             Route::post('/search', 'ProductController@search')->name('search_products');
@@ -59,7 +59,6 @@ Route::group(['middleware' => 'auth'], function () {
             Route::delete('/', 'ProductController@delete')->name('delete_products');
             Route::delete('/photo', 'ProductController@deletePhoto')->name('delete_product_photo');
             Route::post('/photo', 'ProductController@getPhotos')->name('get_product_photos');
-
         });
 
         Route::group(['prefix' => 'users'], function () {
@@ -77,6 +76,14 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/search', 'CategoryController@search')->name('search_categories');
             Route::post('/', 'CategoryController@createOrUpdate')->name('add_categories');
             Route::delete('/', 'CategoryController@delete')->name('delete_categories');;
+        });
+
+        Route::group(['prefix' => 'status'], function () {
+            Route::get('/', 'StatusController@index')->name('status');
+            Route::get('/search', 'StatusController@index');
+            Route::post('/search', 'StatusController@search')->name('search_status');
+            Route::post('/', 'StatusController@createOrUpdate')->name('add_status');
+            Route::delete('/', 'StatusController@delete')->name('delete_status');;
         });
 
         Route::group(['prefix' => 'providers'], function () {

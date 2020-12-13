@@ -12,11 +12,11 @@ class CategoryTransformer extends TransformerAbstract
         $objs = [];
         foreach($categories as &$category){
             $newObject = [];
+            $newObject['id'] = $category->id;
             $newObject['name'] = $category->name;
             array_push($objs,$newObject);
         }
-        $return = [];
-        $return['data'] =  $objs;
-        return $return;
+
+        return $objs;
     }
 }

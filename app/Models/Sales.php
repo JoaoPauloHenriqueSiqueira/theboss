@@ -13,7 +13,8 @@ class Sales extends Model
     protected $collection = 'sales';
     protected $fillable = [
         'client_id', 'company_id', 'date_sale',
-        'time_sale', 'user', 'amount_total', 'amount_paid'
+        'time_sale', 'user', 'amount_total', 'amount_paid',
+        'company_id', 'user_id'
     ];
 
     public function company()
@@ -31,26 +32,22 @@ class Sales extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function status()
+    {
+        return $this->belongsToMany(Statuses::class, 'sales_status', 'sale_id', 'status_id');
+    }
+
 
     public function products()
     {
         return $this->belongsToMany(Products::class, 'sales_products', 'sale_id', 'product_id')
-        ->withPivot('id')
+            ->withPivot('id')
             ->withPivot('quantity')
             ->withPivot('sale_value')
             ->withPivot('sale_id')
             ->withPivot('product_id');;
     }
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($query) {
-            $query->user_id = Auth::user()->id;
-            $query->company_id = Auth::user()->company_id;
-        });
-    }
 
     public function getDateSaleAttribute($date)
     {
@@ -66,7 +63,7 @@ class Sales extends Model
     {
         return Carbon::parse($this->attributes['date_sale'])->format('H:i');
     }
-   
+
     public function getAmountTotalValueAttribute()
     {
         return  Format::money($this->attributes['amount_total']);

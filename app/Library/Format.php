@@ -4,9 +4,19 @@ namespace App\Library;
 
 use Carbon\Carbon;
 use Exception;
-
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 class Format
 {
+
+    public static function paginate($items, $perPage = 50, $page = null, $options = [])
+    {
+        $page = $page ? $page : 1;
+        $perPage = $perPage ? $perPage : 50;
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
 
     public static function removeAcentos($str)
     {

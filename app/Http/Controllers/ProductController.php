@@ -47,14 +47,18 @@ class ProductController extends Controller
             $categories = $this->categoryService->get();
             $providers = $this->providerService->get();
             $pageConfigs = ['pageHeader' => true];
-            return view('pages.products', 
-            ["datas" => $this->service->get(), 
-            "search" => [],
-            "urlS3" => ENV('AWS_URL'),
-            "categories" => $categories,
-            "providers" => $providers,
-            'pageConfigs' => $pageConfigs], 
-            ['breadcrumbs' => []]);
+            return view(
+                'pages.products',
+                [
+                    "datas" => $this->service->get(),
+                    "search" => [],
+                    "urlS3" => ENV('AWS_URL'),
+                    "categories" => $categories,
+                    "providers" => $providers,
+                    'pageConfigs' => $pageConfigs
+                ],
+                ['breadcrumbs' => []]
+            );
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -65,27 +69,30 @@ class ProductController extends Controller
         try {
             $categories = $this->categoryService->get();
             $pageConfigs = ['pageHeader' => true];
-            return view('pages.products', [
-                "datas" => $this->service->search($request), 
-                "search" => $request->all(),
-                "urlS3" => ENV('AWS_URL'),
-                "categories" => $categories,
-                'pageConfigs' => $pageConfigs], 
-                ['breadcrumbs' => []]);
+            return view(
+                'pages.products',
+                [
+                    "datas" => $this->service->search($request),
+                    "search" => $request->all(),
+                    "urlS3" => ENV('AWS_URL'),
+                    "categories" => $categories,
+                    'pageConfigs' => $pageConfigs
+                ],
+                ['breadcrumbs' => []]
+            );
         } catch (Exception $e) {
             return $e->getMessage();
         }
     }
 
-    public function getList(Request $request){
-        
+    public function getList(Request $request)
+    {
     }
 
     public function getPhotos(Request $request)
     {
         try {
-          return  $this->service->getPhotos($request);
-        
+            return  $this->service->getPhotos($request);
         } catch (Exception $e) {
             return $e->getMessage();
         }

@@ -253,10 +253,10 @@
                     <div class="file-field input-field">
                         <div class="btn">
                             <span>Fotos</span>
-                            <input type="file" multiple name="fotos[]" accept="image/*">
+                            <input type="file" multiple name="fotos[]" id="foto" accept="image/*">
                         </div>
                         <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text">
+                            <input class="file-path validate" type="text" id="foto2">
                         </div>
                     </div>
                 </div>
@@ -484,6 +484,9 @@
         $("#sale_value").val('');
         $("#quantity").val('');
         $("#days_notify").val('');
+        $("#foto").val('');
+        $("#foto2").val('');
+
         cleanCategoryField();
         cleanProviderField();
 
@@ -599,7 +602,7 @@
         $("#deleteInputPhoto").val(id);
     }
 
-    function closeCleanPhotoModal( $data) {
+    function closeCleanPhotoModal($data) {
         $("#indeterminate").hide();
         M.toast({
             html: $data

@@ -34,7 +34,8 @@ License: You must have a valid license purchased only from themeforest(the above
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
   <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet" type="text/css">
   <link href="{{ asset('css/select2-materialize.css') }}" rel="stylesheet" type="text/css">
-
+  <!-- favicon -->
+  <link src="{{ asset('images/favicon.ico') }}" rel="icon">
   <style>
     #main {
       background-color: #eceff1;

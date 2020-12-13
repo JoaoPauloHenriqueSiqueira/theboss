@@ -27,7 +27,12 @@ use Illuminate\Http\Request;
 // });
 
 Route::group(['prefix' => 'admin', 'middleware' => 'check_api_token'], function () {
-  Route::post('/categories', 'CategoryController@getList');
-  Route::post('/products', 'ProductController@search');
+  Route::get('/categories', 'CategoryController@getList');
+  Route::get('/products', 'ProductController@search');
+  Route::get('/category/{id}/products', 'CategoryController@getProducts');
 
+  Route::group(['prefix' => 'sales'], function () {
+    Route::post('/', 'SaleController@createOrUpdateAPI');
+  });
+  
 });

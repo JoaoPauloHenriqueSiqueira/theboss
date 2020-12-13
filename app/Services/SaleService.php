@@ -130,7 +130,7 @@ class SaleService
         if (Arr::get($request, 'search_client_id')) {
             array_push($filterColumns, ['client_id', '=',  Arr::get($request, 'search_client_id')]);
         }
-        
+
 
         return  $filterColumns;
     }
@@ -164,14 +164,18 @@ class SaleService
             if ($saleId) {
                 $sale = $this->repository->find($saleId);
                 $sale->products()->detach();
+                $sale->status()->detach();
             }
 
             unset($request['amount_total']);
 
             $request['date_sale'] = $this->carbon->parse(Arr::get($request, "sale_date") . Arr::get($request, "sale_time"));
             $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
-            $amountTotal = $this->addProducts($request, $response);
+            $amountTotal = $this->addProducts($request, $response, false);
             $response =  $this->repository->updateOrCreate(["id" => Arr::get($response, "id")], ['amount_total' => $amountTotal]);
+
+            $statuses = Arr::get($request, "statuses", []);
+            $response = $this->addStatus($statuses, $response);
 
             if ($response) {
                 return redirect()->back()->with('message', 'Registro criado/atualizado!');
@@ -180,14 +184,71 @@ class SaleService
         return redirect()->back()->with('message', 'Ocorreu algum erro');
     }
 
-    private function addProducts($request, $response)
+    public function saveAPI($request)
+    {
+        $saleId = Arr::get($request, "id");
+
+        if ($saleId) {
+            $sale = $this->repository->find($saleId);
+            $sale->products()->detach();
+            $sale->status()->detach();
+        }
+        unset($request['amount_total']);
+
+        $request['date_sale'] = $this->carbon->parse(Arr::get($request, "sale_date") . Arr::get($request, "sale_time"));
+        $companyId = $request->header('Company');
+        $request['company_id'] = $companyId;
+        $request['user_id'] = Arr::get($request, "user_id");
+
+        $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
+        $amountTotal = $this->addProducts($request, $response, $companyId);
+        if (!$amountTotal) {
+            $response->delete();
+            return response()->json(['message' => "Um dos produtos enviados, não está na sua base"], 405);
+        }
+
+        $response =  $this->repository->updateOrCreate(["id" => Arr::get($response, "id")], ['amount_total' => $amountTotal]);
+        $statuses = Arr::get($request, "statuses", []);
+        $response = $this->addStatus($statuses, $response);
+        if ($response) {
+            return response()->json(['message' => "Registro criado/atualizado!"], 201);
+        }
+
+        return response()->json(['message' => "Ocorreu um erro"], 500);
+    }
+
+    private function addStatus($statuses, $response)
+    {
+        $arrStatus = [];
+        if ($statuses && count($statuses) > 0) {
+            foreach ($statuses as $status) {
+                $newStatus = [];
+                $newStatus["sale_id"] = $response->id;
+                $newStatus["status_id"] = $status;
+                array_push($arrStatus, $newStatus);
+            }
+
+            $response->status()->attach(
+                $arrStatus
+            );
+        }
+        return $response;
+    }
+
+
+    private function addProducts($request, $response, $companyId)
     {
         $arrProducts = [];
         $products = Arr::get($request, "products", []);
 
         $amountTotal = 0;
         foreach ($products as $product) {
-            if ($this->productService->checkCompany($product)) {
+
+            if (!$this->productService->checkCompany($product, false, $companyId)) {
+                return false;
+            }
+
+            if ($this->productService->checkCompany($product, false, $companyId)) {
                 $quantity =  Arr::get(
                     $request,
                     "qtde$product",
@@ -202,7 +263,7 @@ class SaleService
                     }
 
                     $productDB['quantity'] = $quantityProdDB - $quantity;
-                    $this->productService->update(["id" => Arr::get($productDB, "id"), "quantity" => Arr::get($productDB, "quantity")]);
+                    $this->productService->update(["id" => Arr::get($productDB, "id"), "quantity" => Arr::get($productDB, "quantity")], $companyId);
                 }
 
                 $saleValue = str_replace(",", '.', Arr::get($productDB, "sale_value"));

@@ -6,6 +6,7 @@ use App\Library\Format;
 use App\Library\Upload;
 use App\Repositories\Contracts\PhotoRepositoryInterface;
 use App\Repositories\Contracts\ProductRepositoryInterface;
+use App\Transformers\ProductTransformer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
@@ -167,6 +168,8 @@ class ProductService
         return redirect()->back()->with('message', 'Ocorreu algum erro');
     }
 
+
+
     private function addPhotos($request, $response)
     {
         $fotos = $request->file('fotos');
@@ -231,10 +234,10 @@ class ProductService
     }
 
 
-    public function update($request)
+    public function update($request, $companyId)
     {
         $productId = Arr::get($request, "id");
-        if (!$this->checkCompany($productId)) {
+        if (!$this->checkCompany($productId, false, $companyId)) {
             return response('Sem permissão para essa empresa', 422);
         }
 
@@ -287,20 +290,26 @@ class ProductService
         return response('Ocorreu algum erro ao remover', 422);
     }
 
-    public function checkCompany($productId, $photo = false)
+    public function checkCompany($productId, $photo = false, $companyId = false)
     {
         if ($productId) {
-            $companyId = Auth::user()->company_id;
+            if (!$companyId) {
+                $companyId = Auth::user()->company_id;
+            }
 
             if ($photo) {
                 return $this->photoRepository->find($productId);
             }
 
             if (!$photo) {
-                $client = $this->repository->find($productId);
+                $product = $this->repository->where("id", $productId)->where("company_id", $companyId);
+
+                if ($product->count() <= 0) {
+                    return false;
+                }
             }
 
-            if ($companyId != Arr::get($client, "company_id")) {
+            if ($companyId != Arr::get($product->first(), "company_id")) {
                 return false;
             }
         }

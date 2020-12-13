@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Sales;
+use App\Http\Requests\SalesAPI;
 use App\Library\Format;
 use App\Services\ClientService;
 use App\Services\ProductService;
 use App\Services\SaleService;
+use App\Services\StatusService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -27,11 +29,13 @@ class SaleController extends Controller
     public function __construct(
         ProductService $productService,
         ClientService $clientService,
-        SaleService $saleService
+        SaleService $saleService,
+        StatusService $statusService
     ) {
         $this->productService = $productService;
         $this->clientService = $clientService;
         $this->saleService = $saleService;
+        $this->statusService = $statusService;
     }
 
     /**
@@ -48,7 +52,7 @@ class SaleController extends Controller
             $clients = $this->clientService->get();
             $products = $this->productService->getFull();
             $sales = $this->saleService->get($saleDateStart);
-
+            $statuses = $this->statusService->get();
             $search = [];
             $search['sale_date_start'] = $saleDateStart->format('Y-m-d');
             $search['sale_date_end'] = $saleDateStart->format('Y-m-d');
@@ -61,6 +65,7 @@ class SaleController extends Controller
                 "datas" => $sales->paginate(10),
                 "total_sales" => Format::money($sales->sum('amount_total')),
                 "clients" => $clients,
+                "statuses" => $statuses,
                 "products" => $products,
                 'pageConfigs' => $pageConfigs
             ], ['breadcrumbs' => []]);
@@ -83,6 +88,9 @@ class SaleController extends Controller
             $products = $this->productService->getFull();
             $sales = $this->saleService->searchBetweenDates($request, $saleDate, $saleDateEnd);
             $saleTitle = $saleDateFormat;
+
+            $statuses = $this->statusService->get();
+
             if ($saleDate != $saleDateEnd) {
                 $saleTitle = "$saleDateFormat - $saleDateEndFormat";
             }
@@ -102,6 +110,7 @@ class SaleController extends Controller
                 "total_sales" => Format::money($sales->sum('amount_total')),
                 "clients" => $clients,
                 "products" => $products,
+                "statuses" => $statuses,
                 'pageConfigs' => $pageConfigs
             ], ['breadcrumbs' => []]);
         } catch (Exception $e) {
@@ -119,6 +128,15 @@ class SaleController extends Controller
     {
         try {
             return $this->saleService->save($request);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function createOrUpdateAPI(Request $request)
+    {
+        try {
+            return $this->saleService->saveAPI($request);
         } catch (Exception $e) {
             return $e->getMessage();
         }

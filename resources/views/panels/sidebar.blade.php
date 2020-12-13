@@ -50,6 +50,9 @@
       <a class="tooltipped" href="{{ URL::route('providers') }}" data-position='right' data-delay='50' data-tooltip="Lista todos Fornecedores de Produtos/Serviços">Fornecedores</a>
     </li>
 
+    <li class="providers search_status">
+      <a class="tooltipped" href="{{ URL::route('status') }}" data-position='right' data-delay='50' data-tooltip="Lista todos Status de Atendimento">Status</a>
+    </li>
 
   </ul>
   <div class="navigation-background"></div>

@@ -2,25 +2,22 @@
 
 namespace App\Models;
 
-use App\Library\Format;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Arr;
 
-class Categories extends Model
+class Statuses extends Model
 {
-    protected $collection = 'categories';
-    protected $fillable = ['name'];
+    protected $collection = 'statuses';
+    protected $fillable = ['name','color'];
 
     public function company()
     {
         return $this->belongsTo(Company::class);
     }
 
-    public function products()
+    public function sales()
     {
-        return $this->belongsToMany(Products::class, 'products_categories', 'category_id', 'product_id');
+        return $this->belongsToMany(Sales::class, 'sales_status', 'status_id', 'sale_id');
     }
 
     protected static function boot()
