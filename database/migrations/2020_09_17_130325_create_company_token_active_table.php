@@ -19,7 +19,7 @@ class CreateCompanyTokenActiveTable extends Migration
             $table->integer('max_attempts')->unsigned();
             $table->integer('attempts')->unsigned();
             $table->integer('token')->unsigned();
-
+            $table->text('api_token');
             $table->timestamps();
         });
 

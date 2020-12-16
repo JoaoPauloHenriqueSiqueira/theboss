@@ -16,7 +16,7 @@ class Clients extends FormRequest
      */
     public function authorize()
     {
-        return Auth::check();
+        return true;
     }
 
     /**
@@ -55,15 +55,13 @@ class Clients extends FormRequest
             'name.max' => 'Máximo de 255 letras para um nome',
             'cpf_cnpj.min' => 'Mínimo de 11 dígitos para cpf/cnpj',
             'cpf_cnpj.max' => 'Máximo de 14 dígitos para cpf/cnpj',
-            'cpf_cnpj.unique' => "Cliente com esse documento já está cadastrado em sua base",
-            'type_id.exists' => 'Tipo de pessoa inválido',
+            'cpf_cnpj.unique' => "Cliente com esse documento já está cadastrado em sua base"
         ];
     }
 
     public function getValidatorInstance()
     {
         $this->extractNumbers();
-        $this->verifyType();
         $this->verifyNotifiable();
         return parent::getValidatorInstance();
     }
@@ -85,23 +83,6 @@ class Clients extends FormRequest
         if ($this->request->has('phone')) {
             $this->merge([
                 'phone' => Format::extractNumbers($this->request->get('phone'))
-            ]);
-        }
-    }
-
-    protected function verifyType()
-    {
-        if ($this->request->has('cpf_cnpj')) {
-
-            $count = strlen($this->request->get('cpf_cnpj'));
-
-            $type = 2;
-            if ($count > 11) {
-                $type = 1;
-            }
-
-            $this->merge([
-                'type_id' => $type
             ]);
         }
     }

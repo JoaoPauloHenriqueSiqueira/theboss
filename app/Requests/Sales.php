@@ -16,7 +16,7 @@ class Sales extends FormRequest
      */
     public function authorize()
     {
-        return Auth::check();
+        return true;
     }
 
     /**
@@ -28,13 +28,22 @@ class Sales extends FormRequest
     {
         $valid = [
             'amount_paid' => 'required',
-            'products' => 'required'
+            'products' => 'required|array',
+            'products.*.id' => 'exists:products,id',
+            'statuses' => 'array|exists:statuses,id',
+
         ];
 
         $client = is_null($this->request->get('client_id'));
         if (!$client) {
             $valid['client_id'] = Rule::exists('clients', 'id');
         }
+
+        $statuses = is_null($this->request->get('statuses'));
+        if (!$statuses) {
+            $valid['statuses.*.id'] = Rule::exists('statuses', 'id');
+        }
+
         return $valid;
     }
 
@@ -57,7 +66,6 @@ class Sales extends FormRequest
     public function getValidatorInstance()
     {
         $this->extractNumbersValue();
-        $this->setUserCompany();
         return parent::getValidatorInstance();
     }
 
@@ -78,20 +86,5 @@ class Sales extends FormRequest
                 $amount
             ]);
         }
-    }
-
-    protected function setUserCompany()
-    {
-        $this->merge([
-            'user_id'
-            =>
-            Auth::user()->id
-        ]);
-
-        $this->merge([
-            'company_id'
-            =>
-            Auth::user()->company_id
-        ]);
     }
 }

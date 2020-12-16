@@ -15,13 +15,14 @@ class CompaniesTableSeeder extends Seeder
         $data = [
             [
                 "id" => 1,
-                "name" => "Biolimpeza",
+                "name" => "Augusto Presentes Teste",
                 "cnpj" => "23720554000169",
                 "phone" => "123123123",
-                "email" => "biolimpeza@gmail.com",
+                "email" => "augustopresentes@gmail.com",
                 "active" => 1,
                 "created_at" => Carbon::now(),
                 "updated_at" => Carbon::now(),
+                'is_api' => 1
             ],
             [
                 "id" => 2,

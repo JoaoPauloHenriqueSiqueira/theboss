@@ -13,7 +13,10 @@ class SaleService
 {
     protected $repository;
     protected $productService;
+    protected $clientService;
+    protected $statusService;
     protected $carbon;
+
     /**
      * Create a new controller instance.
      *
@@ -22,10 +25,14 @@ class SaleService
     public function __construct(
         SaleRepositoryInterface $repository,
         ProductService $productService,
+        ClientService $clientService,
+        StatusService $statusService,
         Carbon $carbon
     ) {
         $this->repository = $repository;
         $this->productService = $productService;
+        $this->clientService = $clientService;
+        $this->statusService = $statusService;
         $this->carbon = $carbon;
     }
 
@@ -156,9 +163,10 @@ class SaleService
     {
         if ($request->validated()) {
             $saleId = Arr::get($request, "id");
+            $companyId = $request->header('Company');
 
-            if (!$this->checkCompany($saleId)) {
-                return response('Sem permissão para essa empresa', 422);
+            if (!$this->validClient($request)) {
+                return redirect()->back()->with('message', 'Cliente não pertence à sua base');
             }
 
             if ($saleId) {
@@ -167,61 +175,114 @@ class SaleService
                 $sale->status()->detach();
             }
 
-            unset($request['amount_total']);
-
-            $request['date_sale'] = $this->carbon->parse(Arr::get($request, "sale_date") . Arr::get($request, "sale_time"));
+            $request = $this->makeSale($request);
             $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
-            $amountTotal = $this->addProducts($request, $response, false);
-            $response =  $this->repository->updateOrCreate(["id" => Arr::get($response, "id")], ['amount_total' => $amountTotal]);
 
+            $amountTotal = $this->addProducts($request, $response, $companyId);
+
+            if (!$amountTotal) {
+                $response->delete();
+                return redirect()->back()->with('message', 'Um dos produtos enviados, não está na sua base');
+            }
+
+            $response =  $this->repository->updateOrCreate(["id" => Arr::get($response, "id")], ['amount_total' => $amountTotal]);
             $statuses = Arr::get($request, "statuses", []);
-            $response = $this->addStatus($statuses, $response);
+            $responseStatus = $this->addStatus($statuses, $response, $companyId);
+
+            if (!$responseStatus) {
+                $response->delete();
+                return redirect()->back()->with('message', 'Um dos status enviados, não está na sua base.');
+            }
 
             if ($response) {
                 return redirect()->back()->with('message', 'Registro criado/atualizado!');
             }
+
+            return redirect()->back()->with('message', 'Ocorreu algum erro');
         }
-        return redirect()->back()->with('message', 'Ocorreu algum erro');
     }
 
     public function saveAPI($request)
     {
-        $saleId = Arr::get($request, "id");
+        if ($request->validated()) {
+            $saleId = Arr::get($request, "id");
+            $companyId = $request->header('Company');
 
-        if ($saleId) {
-            $sale = $this->repository->find($saleId);
-            $sale->products()->detach();
-            $sale->status()->detach();
-        }
-        unset($request['amount_total']);
+            if (!$this->validClient($request)) {
+                return response()->json(['message' => "Cliente não pertence à sua base"], 422);
+            }
 
-        $request['date_sale'] = $this->carbon->parse(Arr::get($request, "sale_date") . Arr::get($request, "sale_time"));
-        $companyId = $request->header('Company');
-        $request['company_id'] = $companyId;
-        $request['user_id'] = Arr::get($request, "user_id");
+            if ($saleId) {
+                $sale = $this->repository->find($saleId);
+                $sale->products()->detach();
+                $sale->status()->detach();
+            }
 
-        $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
-        $amountTotal = $this->addProducts($request, $response, $companyId);
-        if (!$amountTotal) {
-            $response->delete();
-            return response()->json(['message' => "Um dos produtos enviados, não está na sua base"], 405);
-        }
+            $request = $this->makeSale($request);
+            $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
 
-        $response =  $this->repository->updateOrCreate(["id" => Arr::get($response, "id")], ['amount_total' => $amountTotal]);
-        $statuses = Arr::get($request, "statuses", []);
-        $response = $this->addStatus($statuses, $response);
-        if ($response) {
-            return response()->json(['message' => "Registro criado/atualizado!"], 201);
+            $amountTotal = $this->addProducts($request, $response, $companyId);
+
+            if (!$amountTotal) {
+                $response->delete();
+                return response()->json(['message' => "Um dos produtos enviados, não está na sua base"], 405);
+            }
+
+            $response =  $this->repository->updateOrCreate(["id" => Arr::get($response, "id")], ['amount_total' => $amountTotal]);
+            $statuses = Arr::get($request, "statuses", []);
+            $responseStatus = $this->addStatus($statuses, $response, $companyId);
+
+            if (!$responseStatus) {
+                $response->delete();
+                return response()->json(['message' => "Um dos status enviados, não está na sua base."], 405);
+            }
+
+
+            if ($response) {
+                return response()->json(['message' => "Registro criado/atualizado!"], 201);
+            }
+
+            return response()->json(['message' => "Ocorreu um erro"], 500);
         }
 
         return response()->json(['message' => "Ocorreu um erro"], 500);
     }
 
-    private function addStatus($statuses, $response)
+    private function makeSale($request)
+    {
+        $companyId = $request->header('Company');
+        if (!$companyId) {
+            $companyId = Auth::user()->company_id;
+        }
+
+        unset($request['amount_total']);
+        $request['date_sale'] = $this->carbon->parse(Arr::get($request, "sale_date") . Arr::get($request, "sale_time"));
+        $request['company_id'] = $companyId;
+        $request['user_id'] = Arr::get($request, "user_id", Auth::user()->id);
+        return $request;
+    }
+
+    private function validClient($request)
+    {
+        $clientId = Arr::get($request, "client_id");
+        $companyId = $request->header('Company');
+
+        if (!$this->clientService->checkCompany($clientId, $companyId)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function addStatus($statuses, $response, $companyId)
     {
         $arrStatus = [];
         if ($statuses && count($statuses) > 0) {
             foreach ($statuses as $status) {
+                if (!$this->statusService->checkCompany($status, $companyId)) {
+                    return false;
+                }
+
                 $newStatus = [];
                 $newStatus["sale_id"] = $response->id;
                 $newStatus["status_id"] = $status;

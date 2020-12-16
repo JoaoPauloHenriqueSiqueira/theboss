@@ -20,6 +20,7 @@ class CreateCompaniesTable extends Migration
             $table->string('email');
             $table->boolean('active')->unsigned()->nullable(true)->default('1');
             $table->string('phone');
+            $table->integer('is_api')->unsigned()->nullable(false)->default(0);
             $table->timestamps();
         });
     }

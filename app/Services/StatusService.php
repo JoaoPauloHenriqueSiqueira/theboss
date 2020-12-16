@@ -18,11 +18,9 @@ class StatusService
      */
     public function __construct(
         StatusRepositoryInterface $repository,
-        Carbon $carbon,
-        SaleService $saleService
+        Carbon $carbon
     ) {
         $this->repository = $repository;
-        $this->saleService = $saleService;
         $this->carbon = $carbon;
     }
 
@@ -139,13 +137,16 @@ class StatusService
         return response('Ocorreu algum erro ao remover', 422);
     }
 
-    private function checkCompany($clientId)
+    public function checkCompany($statusId,$companyId = false)
     {
-        if ($clientId) {
-            $companyId = Auth::user()->company_id;
-            $client = $this->repository->find($clientId);
+        if ($statusId) {
+            if(!$companyId){
+                $companyId = Auth::user()->company_id;
+            }
+            
+            $status = $this->repository->find($statusId);
 
-            if ($companyId != Arr::get($client, "company_id")) {
+            if ($companyId != Arr::get($status, "company_id")) {
                 return false;
             }
         }

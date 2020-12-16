@@ -5,8 +5,6 @@ namespace App\Models;
 use App\Library\Format;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Arr;
 
 class Sales extends Model
 {

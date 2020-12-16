@@ -23,7 +23,6 @@ class ClientService
     ) {
         $this->repository = $repository;
         $this->carbon = $carbon;
-
     }
 
     /**
@@ -131,7 +130,7 @@ class ClientService
             if (!$this->checkCompany($clientId)) {
                 return response('Sem permissão para essa empresa', 422);
             }
-
+            $request['company_id'] = Auth::user()->company_id;
             $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
 
             if ($response) {
@@ -140,6 +139,27 @@ class ClientService
         }
         return redirect()->back()->withInput($request->all())->with('message', 'Ocorreu algum erro');
     }
+
+    public function saveAPI($request)
+    {
+        $clientId = Arr::get($request, "id");
+        $companyId = $request->header('Company');
+
+        if (!$this->checkCompany($clientId, $companyId)) {
+            return response('Sem permissão para essa empresa', 422);
+        }
+
+        $request['company_id'] = $companyId;
+
+        $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
+
+        if ($response) {
+            return response()->json(['message' => "Registro criado/atualizado!"], 201);
+        }
+
+        return response()->json(['message' => "Ocorreu um erro"], 500);
+    }
+
 
     /**
      * Remove specific task
@@ -163,10 +183,13 @@ class ClientService
         return response('Ocorreu algum erro ao remover', 422);
     }
 
-    private function checkCompany($clientId)
+    public function checkCompany($clientId,  $companyId = false)
     {
-        if ($clientId) {
+        if (!$companyId) {
             $companyId = Auth::user()->company_id;
+        }
+
+        if ($clientId) {
             $client = $this->repository->find($clientId);
 
             if ($companyId != Arr::get($client, "company_id")) {

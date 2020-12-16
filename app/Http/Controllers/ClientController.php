@@ -61,6 +61,15 @@ class ClientController extends Controller
         }
     }
 
+    public function createOrUpdateAPI(Clients $request)
+    {
+        try {
+            return $this->service->saveAPI($request);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
     /**
      * Deleta dado do banco
      *

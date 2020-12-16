@@ -133,7 +133,7 @@ class SaleController extends Controller
         }
     }
 
-    public function createOrUpdateAPI(Request $request)
+    public function createOrUpdateAPI(Sales $request)
     {
         try {
             return $this->saleService->saveAPI($request);
