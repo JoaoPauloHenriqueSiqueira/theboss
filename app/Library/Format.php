@@ -13,9 +13,10 @@ class Format
     {
         $page = $page ? $page : 1;
         $perPage = $perPage ? $perPage : 50;
+       
         $items = $items instanceof Collection ? $items : Collection::make($items);
 
-        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+        return new LengthAwarePaginator($items->forPage($page, $perPage)->values(), $items->count(), $perPage, $page, $options);
     }
 
     public static function removeAcentos($str)
