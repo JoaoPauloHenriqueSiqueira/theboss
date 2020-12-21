@@ -12,14 +12,15 @@ class ProductTransformer extends TransformerAbstract
     {
         $objs = [];
         foreach ($products as &$product) {
-           
+
             $newObject = [];
             $newObject['id'] = $product->id;
             $newObject['name'] = $product->name;
 
             $newObject['valor_moeda'] = Format::money(str_replace(",", '.', $product->sale_value));
             $newObject['valor'] = $product->sale_value;
-
+            $newObject['control_quantity'] = $product->control_quantity;
+            $newObject['quantity'] = $product->quantity;
             $photosArray = [];
             foreach ($product->photos as $photo) {
                 array_push($photosArray,  env('AWS_URL') . $photo->path);
