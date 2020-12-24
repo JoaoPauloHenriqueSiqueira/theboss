@@ -255,10 +255,14 @@ class SaleService
             $companyId = Auth::user()->company_id;
         }
 
+        $userId = Arr::get($request, "user_id");
+        if (!$userId) {
+            $userId = Auth::user()->id;
+        }
         unset($request['amount_total']);
         $request['date_sale'] = $this->carbon->parse(Arr::get($request, "sale_date") . Arr::get($request, "sale_time"));
         $request['company_id'] = $companyId;
-        $request['user_id'] = Arr::get($request, "user_id", Auth::user()->id);
+        $request['user_id'] = $userId;
         return $request;
     }
 
