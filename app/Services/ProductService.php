@@ -6,10 +6,8 @@ use App\Library\Format;
 use App\Library\Upload;
 use App\Repositories\Contracts\PhotoRepositoryInterface;
 use App\Repositories\Contracts\ProductRepositoryInterface;
-use App\Transformers\ProductTransformer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Storage;
 
 class ProductService
 {

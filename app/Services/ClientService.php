@@ -154,7 +154,7 @@ class ClientService
         $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
 
         if ($response) {
-            return response()->json(['message' => "Registro criado/atualizado!"], 201);
+            return response()->json(['message' => "Registro criado/atualizado!", "id" => Arr::get($response, "id")], 201);
         }
 
         return response()->json(['message' => "Ocorreu um erro"], 500);
