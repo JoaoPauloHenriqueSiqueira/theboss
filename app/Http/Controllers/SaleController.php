@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class SaleController extends Controller
 {
@@ -63,6 +64,7 @@ class SaleController extends Controller
                 "sale_date_end" => $saleDateStart->format('Y-m-d'),
                 "sale_date_format" => $saleDateFormat->format('d/m/Y'),
                 "datas" => $sales->paginate(10),
+                "company"=> Auth::user()->company_id,
                 "total_sales" => Format::money($sales->sum('amount_total')),
                 "clients" => $clients,
                 "statuses" => $statuses,
@@ -107,6 +109,7 @@ class SaleController extends Controller
                 "sale_date_end" => $saleDateEnd->format('Y-m-d'),
                 "sale_date_format" => $saleTitle,
                 "datas" => $sales->paginate(10),
+                "company"=> Auth::user()->company_id,
                 "total_sales" => Format::money($sales->sum('amount_total')),
                 "clients" => $clients,
                 "products" => $products,

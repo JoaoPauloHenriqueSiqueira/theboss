@@ -8,6 +8,7 @@ use App\Repositories\Contracts\SaleRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
+use App\Events\NewMessage;
 
 class SaleService
 {
@@ -63,8 +64,6 @@ class SaleService
         });
 
         return $list;
-        $list->sum('amount_total');
-        return $list->paginate(10);
     }
 
 
@@ -178,13 +177,14 @@ class SaleService
             $request = $this->makeSale($request);
             $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
 
-            $amountTotal = $this->addProducts($request, $response, $companyId);
+            $saleProducts = $this->addProducts($request, $response, $companyId);
 
-            if (!$amountTotal) {
+            if (!Arr::get($saleProducts, 'status')) {
                 $response->delete();
-                return redirect()->back()->with('message', 'Um dos produtos enviados, não está na sua base');
+                return redirect()->back()->with('message', Arr::get($saleProducts, 'message'));
             }
 
+            $amountTotal = Arr::get($saleProducts, 'total');
             $response =  $this->repository->updateOrCreate(["id" => Arr::get($response, "id")], ['amount_total' => $amountTotal]);
             $statuses = Arr::get($request, "statuses", []);
             $responseStatus = $this->addStatus($statuses, $response, $companyId);
@@ -221,13 +221,14 @@ class SaleService
             $request = $this->makeSale($request);
             $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
 
-            $amountTotal = $this->addProducts($request, $response, $companyId);
+            $saleProducts = $this->addProducts($request, $response, $companyId);
 
-            if (!$amountTotal) {
+            if (!Arr::get($saleProducts, 'status')) {
                 $response->delete();
-                return response()->json(['message' => "Um dos produtos enviados, não está na sua base"], 405);
+                return response()->json(['message' =>  Arr::get($saleProducts, 'message')], 405);
             }
 
+            $amountTotal = Arr::get($saleProducts, 'total');
             $response =  $this->repository->updateOrCreate(["id" => Arr::get($response, "id")], ['amount_total' => $amountTotal]);
             $statuses = Arr::get($request, "statuses", []);
             $responseStatus = $this->addStatus($statuses, $response, $companyId);
@@ -237,6 +238,8 @@ class SaleService
                 return response()->json(['message' => "Um dos status enviados, não está na sua base."], 405);
             }
 
+            $sale = $this->repository->find(Arr::get($response, "id"));
+            broadcast(new NewMessage($sale, $companyId))->toOthers();
 
             if ($response) {
                 return response()->json(['message' => "Registro criado/atualizado!"], 201);
@@ -307,10 +310,18 @@ class SaleService
         $products = Arr::get($request, "products", []);
 
         $amountTotal = 0;
+
+        $responseProducts = [];
+        $responseProducts['status'] = true;
+        $responseProducts['message'] = '';
+        $responseProducts['total'] = $amountTotal;
+
         foreach ($products as $product) {
 
             if (!$this->productService->checkCompany($product, false, $companyId)) {
-                return false;
+                $responseProducts['message'] = "Um dos produtos não está em sua base. Tente novamente com um produto válido";
+                $responseProducts['status'] = false;
+                return $responseProducts;
             }
 
             if ($this->productService->checkCompany($product, false, $companyId)) {
@@ -322,8 +333,11 @@ class SaleService
 
                 $productDB = $this->productService->find($product);
                 $quantityProdDB = Arr::get($productDB, "quantity");
+
                 if (Arr::get($productDB, "control_quantity")) {
-                    if ($quantityProdDB < $quantity) {
+                    if ((int) $quantityProdDB < (int) $quantity) {
+                        $responseProducts['message'] = "Um dos produtos não possui a quantia em estoque solicitada. Tente novamente com uma quantia válida";
+                        $responseProducts['status'] = false;
                         continue;
                     }
 
@@ -346,11 +360,18 @@ class SaleService
             }
         }
 
+        if (!$responseProducts['status']) {
+            return $responseProducts;
+        }
+
         $response->products()->attach(
             $arrProducts
         );
 
-        return $amountTotal;
+        $responseProducts['status'] = true;
+        $responseProducts['total'] = $amountTotal;
+
+        return $responseProducts;
     }
 
     /**
