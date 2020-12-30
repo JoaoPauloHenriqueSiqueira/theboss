@@ -336,7 +336,6 @@
     var pusher = new Pusher('a2c5fa9d1c581ef42ae4', {
         cluster: 'us2'
     });
-    console.log("cheoguuu");
 
     var channel = pusher.subscribe("saleReceive.{{@$company}}");
 
