@@ -343,7 +343,7 @@
     channel.bind('App\\Events\\NewMessage', function(data) {
         M.toast({
                 html: "Novo atendimento. Atualize a página para consultar",
-                classes:'blue rounded',
+                classes:'green rounded',
                 displayLength: Infinity
         });
     });
