@@ -95,7 +95,7 @@ class Products extends Model
 
     public function getSaleFormatValueMoneyAttribute()
     {
-        return  Format::moneyWithoutSymbol($this->attributes['sale_value'], '.');
+        return  Format::moneyWithoutSymbol($this->attributes['sale_value']);
     }
 
     public function getCostFormatValueAttribute()

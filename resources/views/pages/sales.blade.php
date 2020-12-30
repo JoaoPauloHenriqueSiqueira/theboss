@@ -98,8 +98,15 @@
                     <span class="green-text">Cliente:</span>
                     {{ $data->client->name }}
                 </span></br>
+                <span class="span-body">
+                    <span class="green-text">Endereço:</span>
+                    {{ $data->client->address }}
+                </span><br>
+                <span class="span-body">
+                    <span class="green-text">Telefone contato:</span>
+                    {{ $data->client->cell_phone  }}
+                </span>
                 @endif
-
                 <span class="span-body ">
                     @if(count($data->status) > 0)
                     <span class="green-text">Status:
@@ -307,7 +314,6 @@
     </form>
 </div>
 
-
 @if( method_exists($datas,'links') )
 <br>
 <div>
@@ -316,8 +322,6 @@
 @endif
 
 @endsection
-
-
 <style>
     .second-content {
         position: absolute;
@@ -462,8 +466,8 @@
 
     function sumTotalValue() {
         $quantity = Number($("#quantity").val());
-        $subtotal = parseFloat($("#amount_total").val().replace(',', '.'));
-        $saleValueNumber = ($("#product_selected").find(':selected').data('value-number'));
+        $subtotal = parseFloat($("#amount_total").val().replace('.', '').replace(',', '.'));
+        $saleValueNumber = ($("#product_selected").find(':selected').data('value-number').replace('.', '').replace(',', '.'));
         $total = parseFloat($subtotal + ($quantity * $saleValueNumber)).toFixed(2);
         addValueInputs($total);
     }
