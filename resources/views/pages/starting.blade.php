@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="PT-BR">
 
 <head>
 
@@ -12,7 +12,7 @@
     <meta name="author" content="Coderspoint">
 
     <!-- Site title -->
-    <title>The boss - gerencie suas vendas</title>
+    <title>The boss</title>
 
     <!-- favicon -->
     <link src="{{asset('img/favicon.ico')}}" rel="icon">
