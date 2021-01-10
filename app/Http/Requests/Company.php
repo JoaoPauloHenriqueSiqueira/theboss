@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
-class Clients extends FormRequest
+class Company extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,13 +28,13 @@ class Clients extends FormRequest
     {
         $valid = [
             'name' => 'required|min:3|max:255',
-            'cell_phone' => 'required|min:3|max:255'
+            'phone' => 'min:3|max:255'
         ];
 
-        $cpfCnpj = is_null($this->request->get('cpf_cnpj'));
+        $cpfCnpj = is_null($this->request->get('cnpj'));
         if (!$cpfCnpj) {
-            $valid['cpf_cnpj'] = Rule::unique('clients')->ignore($this->request->get('id'))->where(function ($query) {
-                return $query->where('company_id', Auth::user()->company_id);
+            $valid['cnpj'] = Rule::unique('companies')->ignore($this->request->get('id'))->where(function ($query) {
+                return $query->where('id', Auth::user()->company_id);
             }) . "|min:11|max:14";
         }
 
@@ -55,13 +55,15 @@ class Clients extends FormRequest
             'name.max' => 'Máximo de 255 letras para um nome',
             'cpf_cnpj.min' => 'Mínimo de 11 dígitos para cpf/cnpj',
             'cpf_cnpj.max' => 'Máximo de 14 dígitos para cpf/cnpj',
-            'cpf_cnpj.unique' => "Cliente com esse documento já está cadastrado em sua base"
+            'cpf_cnpj.unique' => "Cliente com esse documento já está cadastrado em sua base",
+            'type_id.exists' => 'Tipo de pessoa inválido',
         ];
     }
 
     public function getValidatorInstance()
     {
         $this->extractNumbers();
+        $this->verifyType();
         $this->verifyNotifiable();
         return parent::getValidatorInstance();
     }
@@ -83,6 +85,23 @@ class Clients extends FormRequest
         if ($this->request->has('phone')) {
             $this->merge([
                 'phone' => Format::extractNumbers($this->request->get('phone'))
+            ]);
+        }
+    }
+
+    protected function verifyType()
+    {
+        if ($this->request->has('cpf_cnpj')) {
+
+            $count = strlen($this->request->get('cpf_cnpj'));
+
+            $type = 2;
+            if ($count > 11) {
+                $type = 1;
+            }
+
+            $this->merge([
+                'type_id' => $type
             ]);
         }
     }

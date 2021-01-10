@@ -67,7 +67,7 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         try {
-            $categories = $this->categoryService->get();
+            $categories = $this->categoryService->get($request);
             $pageConfigs = ['pageHeader' => true];
             return view(
                 'pages.products',
@@ -87,6 +87,7 @@ class ProductController extends Controller
 
     public function getList(Request $request)
     {
+        return $this->service->listApi($request);
     }
 
     public function getPhotos(Request $request)

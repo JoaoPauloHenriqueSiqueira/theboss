@@ -4,7 +4,9 @@ namespace App\Http\Requests;
 
 use App\Library\Format;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class Clients extends FormRequest
@@ -31,11 +33,36 @@ class Clients extends FormRequest
             'cell_phone' => 'required|min:3|max:255'
         ];
 
+        $companyId = app('request')->headers->get('Company');
+        if (!$companyId) {
+            $companyId = Auth::user()->company_id;
+        }
+
         $cpfCnpj = is_null($this->request->get('cpf_cnpj'));
         if (!$cpfCnpj) {
-            $valid['cpf_cnpj'] = Rule::unique('clients')->ignore($this->request->get('id'))->where(function ($query) {
-                return $query->where('company_id', Auth::user()->company_id);
+            $valid['cpf_cnpj'] = Rule::unique('clients')->ignore($this->request->get('id'))->where(function ($query) use ($companyId) {
+                return $query->where('company_id', $companyId);
             }) . "|min:11|max:14";
+        }
+
+        $cellPhone = is_null($this->request->get('cell_phone'));
+        if (!$cellPhone) {
+            $valid['cell_phone'] = Rule::unique('clients')->ignore($this->request->get('id'))->where(function ($query) use ($companyId) {
+                return $query->where('company_id', $companyId);
+            }) . "|required|min:8|max:20";
+        }
+
+        $email = is_null($this->request->get('email'));
+        if (!$email) {
+            $valid['email'] = Rule::unique('clients')->ignore($this->request->get('id'))->where(function ($query) use ($companyId) {
+                return $query->where('company_id', $companyId);
+            });
+        }
+
+        switch ($this->method()) {
+            case 'POST': {
+                $valid['password'] = 'required|min:8|max:255';
+            }
         }
 
         return $valid;
@@ -51,6 +78,9 @@ class Clients extends FormRequest
         return [
             'name.invalid' => "Apenas letras são aceitas",
             'cell_phone.required' => 'Celular é obrigatório',
+            'password.required' => 'Senha é obrigatório',
+            'email.unique' => 'Você já possui um cadastro com esse email',
+            'cell_phone.unique' => 'Você já possui um cadastro com esse número de celular',
             'name.min' => 'Mínimo de 3 letras para um nome',
             'name.max' => 'Máximo de 255 letras para um nome',
             'cpf_cnpj.min' => 'Mínimo de 11 dígitos para cpf/cnpj',
@@ -62,7 +92,6 @@ class Clients extends FormRequest
     public function getValidatorInstance()
     {
         $this->extractNumbers();
-        $this->verifyNotifiable();
         return parent::getValidatorInstance();
     }
 
@@ -71,6 +100,12 @@ class Clients extends FormRequest
         if ($this->request->has('cpf_cnpj')) {
             $this->merge([
                 'cpf_cnpj' => Format::extractNumbers($this->request->get('cpf_cnpj'))
+            ]);
+        }
+
+        if ($this->request->has('cep')) {
+            $this->merge([
+                'cep' => Format::extractNumbers($this->request->get('cep'))
             ]);
         }
 
@@ -85,18 +120,13 @@ class Clients extends FormRequest
                 'phone' => Format::extractNumbers($this->request->get('phone'))
             ]);
         }
-    }
 
-    protected function verifyNotifiable()
-    {
-        $notifiable = 0;
-
-        if ($this->request->has('notify')) {
-            $notifiable = 1;
+        if ($this->request->has('password')) {
+            $this->merge([
+                'password' => bcrypt($this->request->get('password'))
+            ]);
         }
-
-        $this->merge([
-            'notifiable' => $notifiable
-        ]);
     }
+
+    
 }

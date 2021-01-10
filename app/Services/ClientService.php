@@ -4,9 +4,11 @@ namespace App\Services;
 
 use App\Library\Format;
 use App\Repositories\Contracts\ClientRepositoryInterface;
+use App\Transformers\ClientTransformer;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Hash;
 
 class ClientService
 {
@@ -140,18 +142,62 @@ class ClientService
         return redirect()->back()->withInput($request->all())->with('message', 'Ocorreu algum erro');
     }
 
+    public function findAPI($request)
+    {
+        $filterColumns = $this->makeParamsFilterAPI($request);
+        $list = $this->repository->scopeQuery(function ($query) use ($filterColumns) {
+            return $query->where($filterColumns);
+        });
+
+        $user = $list->first();
+
+        if (Hash::check(Arr::get($request, "password"), Arr::get($user, "password"))) {
+            return response()->json(['message' => "Login realizado com sucesso", "client" => (new ClientTransformer)->transform($list->first())], 201);
+        }
+
+        return response()->json(['message' => "Ocorreu um erro"], 500);
+    }
+
+    public function makeParamsFilterAPI($request)
+    {
+        $filterColumns = [
+            'company_id' => $request->header('Company'),
+        ];
+
+        if (Arr::get($request, 'email')) {
+            array_push($filterColumns, ['email', '=',  Arr::get($request, 'email')]);
+        }
+
+        if (Arr::get($request, 'id')) {
+            array_push($filterColumns, ['id', '=',  Arr::get($request, 'id')]);
+        }
+
+        return $filterColumns;
+    }
+
+    private function verifyUpdate($request)
+    {
+        unset($request['password']);
+        return $request;
+    }
+
     public function saveAPI($request)
     {
         $clientId = Arr::get($request, "id");
         $companyId = $request->header('Company');
-
         if (!$this->checkCompany($clientId, $companyId)) {
             return response('Sem permissão para essa empresa', 422);
         }
 
         $request['company_id'] = $companyId;
 
-        $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
+        $id = Arr::get($request, "id");
+
+        if ($id) {
+            $request = $this->verifyUpdate($request);
+        }
+
+        $response = $this->repository->updateOrCreate(["id" => $id], $request->all());
 
         if ($response) {
             return response()->json(['message' => "Registro criado/atualizado!", "id" => Arr::get($response, "id")], 201);
@@ -193,6 +239,19 @@ class ClientService
             $client = $this->repository->find($clientId);
 
             if ($companyId != Arr::get($client, "company_id")) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function checkPassword($clientId,  $password)
+    {
+        if ($clientId) {
+            $client = $this->repository->find($clientId);
+
+            if (Hash::check($password, Arr::get($client, "password"))) {
                 return false;
             }
         }

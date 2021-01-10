@@ -46,6 +46,11 @@ class ClientController extends Controller
         }
     }
 
+    public function findAPI(Request $request)
+    {
+        return $this->service->findAPI($request);
+    }
+
     /**
      * Cria ou atualiza dados no banco
      *

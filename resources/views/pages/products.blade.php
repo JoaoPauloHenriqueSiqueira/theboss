@@ -130,15 +130,15 @@
                     @endif
                 </span>
 
-                <span class="span-body left">
-                    @if(count($data->providers) > 0)
-                    <span class="green-text">Fornecedor(es):
-                    </span></br>
-                    @foreach ($data->providers as $provider)
-                    {{$provider->name}}</br>
-                    @endforeach
-                    @endif
-                </span>
+                    <!-- <span class="span-body left">
+                        @if(count($data->providers) > 0)
+                        <span class="green-text">Fornecedor(es):
+                        </span></br>
+                        @foreach ($data->providers as $provider)
+                        {{$provider->name}}</br>
+                        @endforeach
+                        @endif
+                    </span> -->
             </div>
             <hr>
             <div class="row center">
@@ -273,7 +273,7 @@
                     <label class="active" for="categories">Categorias</label>
                 </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <div class="input-field col s12">
                     <select class="select2 browser-default" id="providers" name="providers[]" multiple>
                         @foreach ($providers as $provider)
@@ -284,7 +284,7 @@
                     </select>
                     <label class="active" for="categories">Fornecedores</label>
                 </div>
-            </div>
+            </div> -->
 
             <div class="row">
                 <div class="input-field col s12">
@@ -293,7 +293,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <!-- <div class="row">
                 <p>
                     <label>
 
@@ -301,7 +301,7 @@
                         <span for="notifiable">Notificar próximos atendimentos</span>
                     </label>
                 </p>
-            </div>
+            </div> -->
 
             <div class="row " id="notify_param">
                 <div class="input-field col s12">

@@ -6,6 +6,7 @@ use App\Library\Format;
 use App\Library\Upload;
 use App\Repositories\Contracts\PhotoRepositoryInterface;
 use App\Repositories\Contracts\ProductRepositoryInterface;
+use App\Transformers\ProductTransformer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
 
@@ -67,6 +68,43 @@ class ProductService
         return $this->repository->find($id)->photos;
     }
 
+    public function listApi($request)
+    {
+        $filters = $this->makeParamsFilterAPI($request);
+
+        $page = $request->query('page');
+        $perPage = $request->query('per_page');
+
+        $list = $this->repository->scopeQuery(function ($query) use ($filters) {
+            return $query->where(Arr::get($filters, 0))->where(Arr::get($filters, 1))->orWhere(Arr::get($filters, 2))->orderBy('name', 'ASC');
+        });
+
+        $list =  (new ProductTransformer)->transform($list->all());
+        return Format::paginate($list, $perPage, $page);
+    }
+
+    function makeParamsFilterAPI($request)
+    {
+        $filters = [];
+        $filterColumns = ['company_id' => $request->header('Company')];
+
+        $filterColumns2 = [
+            'control_quantity' => 1,
+        ];
+        array_push($filterColumns2, ['quantity', '>', '0']);
+
+        $filterColumns3 = [
+            'control_quantity' => 0,
+        ];
+
+        $filters[0] = $filterColumns;
+        $filters[1] = $filterColumns2;
+        $filters[2] = $filterColumns3;
+
+        return $filters;
+
+    }
+
     public function getFull()
     {
         $filterColumns = ['company_id' => Auth::user()->company_id];
@@ -89,7 +127,11 @@ class ProductService
 
     private function makeParamsFilter($request)
     {
-        $filterColumns = ['company_id' => Auth::user()->company_id];
+        $companyId = $request->header('Company');
+        if (!$companyId) {
+            $companyId = Auth::user()->company_id;
+        }
+        $filterColumns = ['company_id' => $companyId];
 
         if (Arr::get($request, 'name')) {
             array_push($filterColumns, ['name', 'like', '%' . Arr::get($request, 'name') . '%']);
@@ -103,7 +145,6 @@ class ProductService
             $costValue = Format::extractNumbers(Arr::get($request, 'cost_value'));
             array_push($filterColumns, ['cost_value', 'like', '%' .  $costValue . '%']);
         }
-
 
         if (Arr::get($request, 'sale_value')) {
             $saleValue = Format::extractNumbers(Arr::get($request, 'sale_value'));

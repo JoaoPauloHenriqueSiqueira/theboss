@@ -205,11 +205,17 @@ class SaleService
     public function saveAPI($request)
     {
         if ($request->validated()) {
+
             $saleId = Arr::get($request, "id");
+
             $companyId = $request->header('Company');
 
             if (!$this->validClient($request)) {
                 return response()->json(['message' => "Cliente não pertence à sua base"], 422);
+            }
+
+            if (!$this->validPasswordClient($request)) {
+                return response()->json(['message' => "Senha do cliente não confere"], 422);
             }
 
             if ($saleId) {
@@ -219,6 +225,7 @@ class SaleService
             }
 
             $request = $this->makeSale($request);
+
             $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
 
             $saleProducts = $this->addProducts($request, $response, $companyId);
@@ -275,6 +282,18 @@ class SaleService
         $companyId = $request->header('Company');
 
         if (!$this->clientService->checkCompany($clientId, $companyId)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function validPasswordClient($request)
+    {
+        $clientId = Arr::get($request, "client_id");
+        $password =  Arr::get($request, "password");
+
+        if (!$this->clientService->checkPassword($clientId, $password)) {
             return false;
         }
 

@@ -12,7 +12,10 @@ class ProductTransformer extends TransformerAbstract
     {
         $objs = [];
         foreach ($products as &$product) {
-
+            if ($product->control_quantity && $product->quantity <= 0) {
+                continue;
+            }
+            
             $newObject = [];
             $newObject['id'] = $product->id;
             $newObject['name'] = $product->name;
@@ -20,7 +23,11 @@ class ProductTransformer extends TransformerAbstract
             $newObject['valor_moeda'] = Format::money(str_replace(",", '.', $product->sale_value));
             $newObject['valor'] = str_replace(",", '.', $product->sale_value);
             $newObject['control_quantity'] = $product->control_quantity;
+
+
             $newObject['quantity'] = $product->quantity;
+
+
             $photosArray = [];
             foreach ($product->photos as $photo) {
                 array_push($photosArray,  env('AWS_URL') . $photo->path);
