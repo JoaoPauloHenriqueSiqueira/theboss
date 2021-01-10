@@ -14,8 +14,11 @@ class AddDescripptionToProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            //
             $table->string('description')->nullable(true);
+            $table->string('width')->nullable(true);
+            $table->string('height')->nullable(true);
+            $table->string('length')->nullable(true);
+            $table->string('weight')->nullable(true);
         });
     }
 
