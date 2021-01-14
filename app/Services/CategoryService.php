@@ -118,7 +118,6 @@ class CategoryService
             return $products;
         }
 
-        
         foreach ($products as $p) {
             foreach ($p->products as &$k) {
                 $k['photos'] = $this->productService->getPhotos($k);

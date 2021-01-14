@@ -3,8 +3,8 @@
 namespace App\Transformers;
 
 use App\Library\Format;
-use App\Models\Categories;
 use League\Fractal\TransformerAbstract;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductTransformer extends TransformerAbstract
 {
@@ -36,7 +36,6 @@ class ProductTransformer extends TransformerAbstract
             $newObject['photos'] = $photosArray;
             array_push($objs, $newObject);
         }
-
-        return $objs;
+        return Collection::make($objs);
     }
 }

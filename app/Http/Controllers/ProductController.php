@@ -90,6 +90,11 @@ class ProductController extends Controller
         return $this->service->listApi($request);
     }
 
+    public function getListCategory(Request $request, $id)
+    {
+        return $this->service->listApiCategory($request, $id);
+    }
+
     public function getPhotos(Request $request)
     {
         try {

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Library\Format;
 use App\Library\Upload;
+use App\Models\Products;
 use App\Repositories\Contracts\PhotoRepositoryInterface;
 use App\Repositories\Contracts\ProductRepositoryInterface;
 use App\Transformers\ProductTransformer;
@@ -75,13 +76,32 @@ class ProductService
         $page = $request->query('page');
         $perPage = $request->query('per_page');
 
-        $list = $this->repository->scopeQuery(function ($query) use ($filters) {
-            return $query->where(Arr::get($filters, 0))->where(Arr::get($filters, 1))->orWhere(Arr::get($filters, 2))->orderBy('name', 'DESC');
-        });
+        $list = Products::where(Arr::get($filters, 0))->where(Arr::get($filters, 1))->orWhere(Arr::get($filters, 2))->orderBy('name', 'DESC')->paginate($perPage);
 
-        $list =  (new ProductTransformer)->transform($list->all());
-        return Format::paginate($list, $perPage, $page);
+        $items = (new ProductTransformer)->transform($list->items());
+        $list->setCollection($items);
+        return $list;
     }
+
+
+    public function listApiCategory($request, $id)
+    {
+        $filters = $this->makeParamsFilterAPI($request);
+
+        $page = $request->query('page');
+        $perPage = $request->query('per_page');
+
+        $list = Products::whereHas('categories', function ($query) use ($id, $filters) {
+            $query->where('category_id', '=', $id)->where(Arr::get($filters, 0))
+                ->where(Arr::get($filters, 1))
+                ->orWhere(Arr::get($filters, 2));
+        })->orderBy('name', 'DESC')->paginate($perPage);
+
+        $items = (new ProductTransformer)->transform($list->items());
+        $list->setCollection($items);
+        return $list;
+    }
+
 
     function makeParamsFilterAPI($request)
     {
@@ -95,14 +115,13 @@ class ProductService
 
         $filterColumns3 = [
             'control_quantity' => 0,
-        ];
 
+        ];
         $filters[0] = $filterColumns;
         $filters[1] = $filterColumns2;
         $filters[2] = $filterColumns3;
 
         return $filters;
-
     }
 
     public function getFull()
