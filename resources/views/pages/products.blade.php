@@ -250,6 +250,12 @@
             </div>
             <div class="row">
                 <div class="input-field col s12">
+                    <input id="description" placeholder="Descrição" name="name" pattern=".{1,}" title="1 letra no mínimo" type="text" class="validate" value="{{ old('name') }}" required>
+                    <label for="disabled">Descrição*</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
                     <div class="file-field input-field">
                         <div class="btn">
                             <span>Fotos</span>

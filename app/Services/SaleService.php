@@ -209,7 +209,6 @@ class SaleService
             $saleId = Arr::get($request, "id");
 
             $companyId = $request->header('Company');
-
             if (!$this->validClient($request)) {
                 return response()->json(['message' => "Cliente não pertence à sua base"], 422);
             }
@@ -223,6 +222,7 @@ class SaleService
                 $sale->products()->detach();
                 $sale->status()->detach();
             }
+            \Log::info("x");
 
             $request = $this->makeSale($request);
 
@@ -269,6 +269,7 @@ class SaleService
         if (!$userId) {
             $userId = Auth::user()->id;
         }
+        
         unset($request['amount_total']);
         $request['date_sale'] = $this->carbon->parse(Arr::get($request, "sale_date") . Arr::get($request, "sale_time"));
         $request['company_id'] = $companyId;

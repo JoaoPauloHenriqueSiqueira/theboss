@@ -4,15 +4,13 @@ namespace App\Services;
 
 use App\Library\Format;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
-use App\Transformers\CategorieTransformer;
 use App\Transformers\CategoryTransformer;
 use App\Transformers\ProductTransformer;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
-use Illuminate\Pagination\Paginator;
 
-class CategoryService
+class SizeService
 {
     protected $repository;
 
@@ -117,8 +115,6 @@ class CategoryService
         if ($products->count() <= 0) {
             return $products;
         }
-
-        
         foreach ($products as $p) {
             foreach ($p->products as &$k) {
                 $k['photos'] = $this->productService->getPhotos($k);

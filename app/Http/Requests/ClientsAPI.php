@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
-class Clients extends FormRequest
+class ClientsAPI extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,7 +30,6 @@ class Clients extends FormRequest
     {
         $valid = [
             'name' => 'required|min:3|max:255',
-            'cell_phone' => 'required|min:3|max:255'
         ];
 
         $companyId = app('request')->headers->get('Company');
@@ -58,6 +57,8 @@ class Clients extends FormRequest
                 return $query->where('company_id', $companyId);
             });
         }
+        
+        $valid['password'] = 'required|min:6|max:255';
 
         return $valid;
     }
@@ -71,11 +72,13 @@ class Clients extends FormRequest
     {
         return [
             'name.invalid' => "Apenas letras são aceitas",
+            'name.min' => "Nome precisa ter pelo menos 3 caracteres",
             'cell_phone.required' => 'Celular é obrigatório',
             'password.required' => 'Senha é obrigatório',
             'email.unique' => 'Você já possui um cadastro com esse email',
             'cell_phone.unique' => 'Você já possui um cadastro com esse número de celular',
             'cell_phone.min' => 'O número de celular precisa de ao menos 8 dígitos',
+            'password.min' => 'A senha precisa ter ao menos 6 caracteres',
             'name.min' => 'Mínimo de 3 letras para um nome',
             'name.max' => 'Máximo de 255 letras para um nome',
             'cpf_cnpj.min' => 'Mínimo de 11 dígitos para cpf/cnpj',

@@ -155,7 +155,7 @@ class ClientService
             return response()->json(['message' => "Login realizado com sucesso", "client" => (new ClientTransformer)->transform($list->first())], 201);
         }
 
-        return response()->json(['message' => "Ocorreu um erro"], 500);
+        return response()->json(['message' => "Usuário/senha não conferem"], 500);
     }
 
     public function makeParamsFilterAPI($request)
@@ -186,16 +186,25 @@ class ClientService
         $clientId = Arr::get($request, "id");
         $companyId = $request->header('Company');
         if (!$this->checkCompany($clientId, $companyId)) {
-            return response('Sem permissão para essa empresa', 422);
+            return response()->json(['message' => "Sem permissão para essa empresa"], 422);
         }
 
         $request['company_id'] = $companyId;
 
         $id = Arr::get($request, "id");
+        \Log::info(Arr::get($request, "password"));
+        \Log::info($id);
+
+        if ($id && !$this->checkPassword($id,  Arr::get($request, "password"))) {
+            return response()->json(['message' => "Senha errada para alterar esse usuário"], 422);
+        }
+
+        $request['password'] = bcrypt(Arr::get($request, "password"));
 
         if ($id) {
             $request = $this->verifyUpdate($request);
         }
+
 
         $response = $this->repository->updateOrCreate(["id" => $id], $request->all());
 
@@ -250,12 +259,10 @@ class ClientService
     {
         if ($clientId) {
             $client = $this->repository->find($clientId);
-
             if (Hash::check($password, Arr::get($client, "password"))) {
-                return false;
+                return true;
             }
         }
-
-        return true;
+        return false;
     }
 }

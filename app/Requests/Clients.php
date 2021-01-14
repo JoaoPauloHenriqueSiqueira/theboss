@@ -51,6 +51,7 @@ class Clients extends FormRequest
         return [
             'name.invalid' => "Apenas letras são aceitas",
             'cell_phone.required' => 'Celular é obrigatório',
+            'cell_phone.min' => 'O número de celular precisa de ao menos 8 dígitos',
             'name.min' => 'Mínimo de 3 letras para um nome',
             'name.max' => 'Máximo de 255 letras para um nome',
             'cpf_cnpj.min' => 'Mínimo de 11 dígitos para cpf/cnpj',

@@ -76,7 +76,7 @@ class ProductService
         $perPage = $request->query('per_page');
 
         $list = $this->repository->scopeQuery(function ($query) use ($filters) {
-            return $query->where(Arr::get($filters, 0))->where(Arr::get($filters, 1))->orWhere(Arr::get($filters, 2))->orderBy('name', 'ASC');
+            return $query->where(Arr::get($filters, 0))->where(Arr::get($filters, 1))->orWhere(Arr::get($filters, 2))->orderBy('name', 'DESC');
         });
 
         $list =  (new ProductTransformer)->transform($list->all());

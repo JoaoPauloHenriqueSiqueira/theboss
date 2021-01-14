@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Clients;
+use App\Http\Requests\ClientsAPI;
 use App\Services\ClientService;
 use Exception;
 use Illuminate\Http\Request;
@@ -66,7 +67,7 @@ class ClientController extends Controller
         }
     }
 
-    public function createOrUpdateAPI(Clients $request)
+    public function createOrUpdateAPI(ClientsAPI $request)
     {
         try {
             return $this->service->saveAPI($request);
