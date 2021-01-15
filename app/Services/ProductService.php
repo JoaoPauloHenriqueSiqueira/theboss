@@ -72,11 +72,10 @@ class ProductService
     public function listApi($request)
     {
         $filters = $this->makeParamsFilterAPI($request);
-
-        $page = $request->query('page');
+        
         $perPage = $request->query('per_page');
 
-        $list = Products::where(Arr::get($filters, 0))->where(Arr::get($filters, 1))->orWhere(Arr::get($filters, 2))->orderBy('name', 'DESC')->paginate($perPage);
+        $list = Products::where(Arr::get($filters, 0))->where(Arr::get($filters, 1))->orWhere(Arr::get($filters, 2))->where(Arr::get($filters, 0))->orderBy('name', 'DESC')->paginate($perPage);
 
         $items = (new ProductTransformer)->transform($list->items());
         $list->setCollection($items);
@@ -92,9 +91,11 @@ class ProductService
         $perPage = $request->query('per_page');
 
         $list = Products::whereHas('categories', function ($query) use ($id, $filters) {
-            $query->where('category_id', '=', $id)->where(Arr::get($filters, 0))
+            $query->where('category_id', '=', $id)
+                ->where(Arr::get($filters, 0))
                 ->where(Arr::get($filters, 1))
-                ->orWhere(Arr::get($filters, 2));
+                ->orWhere(Arr::get($filters, 2))
+                ->where(Arr::get($filters, 0));
         })->orderBy('name', 'DESC')->paginate($perPage);
 
         $items = (new ProductTransformer)->transform($list->items());
