@@ -222,7 +222,6 @@ class SaleService
                 $sale->products()->detach();
                 $sale->status()->detach();
             }
-            \Log::info("x");
 
             $request = $this->makeSale($request);
 

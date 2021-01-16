@@ -74,10 +74,6 @@ class Sales extends FormRequest
         if ($this->request->has('amount_paid')) {
             $amount = $this->request->get('amount_paid');
 
-            if (strlen($amount) > 6) {
-                $amount = str_replace(".", '', $this->request->get('amount_paid'));
-            }
-
             $amount = str_replace(",", '.', $amount);
 
             $this->merge([
