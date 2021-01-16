@@ -192,9 +192,6 @@ class ClientService
         $request['company_id'] = $companyId;
 
         $id = Arr::get($request, "id");
-        \Log::info(Arr::get($request, "password"));
-        \Log::info($id);
-
         if ($id && !$this->checkPassword($id,  Arr::get($request, "password"))) {
             return response()->json(['message' => "Senha errada para alterar esse usuário"], 422);
         }

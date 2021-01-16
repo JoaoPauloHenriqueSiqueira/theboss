@@ -86,16 +86,16 @@ class ProductService
     public function listApiCategory($request, $id)
     {
         $filters = $this->makeParamsFilterAPI($request);
-
-        $page = $request->query('page');
         $perPage = $request->query('per_page');
 
         $list = Products::whereHas('categories', function ($query) use ($id, $filters) {
-            $query->where('category_id', '=', $id)
+            $query
+                ->where('category_id', '=', $id)
                 ->where(Arr::get($filters, 0))
                 ->where(Arr::get($filters, 1))
-                ->orWhere(Arr::get($filters, 2))
-                ->where(Arr::get($filters, 0));
+                ->orWhere(Arr::get($filters, 0))
+                ->where(Arr::get($filters, 2))
+                ->where('category_id', '=', $id);
         })->orderBy('name', 'DESC')->paginate($perPage);
 
         $items = (new ProductTransformer)->transform($list->items());
