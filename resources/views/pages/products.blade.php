@@ -24,6 +24,7 @@
             <table class="table-responsive bordered centered">
                 <thead>
                     <tr>
+                        <th>Id</th>
                         <th>Nome</th>
                         <th>Código</th>
                         <th>Valor Custo</th>
@@ -36,6 +37,10 @@
                 <tbody>
                     <form class="col s12" method="POST" action="{{ URL::route('search_products') }}">
                         <tr>
+                            <td>
+                                <input placeholder="Procurar" id="search_id" name="search_id" type="text" value="{{Arr::get($search,'search_id')}}" class="validate">
+                                <label for="procurar_id">Id</label>
+                            </td>
                             <td>
                                 <input placeholder="Procurar" id="search_name" name="search_name" type="text" value="{{Arr::get($search,'search_name')}}" class="validate">
                                 <label for="procurar_nome">Nome</label>
@@ -88,6 +93,11 @@
         <div class="collapsible-body white">
             <div class="row ">
                 <span class="span-body">
+                    <span class="green-text">Id:</span>
+                    {{ $data->id ==  "" ? '-' : $data->id }}
+                </span></br>
+
+                <span class="span-body">
                     @if(count($data->photos) > 0)
                     <a class=" right" onclick="photos({{$data->id}})"><i class="material-icons">add_a_photo</i></a>
                     @endif
@@ -130,7 +140,7 @@
                     @endif
                 </span>
 
-                    <!-- <span class="span-body left">
+                <!-- <span class="span-body left">
                         @if(count($data->providers) > 0)
                         <span class="green-text">Fornecedor(es):
                         </span></br>

@@ -72,7 +72,7 @@ class ProductService
     public function listApi($request)
     {
         $filters = $this->makeParamsFilterAPI($request);
-        
+
         $perPage = $request->query('per_page');
 
         $list = Products::where(Arr::get($filters, 0))->where(Arr::get($filters, 1))->orWhere(Arr::get($filters, 2))->where(Arr::get($filters, 0))->orderBy('name', 'DESC')->paginate($perPage);
@@ -153,26 +153,32 @@ class ProductService
         }
         $filterColumns = ['company_id' => $companyId];
 
-        if (Arr::get($request, 'name')) {
-            array_push($filterColumns, ['name', 'like', '%' . Arr::get($request, 'name') . '%']);
+
+        if (Arr::get($request, 'search_id')) {
+            array_push($filterColumns, ['id', '=', Arr::get($request, 'search_id')]);
         }
 
-        if (Arr::get($request, 'bar_code')) {
-            array_push($filterColumns, ['bar_code', 'like', '%' . Arr::get($request, 'bar_code') . '%']);
+
+        if (Arr::get($request, 'search_name')) {
+            array_push($filterColumns, ['name', 'like', '%' . Arr::get($request, 'search_name') . '%']);
         }
 
-        if (Arr::get($request, 'cost_value')) {
-            $costValue = Format::extractNumbers(Arr::get($request, 'cost_value'));
+        if (Arr::get($request, 'search_bar_code')) {
+            array_push($filterColumns, ['bar_code', 'like', '%' . Arr::get($request, 'search_bar_code') . '%']);
+        }
+
+        if (Arr::get($request, 'search_cost_value')) {
+            $costValue = Format::extractNumbers(Arr::get($request, 'search_cost_value'));
             array_push($filterColumns, ['cost_value', 'like', '%' .  $costValue . '%']);
         }
 
-        if (Arr::get($request, 'sale_value')) {
-            $saleValue = Format::extractNumbers(Arr::get($request, 'sale_value'));
+        if (Arr::get($request, 'search_sale_value')) {
+            $saleValue = Format::extractNumbers(Arr::get($request, 'search_sale_value'));
             array_push($filterColumns, ['sale_value', 'like', '%' .  $saleValue . '%']);
         }
 
-        if (Arr::get($request, 'quantity')) {
-            $quantity = Format::extractNumbers(Arr::get($request, 'quantity'));
+        if (Arr::get($request, 'search_quantity')) {
+            $quantity = Format::extractNumbers(Arr::get($request, 'search_quantity'));
             array_push($filterColumns, ['quantity', 'like', '%' .  $quantity . '%']);
         }
 

@@ -68,6 +68,7 @@ class ProductController extends Controller
     {
         try {
             $categories = $this->categoryService->get($request);
+            $providers = $this->providerService->get();
             $pageConfigs = ['pageHeader' => true];
             return view(
                 'pages.products',
@@ -76,6 +77,7 @@ class ProductController extends Controller
                     "search" => $request->all(),
                     "urlS3" => ENV('AWS_URL'),
                     "categories" => $categories,
+                    "providers" => $providers,
                     'pageConfigs' => $pageConfigs
                 ],
                 ['breadcrumbs' => []]

@@ -133,6 +133,7 @@
                     <table class="bordered center">
                         <thead>
                             <tr>
+                                <th>Id</th>
                                 <th>Produto</th>
                                 <th>Valor</th>
                                 <th>Qtde</th>
@@ -141,6 +142,10 @@
                         <tbody>
                             @foreach ($data->products as $product)
                             <tr>
+                                <td>
+                                    <input placeholder="Id" type="text" readonly disabled value="{{$product->id}}">
+                                    <label for="id">Id</label>
+                                </td>
                                 <td>
                                     <input placeholder="Nome" type="text" readonly disabled value="{{$product->name}}">
                                     <label for="name">Nome</label>
@@ -341,14 +346,14 @@
 
     channel.bind('App\\Events\\NewMessage', function(data) {
         M.toast({
-                html: "Novo atendimento. Atualize a página para consultar",
-                classes:'green rounded',
-                displayLength: Infinity
+            html: "Novo atendimento. Atualize a página para consultar",
+            classes: 'green rounded',
+            displayLength: Infinity
         });
     });
 
     function createrowTable($data) {
-        
+
     }
 </script>
 <script>
