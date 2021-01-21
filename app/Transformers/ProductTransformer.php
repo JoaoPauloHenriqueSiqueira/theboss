@@ -19,7 +19,7 @@ class ProductTransformer extends TransformerAbstract
             $newObject = [];
             $newObject['id'] = $product->id;
             $newObject['name'] = $product->name;
-
+            $newObject['description'] = $product->description;
             $newObject['valor_moeda'] = Format::money(str_replace(",", '.', $product->sale_value));
             $newObject['valor'] = str_replace(",", '.', $product->sale_value);
             $newObject['control_quantity'] = $product->control_quantity;
