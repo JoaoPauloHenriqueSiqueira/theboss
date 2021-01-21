@@ -260,7 +260,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="description" placeholder="Descrição" name="name" pattern=".{1,}" title="1 letra no mínimo" type="text" class="validate" value="{{ old('name') }}" required>
+                    <input id="description" placeholder="Descrição" name="description" pattern=".{1,}" title="1 letra no mínimo" type="text" class="validate" value="{{ old('description') }}" >
                     <label for="disabled">Descrição*</label>
                 </div>
             </div>
@@ -495,6 +495,7 @@
 
     function cleanFields() {
         $("#name").val('');
+        $("#description").val('');
         $("#bar_code").val('');
         $("#cost_value").val('0');
         $("#sale_value").val('');
@@ -572,6 +573,7 @@
         $("#idProduct").append(product['id']);
         $("#product").html("Editar Produto");
         $("#name").val(product['name']);
+        $("#description").val(product['description']);
         $("#bar_code").val(product['bar_code']);
         $("#cost_value").val(product['cost_value']);
         $("#sale_value").val(product['sale_value']);

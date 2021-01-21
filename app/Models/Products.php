@@ -12,6 +12,7 @@ class Products extends Model
 {
     protected $collection = 'products';
     protected $fillable = [
+        'description',
         'name', 'bar_code', 'cost_value',
         'sale_value', 'quantity', 'notifiable',
         'days_notify', 'control_quantity','is_active'
