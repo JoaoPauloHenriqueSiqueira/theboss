@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Provider;
-use App\Services\ProviderService;
+use App\Http\Requests\Size;
+use App\Services\SizeService;
 use Exception;
 use Illuminate\Http\Request;
 
-class ProviderController extends Controller
+class SizeController extends Controller
 {
     protected $service;
 
     /**
      * Construct function
      *
-     * @param ProviderService $service
+     * @param SizeService $service
      */
-    public function __construct(ProviderService $service)
+    public function __construct(SizeService $service)
     {
         $this->service = $service;
     }
@@ -52,7 +52,7 @@ class ProviderController extends Controller
      * @param TaskPost $request
      * @return void
      */
-    public function createOrUpdate(Provider $request)
+    public function createOrUpdate(Size $request)
     {
         try {
             return $this->service->save($request);

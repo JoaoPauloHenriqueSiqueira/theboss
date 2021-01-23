@@ -62,6 +62,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Contracts\StatusRepositoryInterface',
             'App\Repositories\StatusRepository'
         );
+
+        $this->app->bind(
+            'App\Repositories\Contracts\SizeRepositoryInterface',
+            'App\Repositories\SizeRepository'
+        );
     }
 
     /**

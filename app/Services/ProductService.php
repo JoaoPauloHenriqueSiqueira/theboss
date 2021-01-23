@@ -215,15 +215,19 @@ class ProductService
                 $product = $this->repository->find($productId);
                 $product->categories()->detach();
                 $product->providers()->detach();
+                $product->sizes()->detach();
             }
 
             $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
 
             $categories = Arr::get($request, "categories", []);
             $providers = Arr::get($request, "providers", []);
+            $sizes = Arr::get($request, "sizes", []);
 
             $response = $this->addCategories($categories, $response);
             $response = $this->addProviders($providers, $response);
+            $response = $this->addSizes($sizes, $response);
+
             $response = $this->addPhotos($request, $response);
 
             if ($response) {
@@ -293,6 +297,24 @@ class ProductService
 
             $response->providers()->attach(
                 $arrProviders
+            );
+        }
+        return $response;
+    }
+
+    private function addSizes($sizes, $response)
+    {
+        $arrSizes = [];
+        if ($sizes && count($sizes) > 0) {
+            foreach ($sizes as $size) {
+                $newSize = [];
+                $newSize["product_id"] = $response->id;
+                $newSize["size_id"] = $size;
+                array_push($arrSizes, $newSize);
+            }
+
+            $response->sizes()->attach(
+                $arrSizes
             );
         }
         return $response;

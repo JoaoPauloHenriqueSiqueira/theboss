@@ -93,5 +93,14 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/', 'ProviderController@createOrUpdate')->name('add_providers');
             Route::delete('/', 'ProviderController@delete')->name('delete_providers');;
         });
+
+        Route::group(['prefix' => 'sizes'], function () {
+            Route::get('/', 'SizeController@index')->name('sizes');
+            Route::get('/search', 'SizeController@index');
+            Route::post('/search', 'SizeController@search')->name('search_sizes');
+            Route::post('/', 'SizeController@createOrUpdate')->name('add_sizes');
+            Route::delete('/', 'SizeController@delete')->name('delete_sizes');;
+        });
+        
     });
 });

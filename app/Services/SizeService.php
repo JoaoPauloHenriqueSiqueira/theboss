@@ -2,10 +2,8 @@
 
 namespace App\Services;
 
-use App\Library\Format;
-use App\Repositories\Contracts\CategoryRepositoryInterface;
-use App\Transformers\CategoryTransformer;
-use App\Transformers\ProductTransformer;
+use App\Repositories\Contracts\ProviderRepositoryInterface;
+use App\Repositories\Contracts\SizeRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
@@ -20,13 +18,12 @@ class SizeService
      * @return void
      */
     public function __construct(
-        CategoryRepositoryInterface $repository,
-        Carbon $carbon,
-        ProductService $productService
+        SizeRepositoryInterface $repository,
+        Carbon $carbon
     ) {
         $this->repository = $repository;
-        $this->productService = $productService;
         $this->carbon = $carbon;
+
     }
 
     /**
@@ -54,7 +51,6 @@ class SizeService
         $dateFilter = $this->carbon->parse($dateFilter);
         $start = $dateFilter->copy()->startOfDay()->startOfMonth();
         $finish = $dateFilter->copy()->endOfDay()->endOfMonth();
-
 
         $filterColumns = ['company_id' => Auth::user()->company_id];
         $list = $this->repository->scopeQuery(function ($query) use ($filterColumns, $start, $finish) {
@@ -95,51 +91,6 @@ class SizeService
     {
         return $this->repository->find($taskId)->toArray();
     }
-
-    public function listProductsApi($request, $id)
-    {
-        $filterColumns = ['company_id' => $request->header('Company'), 'id' => $id];
-
-        $list = $this->repository->scopeQuery(function ($query) use ($filterColumns) {
-            return $query->where($filterColumns);
-        });
-
-        $page = $request->query('page');
-        $perPage = $request->query('per_page');
-
-        return Format::paginate($this->getPhotosProduct($list->all()), $perPage, $page);
-    }
-
-    public function getPhotosProduct($products)
-    {
-        if ($products->count() <= 0) {
-            return $products;
-        }
-        foreach ($products as $p) {
-            foreach ($p->products as &$k) {
-                $k['photos'] = $this->productService->getPhotos($k);
-            }
-        }
-
-        return (new ProductTransformer)->transform($products->first()->products);
-    }
-
-    public function listApi($request)
-    {
-        $filterColumns = ['company_id' => $request->header('Company')];
-
-        $page = $request->query('page');
-        $perPage = $request->query('per_page');
-
-        $list = $this->repository->scopeQuery(function ($query) use ($filterColumns) {
-            return $query->where($filterColumns)->orderBy('name', 'ASC');
-        });
-
-        $list =  (new CategoryTransformer)->transform($list->all());
-        return Format::paginate($list, $perPage, $page);
-    }
-
-
 
     /**
      * Save a task with a validation

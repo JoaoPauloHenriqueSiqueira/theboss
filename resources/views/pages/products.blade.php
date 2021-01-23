@@ -130,7 +130,7 @@
                 </span>
 
                 @endif
-                <span class="span-body left">
+                <span class="span-body ">
                     @if(count($data->categories) > 0)
                     <span class="green-text">Categoria(s):
                     </span></br>
@@ -139,8 +139,7 @@
                     @endforeach
                     @endif
                 </span>
-
-                <!-- <span class="span-body left">
+                 <span class="span-body">
                         @if(count($data->providers) > 0)
                         <span class="green-text">Fornecedor(es):
                         </span></br>
@@ -148,7 +147,17 @@
                         {{$provider->name}}</br>
                         @endforeach
                         @endif
-                    </span> -->
+                </span>
+
+                <span class="span-body ">
+                        @if(count($data->sizes) > 0)
+                        <span class="green-text">Tamanho(s):
+                        </span></br>
+                        @foreach ($data->sizes as $size)
+                            {{$size->name}}</br>
+                        @endforeach
+                        @endif
+                </span> 
             </div>
             <hr>
             <div class="row center">
@@ -289,7 +298,7 @@
                     <label class="active" for="categories">Categorias</label>
                 </div>
             </div>
-            <!-- <div class="row">
+            <div class="row">
                 <div class="input-field col s12">
                     <select class="select2 browser-default" id="providers" name="providers[]" multiple>
                         @foreach ($providers as $provider)
@@ -300,7 +309,20 @@
                     </select>
                     <label class="active" for="categories">Fornecedores</label>
                 </div>
-            </div> -->
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <select class="select2 browser-default" id="sizes" name="sizes[]" multiple>
+                        @foreach ($sizes as $size)
+                        <option value="{{$size->id}}">
+                            {{$size->name}}
+                        </option>
+                        @endforeach
+                    </select>
+                    <label class="active" for="sizes">Tamanhos</label>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="input-field col s12">
@@ -506,7 +528,7 @@
 
         cleanCategoryField();
         cleanProviderField();
-
+        cleanSizeField();
     }
 
     function clean() {
@@ -527,6 +549,12 @@
         $('#providers').formSelect();
     }
 
+    function selectSizes($size) {
+        $('#sizes option[value="' + $size + '"]').attr('selected', true);
+        $('#sizes').change();
+        $('#sizes').formSelect();
+    }
+
     function cleanCategoryField() {
         $('#categories option').prop('selected', false);
         $('#categories').change();
@@ -537,6 +565,12 @@
         $('#providers option').prop('selected', false);
         $('#providers').change();
         $('#providers').formSelect();
+    }
+
+    function cleanSizeField() {
+        $('#sizes option').prop('selected', false);
+        $('#sizes').change();
+        $('#sizes').formSelect();
     }
 
     function createRowPhoto(photo) {
@@ -567,6 +601,13 @@
         if (providers !== undefined) {
             providers.forEach(element => {
                 this.selectProvider(element.id);
+            });
+        }
+
+        let sizes = product.sizes;
+        if (sizes !== undefined) {
+            sizes.forEach(element => {
+                this.selectSizes(element.id);
             });
         }
 

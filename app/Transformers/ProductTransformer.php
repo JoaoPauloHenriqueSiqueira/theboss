@@ -23,10 +23,8 @@ class ProductTransformer extends TransformerAbstract
             $newObject['valor_moeda'] = Format::money(str_replace(",", '.', $product->sale_value));
             $newObject['valor'] = str_replace(",", '.', $product->sale_value);
             $newObject['control_quantity'] = $product->control_quantity;
-
-
+            $newObject['sizes'] = (new SizeTransformer)->transform($product->sizes);
             $newObject['quantity'] = $product->quantity;
-
 
             $photosArray = [];
             foreach ($product->photos as $photo) {

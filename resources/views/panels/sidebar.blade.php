@@ -42,6 +42,10 @@
       <a class="tooltipped" href="{{ URL::route('products') }}" data-position='right' data-delay='50' data-tooltip="Lista todos os Produtos/Serviços">Produtos/Serviços</a>
     </li>
 
+    <li class="sizes search_sizes">
+      <a class="tooltipped" href="{{ URL::route('sizes') }}" data-position='right' data-delay='50' data-tooltip="Lista todos os Tamanhos de Produtos">Tamanhos de Produtos</a>
+    </li>
+
     <li class="categories search_categories">
       <a class="tooltipped" href="{{ URL::route('categories') }}" data-position='right' data-delay='50' data-tooltip="Lista todas Categorias de Produtos/Serviços">Categorias</a>
     </li>

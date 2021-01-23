@@ -38,6 +38,11 @@ class Products extends Model
         return $this->belongsToMany(Providers::class, 'products_providers', 'product_id', 'provider_id');
     }
 
+    public function sizes()
+    {
+        return $this->belongsToMany(Sizes::class, 'products_sizes', 'product_id', 'size_id');
+    }
+
     public function photos()
     {
         return $this->belongsToMany(Photos::class, 'products_photos', 'product_id','photo_id');

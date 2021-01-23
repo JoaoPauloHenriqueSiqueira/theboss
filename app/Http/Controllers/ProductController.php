@@ -4,10 +4,10 @@ namespace App\Http\Controllers;;
 
 use App\Http\Requests\Products;
 use App\Services\CategoryService;
-use App\Services\ClientService;
 use App\Services\CompanyService;
 use App\Services\ProductService;
 use App\Services\ProviderService;
+use App\Services\SizeService;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -17,23 +17,22 @@ class ProductController extends Controller
     protected $categoryService;
     protected $providerService;
     protected $companyService;
+    protected $sizeService;
 
-    /**
-     * Construct function
-     *
-     * @param ClientService $service
-     */
+    
     public function __construct(
         ProductService $service,
         CategoryService $categoryService,
         ProviderService $providerService,
-        CompanyService $companyService
-
+        CompanyService $companyService,
+        SizeService $sizeService
     ) {
         $this->service = $service;
         $this->categoryService = $categoryService;
         $this->providerService = $providerService;
         $this->companyService = $companyService;
+        $this->sizeService = $sizeService;
+
     }
 
     /**
@@ -46,6 +45,8 @@ class ProductController extends Controller
         try {
             $categories = $this->categoryService->get();
             $providers = $this->providerService->get();
+            $sizes = $this->sizeService->get();
+
             $pageConfigs = ['pageHeader' => true];
             return view(
                 'pages.products',
@@ -55,6 +56,7 @@ class ProductController extends Controller
                     "urlS3" => ENV('AWS_URL'),
                     "categories" => $categories,
                     "providers" => $providers,
+                    "sizes" => $sizes,
                     'pageConfigs' => $pageConfigs
                 ],
                 ['breadcrumbs' => []]
@@ -69,6 +71,8 @@ class ProductController extends Controller
         try {
             $categories = $this->categoryService->get($request);
             $providers = $this->providerService->get();
+            $sizes = $this->sizeService->get();
+
             $pageConfigs = ['pageHeader' => true];
             return view(
                 'pages.products',
@@ -78,6 +82,8 @@ class ProductController extends Controller
                     "urlS3" => ENV('AWS_URL'),
                     "categories" => $categories,
                     "providers" => $providers,
+                    "sizes" => $sizes,
+
                     'pageConfigs' => $pageConfigs
                 ],
                 ['breadcrumbs' => []]
