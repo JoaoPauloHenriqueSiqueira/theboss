@@ -43,7 +43,9 @@ class Sales extends Model
             ->withPivot('quantity')
             ->withPivot('sale_value')
             ->withPivot('sale_id')
-            ->withPivot('product_id');;
+            ->withPivot('product_id')
+            ->withPivot('size_id');
+
     }
 
 

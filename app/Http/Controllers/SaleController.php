@@ -8,6 +8,7 @@ use App\Library\Format;
 use App\Services\ClientService;
 use App\Services\ProductService;
 use App\Services\SaleService;
+use App\Services\SizeService;
 use App\Services\StatusService;
 use Carbon\Carbon;
 use Exception;
@@ -20,6 +21,7 @@ class SaleController extends Controller
     protected $productService;
     protected $clientService;
     protected $saleService;
+    protected $sizeService;
 
 
     /**
@@ -31,12 +33,14 @@ class SaleController extends Controller
         ProductService $productService,
         ClientService $clientService,
         SaleService $saleService,
-        StatusService $statusService
+        StatusService $statusService,
+        SizeService $sizeService
     ) {
         $this->productService = $productService;
         $this->clientService = $clientService;
         $this->saleService = $saleService;
         $this->statusService = $statusService;
+        $this->sizeService = $sizeService;
     }
 
     /**
@@ -57,6 +61,7 @@ class SaleController extends Controller
             $search = [];
             $search['sale_date_start'] = $saleDateStart->format('Y-m-d');
             $search['sale_date_end'] = $saleDateStart->format('Y-m-d');
+            $sizes = $this->sizeService->get();
 
             return view('pages.sales', [
                 "search" => $search,
@@ -69,6 +74,7 @@ class SaleController extends Controller
                 "clients" => $clients,
                 "statuses" => $statuses,
                 "products" => $products,
+                "sizes" => $sizes,
                 'pageConfigs' => $pageConfigs
             ], ['breadcrumbs' => []]);
         } catch (Exception $e) {
@@ -98,6 +104,9 @@ class SaleController extends Controller
             }
 
 
+            $sizes = $this->sizeService->get();
+
+
             $search = [];
             $search['sale_date_start'] = $saleDate->format('Y-m-d');
             $search['sale_date_end'] = $saleDateEnd->format('Y-m-d');
@@ -114,6 +123,7 @@ class SaleController extends Controller
                 "clients" => $clients,
                 "products" => $products,
                 "statuses" => $statuses,
+                "sizes" => $sizes,
                 'pageConfigs' => $pageConfigs
             ], ['breadcrumbs' => []]);
         } catch (Exception $e) {

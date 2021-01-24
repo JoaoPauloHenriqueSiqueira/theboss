@@ -136,6 +136,7 @@
                                 <th>Id</th>
                                 <th>Produto</th>
                                 <th>Valor</th>
+                                <th>Tamanho</th>
                                 <th>Qtde</th>
                             </tr>
                         </thead>
@@ -153,6 +154,18 @@
                                 <td>
                                     <input placeholder="Valor" type="text" readonly value="{{$product->pivot->sale_value}}" readonly>
                                     <label for="value">Valor</label>
+                                </td>
+                                <td>
+                                    <select class="browser-default">
+                                        <option disabled selected>Tamanho</option>
+                                        @foreach ($sizes as $size)
+                                        <option value="{{$size->id}}" {{$size->id == $product->pivot->size_id  ? 'selected' : '' }}>
+                                            {{$size->name}}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    <label class="active" for="sizes">Tamanho</label>
+
                                 </td>
                                 <td>
                                     <input placeholder="Qtde" type="text" value="{{$product->pivot->quantity}}" readonly>
@@ -272,6 +285,20 @@
                     <input id="quantity" placeholder="Quantidade" type="number" min="0" oninput="validity.valid||(value='');" value="1" class="validate">
                     <label class="active">Quantidade</label>
                 </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col m6 s7">
+                    <select id="sizes" class="select2 browser-default">
+                        <option value="" selected>Tamanho</option>
+                        @foreach ($sizes as $size)
+                        <option value="{{$size->id}}">
+                            {{$size->name}}
+                        </option>
+                        @endforeach
+                    </select>
+                    <label class="active" for="product_id">Tamanho</label>
+                </div>
 
                 <div class="input-field col m2 s2">
                     <a class="btn-floating blue  btn tooltipped " data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Adicionar produto" onclick="addSale()">
@@ -298,6 +325,7 @@
                         <tr>
                             <th>Produto</th>
                             <th>Valor</th>
+                            <th>Tamanho</th>
                             <th>Quantidade</th>
                             <th></th>
                         </tr>
@@ -432,13 +460,21 @@
         controlQuantity();
         validProductAdd();
         $product = $("#product_selected").val();
+ 
         $quantity = $("#quantity").val();
         $saleValue = $("#product_selected").find(':selected').data('value');
         $saleValueNumber = $("#product_selected").find(':selected').data('value-number');
         $name = $("#product_selected").find(':selected').data('name');
 
+        $size = $("#sizes").val();
+        $sizeLabel = $("#sizes option:selected").text().trim();
+
+        if($size == ""){
+            $sizeLabel = "";
+        }
+
         if ($product && $quantity) {
-            let $element = createSaleRow($product, $quantity, $saleValueNumber, $name);
+            let $element = createSaleRow($product, $quantity, $saleValueNumber, $name, $size, $sizeLabel);
             $("#sale_form").append($element);
             sumTotalValue();
             this.selectProduct(true, $product);
@@ -447,13 +483,17 @@
         }
     }
 
-    function createSaleRow($product, $quantity, $saleValue, $name) {
+    function createSaleRow($product, $quantity, $saleValue, $name, $size, $sizeLabel) {
         if (String($saleValue).length == 2) {
             $saleValue = parseFloat($saleValue).toFixed(2);
         }
+
+
         return $(`<tr id="rowproduct${$product}">
                             <td>
+                                <input type="hidden"  name="size${$product}"  value="${$size}">
                                 <input type="hidden"  name="products[]"  value="${$product}">
+
                                 <input placeholder="Nome" type="text" class="validate" readonly disabled value="${$name}">
                                 <label for="name">Nome</label>
                             </td>
@@ -461,6 +501,11 @@
                                 <input placeholder="Valor" name="value${$product}" type="text" readonly value="${$saleValue}" readonly class="validate">
                                 <label for="value">Valor</label>
                             </td>
+                            <td>
+                                <input placeholder="Tamanho"  type="text" readonly value="${$sizeLabel}" readonly class="validate">
+                                <label for="value">Tamanho</label>
+                            </td>
+                         
                             <td>
                                 <input placeholder="Qtde" id="qtde${$product}" name="qtde${$product}" type="text" value="${$quantity}" readonly class="validate">
                                 <label for="qtde">Qtde</label>
@@ -602,7 +647,9 @@
 
     function editSale(dateSale, timeSale, sale, products) {
         products.forEach(element => {
-            let newRow = createSaleRow(element.id, element.pivot.quantity, element.pivot.sale_value, element.name);
+            let sizeId = element.pivot.size_id;
+            let labelSize = $(`#sizes option[value=${sizeId}]`).text().trim();
+            let newRow = createSaleRow(element.id, element.pivot.quantity, element.pivot.sale_value, element.name,element.pivot.size_id,labelSize);
             $("#sale_form").append(newRow);
             this.selectProduct(true, element.id);
             $("#tableProducts").removeClass('hide');

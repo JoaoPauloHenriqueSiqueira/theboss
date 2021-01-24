@@ -350,6 +350,11 @@ class SaleService
                     1
                 );
 
+                $size =  Arr::get(
+                    $request,
+                    "size$product"
+                );
+
                 $productDB = $this->productService->find($product);
                 $quantityProdDB = Arr::get($productDB, "quantity");
 
@@ -370,6 +375,8 @@ class SaleService
                 $newProduct["product_id"] = $product;
                 $newProduct["sale_id"] = $response->id;
                 $newProduct["quantity"] = $quantity;
+                $newProduct["size_id"] = $size;
+                
 
                 $amountTotal += $quantity * $saleValue;
                 $newProduct["sale_value"] = $saleValue;
