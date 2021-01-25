@@ -118,6 +118,30 @@ class UserService
         return $request;
     }
 
+    public function checkCompany($request)
+    {
+
+        $companyId = $request->header('Company');
+        if (!$companyId) {
+            $companyId = Auth::user()->company_id;
+        }
+
+        $userId = Arr::get($request, "user_id");
+        if (!$userId) {
+            $userId = Auth::user()->id;
+        }
+
+        if ($userId) {
+            $client = $this->repository->find($userId);
+
+            if ($companyId != Arr::get($client, "company_id")) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * Deleta usuário
      *

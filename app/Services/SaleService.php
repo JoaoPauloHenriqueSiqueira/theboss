@@ -15,6 +15,7 @@ class SaleService
     protected $repository;
     protected $productService;
     protected $clientService;
+    protected $userService;
     protected $statusService;
     protected $carbon;
 
@@ -28,12 +29,14 @@ class SaleService
         ProductService $productService,
         ClientService $clientService,
         StatusService $statusService,
+        UserService $userService,
         Carbon $carbon
     ) {
         $this->repository = $repository;
         $this->productService = $productService;
         $this->clientService = $clientService;
         $this->statusService = $statusService;
+        $this->userService = $userService;
         $this->carbon = $carbon;
     }
 
@@ -221,6 +224,10 @@ class SaleService
                 $sale = $this->repository->find($saleId);
                 $sale->products()->detach();
                 $sale->status()->detach();
+            }
+
+            if (!$this->userService->checkCompany($request)) {
+                return response()->json(['message' => "Esse usuário não pertence a essa empresa"], 422);
             }
 
             $request = $this->makeSale($request);
