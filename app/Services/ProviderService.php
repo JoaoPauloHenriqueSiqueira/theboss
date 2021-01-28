@@ -44,6 +44,16 @@ class ProviderService
         });
         return $list->paginate(10);
     }
+    
+    public function list()
+    {
+        $filterColumns = ['company_id' => Auth::user()->company_id];
+        $list =  $this->repository->scopeQuery(function ($query) use ($filterColumns) {
+            return $query->where($filterColumns)->orderBy('created_at', 'DESC');
+        });
+
+        return $list->get();
+    }
 
     public function searchDate($dateFilter)
     {

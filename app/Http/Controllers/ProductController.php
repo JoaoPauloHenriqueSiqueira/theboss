@@ -43,9 +43,9 @@ class ProductController extends Controller
     public function index()
     {
         try {
-            $categories = $this->categoryService->get();
-            $providers = $this->providerService->get();
-            $sizes = $this->sizeService->get();
+            $categories = $this->categoryService->list();
+            $providers = $this->providerService->list();
+            $sizes = $this->sizeService->list();
 
             $pageConfigs = ['pageHeader' => true];
             return view(
@@ -69,9 +69,9 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         try {
-            $categories = $this->categoryService->get($request);
-            $providers = $this->providerService->get();
-            $sizes = $this->sizeService->get();
+            $categories = $this->categoryService->list();
+            $providers = $this->providerService->list();
+            $sizes = $this->sizeService->list();
 
             $pageConfigs = ['pageHeader' => true];
             return view(
@@ -83,7 +83,6 @@ class ProductController extends Controller
                     "categories" => $categories,
                     "providers" => $providers,
                     "sizes" => $sizes,
-
                     'pageConfigs' => $pageConfigs
                 ],
                 ['breadcrumbs' => []]

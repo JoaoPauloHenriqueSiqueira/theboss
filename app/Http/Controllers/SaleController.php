@@ -54,14 +54,14 @@ class SaleController extends Controller
             $pageConfigs = ['pageHeader' => true];
             $saleDateStart = Arr::get($request, "sale_date_start", Carbon::now());
             $saleDateFormat = $saleDateStart->copy();
-            $clients = $this->clientService->get();
-            $products = $this->productService->getFull();
+            $clients = $this->clientService->list();
+            $products = $this->productService->listFull();
             $sales = $this->saleService->get($saleDateStart);
-            $statuses = $this->statusService->get();
+            $statuses = $this->statusService->list();
             $search = [];
             $search['sale_date_start'] = $saleDateStart->format('Y-m-d');
             $search['sale_date_end'] = $saleDateStart->format('Y-m-d');
-            $sizes = $this->sizeService->get();
+            $sizes = $this->sizeService->list();
 
             return view('pages.sales', [
                 "search" => $search,
@@ -92,8 +92,8 @@ class SaleController extends Controller
             $saleDateFormat = Carbon::parse($saleDate->copy())->format('d/m/Y');
             $saleDateEndFormat = Carbon::parse($saleDateEnd->copy())->format('d/m/Y');
 
-            $clients = $this->clientService->get();
-            $products = $this->productService->getFull();
+            $clients = $this->clientService->list();
+            $products = $this->productService->listFull();
             $sales = $this->saleService->searchBetweenDates($request, $saleDate, $saleDateEnd);
             $saleTitle = $saleDateFormat;
 
@@ -104,7 +104,7 @@ class SaleController extends Controller
             }
 
 
-            $sizes = $this->sizeService->get();
+            $sizes = $this->sizeService->list();
 
 
             $search = [];

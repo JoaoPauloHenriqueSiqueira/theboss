@@ -30,7 +30,7 @@ class ProviderController extends Controller
     {
         try {
             $pageConfigs = ['pageHeader' => true];
-            return view('pages.sizes', ["datas" => $this->service->get(),"search"=>[], 'pageConfigs' => $pageConfigs], ['breadcrumbs' => []]);
+            return view('pages.providers', ["datas" => $this->service->get(),"search"=>[], 'pageConfigs' => $pageConfigs], ['breadcrumbs' => []]);
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -40,7 +40,7 @@ class ProviderController extends Controller
     {
         try {
             $pageConfigs = ['pageHeader' => true];
-            return view('pages.sizes', ["datas" => $this->service->search($request),"search"=>$request->all(), 'pageConfigs' => $pageConfigs], ['breadcrumbs' => []])->withInput($request->all());
+            return view('pages.providers', ["datas" => $this->service->search($request),"search"=>$request->all(), 'pageConfigs' => $pageConfigs], ['breadcrumbs' => []])->withInput($request->all());
         } catch (Exception $e) {
             return $e->getMessage();
         }
