@@ -131,6 +131,12 @@ class SaleController extends Controller
         }
     }
 
+    public function salesClientList(Request $request)
+    {
+        return $this->saleService->listClientApi($request);
+    }
+
+
     /**
      * Cria ou atualiza dados no banco
      *

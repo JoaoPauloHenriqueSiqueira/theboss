@@ -151,7 +151,7 @@ class ClientService
         return redirect()->back()->withInput($request->all())->with('message', 'Ocorreu algum erro');
     }
 
-    public function findAPI($request)
+    public function findClientPasswordMail($request)
     {
         $filterColumns = $this->makeParamsFilterAPI($request);
         $list = $this->repository->scopeQuery(function ($query) use ($filterColumns) {
@@ -159,6 +159,16 @@ class ClientService
         });
 
         $user = $list->first();
+        if (Hash::check(Arr::get($request, "password"), Arr::get($user, "password"))) {
+            return $user;
+        }
+
+        return false;
+    }
+
+    public function findAPI($request)
+    {
+        $user = $this->findClientPasswordMail($request);
 
         if (Hash::check(Arr::get($request, "password"), Arr::get($user, "password"))) {
             return response()->json(['message' => "Login realizado com sucesso", "client" => (new ClientTransformer)->transform($list->first())], 201);

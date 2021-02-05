@@ -134,7 +134,13 @@ class SaleService
 
     private function makeParamsFilter($request)
     {
-        $filterColumns = ['company_id' => Auth::user()->company_id];
+        $companyId = $request->header('Company');
+        
+        if (!$companyId) {
+            $companyId = Auth::user()->company_id;
+        }
+
+        $filterColumns = ['company_id' => $companyId];
 
         if (Arr::get($request, 'search_client_id')) {
             array_push($filterColumns, ['client_id', '=',  Arr::get($request, 'search_client_id')]);
@@ -165,7 +171,7 @@ class SaleService
     {
         if ($request->validated()) {
             $saleId = Arr::get($request, "id");
-            $companyId = $request->header('Company');
+            $companyId = Auth::user()->company_id;
 
             if (!$this->validClient($request)) {
                 return redirect()->back()->with('message', 'Cliente não pertence à sua base');
@@ -203,6 +209,25 @@ class SaleService
 
             return redirect()->back()->with('message', 'Ocorreu algum erro');
         }
+    }
+
+    public function listClientApi($request)
+    {
+        $clientId = $this->clientService->findClientPasswordMail($request);
+       
+        if(!$clientId){
+            return false;
+        }
+
+        $request['search_client_id'] = $clientId->id;
+      
+
+        $filterColumns = $this->makeParamsFilter($request);
+        $list = $this->repository->scopeQuery(function ($query) use ($filterColumns) {
+            return $query->where($filterColumns)->orderBy('created_at', 'DESC');
+        });
+        
+        return $list->paginate(10);
     }
 
     public function saveAPI($request)
@@ -287,6 +312,10 @@ class SaleService
     {
         $clientId = Arr::get($request, "client_id");
         $companyId = $request->header('Company');
+
+        if (!$companyId) {
+            $companyId = Auth::user()->company_id;
+        }
 
         if (!$this->clientService->checkCompany($clientId, $companyId)) {
             return false;

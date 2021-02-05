@@ -33,6 +33,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'check_api_token'], function 
 
   Route::group(['prefix' => 'sales'], function () {
     Route::post('/', 'SaleController@createOrUpdateAPI');
+    Route::post('/client', 'SaleController@salesClientList');
+
   });
 
   Route::group(['prefix' => 'client'], function () {
