@@ -22,6 +22,8 @@ class SaleTransformer extends TransformerAbstract
                 $statusesProduct = $status->name;
             }
 
+            $newObject['products'] =  (new ProductSaleTransformer)->transform($sale->products);
+
             $newObject['status'] = $statusesProduct;
 
             array_push($objs, $newObject);
