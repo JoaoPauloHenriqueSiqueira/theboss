@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 
@@ -30,7 +29,7 @@ class Sales extends FormRequest
             'amount_paid' => 'required',
             'products' => 'required|array',
             'products.*.id' => 'exists:products,id',
-            'statuses' => 'array|exists:statuses,id',
+            'statuses' => 'exists:statuses,id',
 
         ];
 
@@ -73,7 +72,7 @@ class Sales extends FormRequest
     {
         if ($this->request->has('amount_paid')) {
             $amount = $this->request->get('amount_paid');
-
+            $amount = str_replace(".", '', $amount);
             $amount = str_replace(",", '.', $amount);
 
             $this->merge([

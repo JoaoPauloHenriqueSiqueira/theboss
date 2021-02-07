@@ -36,8 +36,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::group(['prefix' => 'sales'], function () {
             Route::get('/', 'SaleController@index')->name('sales');
-            Route::get('/search', 'SaleController@index');
-            Route::post('/search', 'SaleController@search')->name('search_sales');
+            Route::get('/search', 'SaleController@index')->name('search_sales');
+            Route::post('/search', 'SaleController@search');
             Route::post('/', 'SaleController@createOrUpdate')->name('make_sale');
             Route::delete('/', 'SaleController@delete')->name('delete_sales');;
         });

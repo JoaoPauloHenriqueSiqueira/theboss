@@ -52,77 +52,44 @@ class SaleController extends Controller
     {
         try {
             $pageConfigs = ['pageHeader' => true];
-            $saleDateStart = Arr::get($request, "sale_date_start", Carbon::now());
-            $saleDateFormat = $saleDateStart->copy();
-            $clients = $this->clientService->list();
-            $products = $this->productService->listFull();
-            $sales = $this->saleService->get($saleDateStart);
-            $statuses = $this->statusService->list();
-            $search = [];
-            $search['sale_date_start'] = $saleDateStart->format('Y-m-d');
-            $search['sale_date_end'] = $saleDateStart->format('Y-m-d');
-            $sizes = $this->sizeService->list();
-
-            return view('pages.sales', [
-                "search" => $search,
-                "sale_date_start" => $saleDateStart->format('Y-m-d'),
-                "sale_date_end" => $saleDateStart->format('Y-m-d'),
-                "sale_date_format" => $saleDateFormat->format('d/m/Y'),
-                "datas" => $sales->paginate(10),
-                "company"=> Auth::user()->company_id,
-                "total_sales" => Format::money($sales->sum('amount_total')),
-                "clients" => $clients,
-                "statuses" => $statuses,
-                "products" => $products,
-                "sizes" => $sizes,
-                'pageConfigs' => $pageConfigs
-            ], ['breadcrumbs' => []]);
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
-    public function search(Request $request)
-    {
-        try {
-            $pageConfigs = ['pageHeader' => true];
-            $saleDate = Carbon::parse(Arr::get($request, "search_sale_date_start", Carbon::now()));
-            $saleDateEnd = Carbon::parse(Arr::get($request, "search_sale_date_end", Carbon::now()));
+            $saleDate = Carbon::parse(Arr::get($request, "start", Carbon::now()));
+            $saleDateEnd = Carbon::parse(Arr::get($request, "end", Carbon::now()));
 
             $saleDateFormat = Carbon::parse($saleDate->copy())->format('d/m/Y');
             $saleDateEndFormat = Carbon::parse($saleDateEnd->copy())->format('d/m/Y');
 
-            $clients = $this->clientService->list();
-            $products = $this->productService->listFull();
-            $sales = $this->saleService->searchBetweenDates($request, $saleDate, $saleDateEnd);
+
             $saleTitle = $saleDateFormat;
 
-            $statuses = $this->statusService->get();
 
             if ($saleDate != $saleDateEnd) {
                 $saleTitle = "$saleDateFormat - $saleDateEndFormat";
             }
 
+            $clients = $this->clientService->list();
+            $products = $this->productService->listFull();
+            $sales = $this->saleService->searchBetweenDates($request, $saleDate, $saleDateEnd);
+
+            $statuses = $this->statusService->list();
+            $search = [];
+            $search['start'] = $saleDate->format('Y-m-d');
+            $search['end'] = $saleDateEnd->format('Y-m-d');
+            $search['search_client_id'] = Arr::get($request, "search_client_id");
 
             $sizes = $this->sizeService->list();
 
-
-            $search = [];
-            $search['sale_date_start'] = $saleDate->format('Y-m-d');
-            $search['sale_date_end'] = $saleDateEnd->format('Y-m-d');
-            $search['search_client_id'] = Arr::get($request, "search_client_id");
-
             return view('pages.sales', [
                 "search" => $search,
-                "sale_date_start" => $saleDate->format('Y-m-d'),
-                "sale_date_end" => $saleDateEnd->format('Y-m-d'),
+                "start" => $saleDate->format('Y-m-d'),
+                "end" => $saleDateEnd->format('Y-m-d'),
                 "sale_date_format" => $saleTitle,
-                "datas" => $sales->paginate(10),
+
+                "datas" => $sales,
                 "company"=> Auth::user()->company_id,
                 "total_sales" => Format::money($sales->sum('amount_total')),
                 "clients" => $clients,
-                "products" => $products,
                 "statuses" => $statuses,
+                "products" => $products,
                 "sizes" => $sizes,
                 'pageConfigs' => $pageConfigs
             ], ['breadcrumbs' => []]);
@@ -135,7 +102,6 @@ class SaleController extends Controller
     {
         return $this->saleService->listClientApi($request);
     }
-
 
     /**
      * Cria ou atualiza dados no banco

@@ -48,7 +48,6 @@ class Sales extends Model
 
     }
 
-
     public function getDateSaleAttribute($date)
     {
         return Carbon::parse($date)->format('d/m/Y H:i');

@@ -5,7 +5,7 @@
 
 @section('content')
 <ul class="collapsible " data-collapsible=" accordion">
-    <li>
+    <li class="active">
         <div class="collapsible-header valign-wrapper">
             <div class="center">
                 <p>
@@ -25,12 +25,12 @@
                         <th>Nome Cliente</th>
                         <th>De</th>
                         <th>Até</th>
+                        <th>Procurar</th>
                         <th>Limpar</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <form class="col s12" method="POST" action="{{ URL::route('search_sales') }}">
+                    <form class="col s12" action="{{ URL::route('search_sales') }}">
                         <tr>
                             <td>
                                 <div class="input-field  col m12 s12">
@@ -44,22 +44,24 @@
                                 </div>
                             </td>
                             <td>
-                                <input placeholder="Procurar" id="sale_date_search_start" name="search_sale_date_start" type="date" class="validate" value="{{Arr::get($search,'sale_date_start')}}" required>
+                                <input placeholder="Procurar" id="sale_date_search_start" name="start" type="date" class="validate" value="{{Arr::get($search,'start')}}" >
                                 <label for="procurar_data_venda_inicial">De</label>
                             </td>
                             <td>
-                                <input placeholder="Procurar" id="sale_date_search_end" name="search_sale_date_end" type="date" class="validate" value="{{Arr::get($search,'sale_date_end')}}" required>
+                                <input placeholder="Procurar" id="sale_date_search_end" name="end" type="date" class="validate" value="{{Arr::get($search,'end')}}" >
                                 <label for="procurar_data_venda_final">Até</label>
+                            </td>
+                            <td>
+                                <button class="btn waves-effect waves-light" type="submit">
+                                <i class="material-icons white-text">
+                                    search
+                                </i>
+                                </button>
                             </td>
                             <td>
                                 <a class="btn red" onclick="clearSearch()">
                                     Limpar
                                 </a>
-
-                            </td>
-                            <td>
-                                <button class="btn waves-effect waves-light" type="submit">Procurar
-                                </button>
                             </td>
                         </tr>
                     </form>
@@ -152,11 +154,11 @@
                                     <label for="name">Nome</label>
                                 </td>
                                 <td>
-                                    <input placeholder="Valor" type="text" readonly value="{{$product->pivot->sale_value}}" readonly>
+                                    <input placeholder="Valor" type="text" readonly value="{{$product->product_sale_value}}" readonly>
                                     <label for="value">Valor</label>
                                 </td>
                                 <td>
-                                    <select class="browser-default">
+                                    <select class="browser-default" disabled>
                                         <option disabled selected>Tamanho</option>
                                         @foreach ($sizes as $size)
                                         <option value="{{$size->id}}" {{$size->id == $product->pivot->size_id  ? 'selected' : '' }}>
@@ -165,7 +167,6 @@
                                         @endforeach
                                     </select>
                                     <label class="active" for="sizes">Tamanho</label>
-
                                 </td>
                                 <td>
                                     <input placeholder="Qtde" type="text" value="{{$product->pivot->quantity}}" readonly>
@@ -181,7 +182,6 @@
 
             <hr>
             <div class="row center">
-
                 <a class="btn-small tooltipped" onclick="editSale('{{$data->sale_date_format}}','{{$data->sale_time_format}}',{{$data}},{{$data->products}})" data-position='left' data-delay='50' data-tooltip="Editar Atendimento">
                     <i class="material-icons white-text">
                         edit
@@ -226,7 +226,6 @@
     </div>
 </div>
 
-
 <!-- Modal Structure -->
 <div id="modal" class="modal bottom-sheet">
     <form class="col s12" method="POST" action="{{ URL::route('make_sale') }}" id="formSale">
@@ -244,7 +243,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <select class="select2 browser-default" id="status" name="statuses[]" multiple>
+                    <select class="select2 browser-default" id="status" name="statuses" >
                         @foreach ($statuses as $status)
                         <option value="{{$status->id}}">
                             {{$status->name}}
@@ -352,6 +351,7 @@
     <h1 class="center" style="display:block">{{$datas->links('vendor.pagination.materializecss')}}</h1>
 </div>
 @endif
+</div>
 
 @endsection
 <style>
@@ -484,11 +484,7 @@
     }
 
     function createSaleRow($product, $quantity, $saleValue, $name, $size, $sizeLabel) {
-        if (String($saleValue).length == 2) {
-            $saleValue = parseFloat($saleValue).toFixed(2);
-        }
-
-
+        let $value  = $saleValue.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
         return $(`<tr id="rowproduct${$product}">
                             <td>
                                 <input type="hidden"  name="size${$product}"  value="${$size}">
@@ -498,7 +494,7 @@
                                 <label for="name">Nome</label>
                             </td>
                             <td>
-                                <input placeholder="Valor" name="value${$product}" type="text" readonly value="${$saleValue}" readonly class="validate">
+                                <input placeholder="Valor" name="value${$product}" type="text" readonly value="${$value}" readonly class="validate">
                                 <label for="value">Valor</label>
                             </td>
                             <td>
@@ -595,7 +591,7 @@
 
     function cleanFields() {
         $("#quantity").val("1");
-        $("#sale_date").val("<?= $sale_date_start ?>");
+        $("#sale_date").val("<?= $start ?>");
 
         cleanStatusField();
 

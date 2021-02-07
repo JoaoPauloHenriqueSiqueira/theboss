@@ -8,8 +8,6 @@ class ClientTransformer extends TransformerAbstract
 {
     public function transform($client)
     {
-
-
         $newObject = [];
         $newObject['id'] = $client->id;
         $newObject['name'] = $client->name;

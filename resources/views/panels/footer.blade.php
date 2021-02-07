@@ -2,7 +2,7 @@
 <footer class="{{$configData['mainFooterClass']}} @if($configData['isFooterFixed']=== true){{'footer-fixed'}}@else {{'footer-static'}} @endif @if($configData['isFooterDark']=== true) {{'footer-dark'}} @elseif($configData['isFooterDark']=== false) {{'footer-light'}} @else {{$configData['mainFooterColor']}} @endif">
   <div class="footer-copyright">
     <div class="container">
-      <span>&copy; 2020
+      <span>&copy; 2021
         <!-- <a href="http://themeforest.net/user/pixinvent/portfolio?ref=pixinvent" 
           target="_blank">PIXINVENT</a> All rights reserved.-->
       </span>
@@ -12,5 +12,4 @@
     </div>
   </div>
 </footer>
-
 <!-- END: Footer-->

@@ -171,7 +171,7 @@ class ClientService
         $user = $this->findClientPasswordMail($request);
 
         if (Hash::check(Arr::get($request, "password"), Arr::get($user, "password"))) {
-            return response()->json(['message' => "Login realizado com sucesso", "client" => (new ClientTransformer)->transform($list->first())], 201);
+            return response()->json(['message' => "Login realizado com sucesso", "client" => (new ClientTransformer)->transform($user)], 201);
         }
 
         return response()->json(['message' => "Usuário/senha não conferem"], 500);

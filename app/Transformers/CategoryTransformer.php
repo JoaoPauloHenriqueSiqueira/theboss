@@ -2,7 +2,6 @@
 
 namespace App\Transformers;
 
-use App\Models\Categories;
 use League\Fractal\TransformerAbstract;
 
 class CategoryTransformer extends TransformerAbstract
