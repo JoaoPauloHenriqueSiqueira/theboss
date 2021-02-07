@@ -122,14 +122,6 @@
                     <span class="green-text">Valor Venda:</span>
                     {{ $data->amount_total ==  "" ? '-' : $data->amount_total_value }}
                 </span></br>
-                <span class="span-body">
-                    <span class="green-text">Valor Pago:</span>
-                    {{ $data->amount_paid ==  "" ? '-' : $data->amount_paid_value }}
-                </span></br>
-                <span class="span-body">
-                    <span class="green-text">Valor Débito:</span>
-                    {{ $data->amount_paid <  $data->amount_total  ?  $data->getDebtAttribute() : 0}}
-                </span></br>
                 <span class="span-body center">
                     @if(count($data->products) > 0)
                     <table class="bordered center">
@@ -244,6 +236,7 @@
             <div class="row">
                 <div class="input-field col s12">
                     <select class="select2 browser-default" id="status" name="statuses" >
+                        <option disabled selected>Selecione um status</option>
                         @foreach ($statuses as $status)
                         <option value="{{$status->id}}">
                             {{$status->name}}
@@ -307,14 +300,9 @@
             </div>
 
             <div class="row">
-                <div class="input-field col m6 s6">
+                <div class="input-field col m12 s12">
                     <input id="amount_total" name="amount_total" required placeholder="Valor Total" type="text" class="validate" value="0" disabled>
                     <label class="active">Valor Total</label>
-                </div>
-
-                <div class="input-field col m6 s6">
-                    <input id="amount_paid" name="amount_paid" required placeholder="Valor pago" type="text" class="validate" value="0" onchange="verifyValuePaid()">
-                    <label class="active">Valor pago</label>
                 </div>
             </div>
 
@@ -414,31 +402,10 @@
             decimal: ','
         });
 
-        $('#amount_paid').maskMoney({
-            prefix: 'R$ ',
-            thousands: '.',
-            decimal: ','
-        });
+    
     }
 
-    function verifyValuePaid() {
-        let paid = $("#amount_paid").val();
-        let total = $("#amount_total").val();
-
-        paid = paid.replace(/[^\w\s]/gi, '');
-        total = total.replace(/[^\w\s]/gi, '');
-
-        if (paid > total) {
-            M.toast({
-                html: "Valor pago não pode ser maior que o valor total"
-            }, 5000);
-            $("#amount_paid").val(total);
-            $("#amount_paid").maskMoney('mask', total);
-
-        }
-
-    }
-
+    
     function validProductAdd() {
         $product = $("#product_selected").val();
         $quantity = $("#quantity").val();
@@ -524,8 +491,6 @@
         }
 
         $("#amount_total").val($total);
-        $("#amount_paid").val($total);
-        $("#amount_paid").maskMoney('mask', $total);
         $("#amount_total").maskMoney('mask', $total);
     }
 
@@ -663,19 +628,15 @@
         $("#sale_time").val(timeSale);
 
         sale['amount_total'] = parseFloat(sale['amount_total']).toFixed(2);
-        sale['amount_paid'] = parseFloat(sale['amount_paid']).toFixed(2);
 
         let totalSale = String(sale['amount_total']);
         totalSale = totalSale.replace(/[^\w\s]/gi, '');
 
-        let totalPaid = String(sale['amount_paid']);
         totalPaid = totalPaid.replace(/[^\w\s]/gi, '');
 
         $("#amount_total").val(totalSale);
         $("#amount_total").maskMoney('mask', totalSale);
 
-        $("#amount_paid").val(sale['amount_paid']);
-        $("#amount_paid").maskMoney('mask', totalPaid);
 
         selectClient(sale['client_id'], '#client_id');
         $('<input>').attr({

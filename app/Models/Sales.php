@@ -11,7 +11,7 @@ class Sales extends Model
     protected $collection = 'sales';
     protected $fillable = [
         'client_id', 'company_id', 'date_sale',
-        'time_sale', 'user', 'amount_total', 'amount_paid',
+        'time_sale', 'user', 'amount_total', 
         'company_id', 'user_id'
     ];
 
@@ -68,13 +68,4 @@ class Sales extends Model
         return  Format::money($this->attributes['amount_total']);
     }
 
-    public function getAmountPaidValueAttribute()
-    {
-        return  Format::money($this->attributes['amount_paid']);
-    }
-
-    public function getDebtAttribute()
-    {
-        return  Format::money($this->attributes['amount_total'] - $this->attributes['amount_paid']);
-    }
 }

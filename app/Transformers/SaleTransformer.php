@@ -13,7 +13,7 @@ class SaleTransformer extends TransformerAbstract
         $objs = [];
         foreach ($sales as $sale) {
             $newObject = [];
-            $newObject['amount'] = Format::money(str_replace(",", '.', $sale->amount_paid));
+            $newObject['amount'] = Format::money(str_replace(",", '.', $sale->amount_total));
             $newObject['date_sale'] = $sale->date_sale;
             $statuses = $sale->status;
             $statusesProduct = false;
