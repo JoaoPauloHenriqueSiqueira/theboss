@@ -38,7 +38,7 @@
                 </thead>
 
                 <tbody>
-                    <form class="col s12" method="POST" action="{{ URL::route('search_clients') }}">
+                    <form class="col s12"  action="{{ URL::route('search_clients') }}">
                         <tr>
                             <td>
                                 <input placeholder="Procurar" id="search_name" name="search_name" type="text" class="validate" value="{{Arr::get($search,'search_name')}}">
@@ -174,7 +174,7 @@
 <div id="modal" class="modal bottom-sheet">
     <div class="modal-content">
         <h4 id="client" class="center red-text">Novo Cliente</h4>
-        <form class="col s12" method="POST" action="{{ URL::route('add_clients') }}" id="formClient">
+        <form class="col s12" method="POST" action="{{ URL::route('make_client') }}" id="formClient">
             <input type="hidden" id="old">
             <div class="row">
                 <div class="input-field col s12">

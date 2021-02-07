@@ -36,16 +36,6 @@ class UserController extends Controller
         }
     }
 
-    public function search(Request $request)
-    {
-        try {
-            $pageConfigs = ['pageHeader' => true];
-
-            return view('pages.users', ["datas" => $this->service->search($request), 'pageConfigs' => $pageConfigs], ['breadcrumbs' => []]);
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
 
     /**
      * Cria usuário

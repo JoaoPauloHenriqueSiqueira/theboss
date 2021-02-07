@@ -35,7 +35,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <form class="col s12" method="POST" action="{{ URL::route('search_products') }}">
+                    <form class="col s12" action="{{ URL::route('search_products') }}">
                         <tr>
                             <td>
                                 <input placeholder="Procurar" id="search_id" name="search_id" type="text" value="{{Arr::get($search,'search_id')}}" class="validate">
@@ -259,7 +259,7 @@
 <div id="modal" class="modal bottom-sheet">
     <div class="modal-content">
         <h4 id="product" class="center red-text">Novo Produto</h4>
-        <form class="col s12" method="POST" action="products" id="formProduct" enctype="multipart/form-data">
+        <form class="col s12" method="POST"  action="{{ URL::route('make_product') }}" id="formProduct" enctype="multipart/form-data">
             <input type="hidden" id="old">
             <div class="row">
                 <div class="input-field col s12">

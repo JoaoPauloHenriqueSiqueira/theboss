@@ -236,7 +236,7 @@
             <div class="row">
                 <div class="input-field col s12">
                     <select class="select2 browser-default" id="status" name="statuses" >
-                        <option disabled selected>Selecione um status</option>
+                        <option value=""  selected>Sem status</option>
                         @foreach ($statuses as $status)
                         <option value="{{$status->id}}">
                             {{$status->name}}
@@ -632,7 +632,6 @@
         let totalSale = String(sale['amount_total']);
         totalSale = totalSale.replace(/[^\w\s]/gi, '');
 
-        totalPaid = totalPaid.replace(/[^\w\s]/gi, '');
 
         $("#amount_total").val(totalSale);
         $("#amount_total").maskMoney('mask', totalSale);

@@ -27,11 +27,11 @@ class StatusController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             $pageConfigs = ['pageHeader' => true];
-            return view('pages.status', ["datas" => $this->service->get(), "search" => [], 'pageConfigs' => $pageConfigs], ['breadcrumbs' => []]);
+            return view('pages.status', ["datas" => $this->service->search($request), "search" => $request->all(), 'pageConfigs' => $pageConfigs], ['breadcrumbs' => []]);
         } catch (Exception $e) {
             return $e->getMessage();
         }

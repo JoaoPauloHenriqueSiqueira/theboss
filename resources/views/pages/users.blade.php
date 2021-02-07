@@ -8,59 +8,6 @@
 @section('content')
 
 
-<ul class="collapsible " data-collapsible=" accordion">
-    <li>
-        <div class="collapsible-header valign-wrapper">
-            <div class="center">
-                <p>
-                    Pesquisar
-                </p>
-            </div>
-            <div class="second-content">
-                <i class="material-icons green-text">
-                    search
-                </i>
-            </div>
-        </div>
-        <div class="collapsible-body white">
-            <table class="table-responsive bordered centered ">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Limpar</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <form class="col s12" method="POST" action="{{ URL::route('search_users') }}">
-                        <tr>
-                            <td>
-                                <input placeholder="Procurar" id="search_name" id="search_name" name="search_name" type="text" class="validate">
-                                <label for="procurar_nome">Nome</label>
-                            </td>
-                            <td>
-                                <input placeholder="Procurar" id="search_email" name="search_email" type="text" class="validate">
-                                <label for="procurar_codigo">Email</label>
-                            </td>
-                            <td>
-                                <a class="btn red" onclick="clearSearch()">
-                                    Limpar
-                                </a>
-                            </td>
-                            <td>
-                                <button class="btn waves-effect waves-light" type="submit">Procurar
-                                    <i class="material-icons right">send</i>
-                                </button>
-                            </td>
-                        </tr>
-                    </form>
-                </tbody>
-            </table>
-        </div>
-    </li>
-</ul>
-
 <ul class="collapsible collection" data-collapsible="accordion">
     @foreach ($datas as $data)
     <li id="{{$data->id}}">

@@ -27,21 +27,11 @@ class ClientController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             $pageConfigs = ['pageHeader' => true];
-            return view('pages.clients', ["datas" => $this->service->get(),"search"=>[], 'pageConfigs' => $pageConfigs], ['breadcrumbs' => []]);
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
-    public function search(Request $request)
-    {
-        try {
-            $pageConfigs = ['pageHeader' => true];
-            return view('pages.clients', ["datas" => $this->service->search($request),"search"=>$request->all(), 'pageConfigs' => $pageConfigs], ['breadcrumbs' => []])->withInput($request->all());
+            return view('pages.clients', ["datas" => $this->service->search($request),"search"=>$request->all(),  'pageConfigs' => $pageConfigs], ['breadcrumbs' => []]);
         } catch (Exception $e) {
             return $e->getMessage();
         }

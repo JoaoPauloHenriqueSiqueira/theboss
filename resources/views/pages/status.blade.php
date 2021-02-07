@@ -6,8 +6,6 @@
 
 {{-- page content --}}
 
-
-
 @section('content')
 
 <style>
@@ -39,9 +37,8 @@
                         <th></th>
                     </tr>
                 </thead>
-
                 <tbody>
-                    <form class="col s12" method="POST" action="{{ URL::route('search_status') }}">
+                    <form class="col s12" action="{{ URL::route('search_status') }}">
                         <tr>
                             <td>
                                 <input placeholder="Procurar" id="search_name" name="search_name" type="text" class="validate" value="{{Arr::get($search,'search_name')}}">

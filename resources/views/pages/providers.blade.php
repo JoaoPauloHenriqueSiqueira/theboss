@@ -33,15 +33,13 @@
                 <thead>
                     <tr>
                         <th>Nome</th>
-                        <th>Telefone</th>
-                        <th>Email</th>
                         <th>Limpar</th>
                         <th></th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <form class="col s12" method="POST" action="{{ URL::route('search_providers') }}">
+                    <form class="col s12" action="{{ URL::route('search_providers') }}">
                         <tr>
                             <td>
                                 <input placeholder="Procurar" id="search_name" name="search_name" type="text" class="validate" value="{{Arr::get($search,'search_name')}}">

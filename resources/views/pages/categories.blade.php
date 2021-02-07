@@ -41,7 +41,7 @@
                 </thead>
 
                 <tbody>
-                    <form class="col s12" method="POST" action="{{ URL::route('search_categories') }}">
+                    <form class="col s12" action="{{ URL::route('search_categories') }}">
                         <tr>
                             <td>
                                 <input placeholder="Procurar" id="search_name" name="search_name" type="text" class="validate" value="{{Arr::get($search,'search_name')}}">

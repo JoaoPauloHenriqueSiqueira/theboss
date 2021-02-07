@@ -40,33 +40,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
-    {
-        try {
-            $categories = $this->categoryService->list();
-            $providers = $this->providerService->list();
-            $sizes = $this->sizeService->list();
-
-            $pageConfigs = ['pageHeader' => true];
-            return view(
-                'pages.products',
-                [
-                    "datas" => $this->service->get(),
-                    "search" => [],
-                    "urlS3" => ENV('AWS_URL'),
-                    "categories" => $categories,
-                    "providers" => $providers,
-                    "sizes" => $sizes,
-                    'pageConfigs' => $pageConfigs
-                ],
-                ['breadcrumbs' => []]
-            );
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
-    public function search(Request $request)
+    public function index(Request $request)
     {
         try {
             $categories = $this->categoryService->list();
