@@ -362,7 +362,9 @@ class SaleService
         $responseProducts['status'] = true;
         $responseProducts['message'] = '';
         $responseProducts['total'] = $amountTotal;
-
+        
+        $saleId = Arr::get($request, "id", false);
+        
         foreach ($products as $product) {
 
             if (!$this->productService->checkCompany($product, false, $companyId)) {
@@ -387,7 +389,7 @@ class SaleService
                 $productDB = $this->productService->find($product);
                 $quantityProdDB = Arr::get($productDB, "quantity");
 
-                if (Arr::get($productDB, "control_quantity")) {
+                if (Arr::get($productDB, "control_quantity") && !$saleId) {
                     if ((int) $quantityProdDB < (int) $quantity) {
                         $responseProducts['message'] = "Um dos produtos não possui a quantia em estoque solicitada. Tente novamente com uma quantia válida";
                         $responseProducts['status'] = false;
