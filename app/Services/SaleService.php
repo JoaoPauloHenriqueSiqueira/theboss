@@ -174,6 +174,16 @@ class SaleService
 
             if ($saleId) {
                 $sale = $this->repository->find($saleId);
+
+                $products = $sale->products;
+                foreach ($products as $product) {
+                    if (Arr::get($product, "control_quantity")) {
+                        $quantity = $product->pivot->quantity;
+                        $product['quantity'] = $product['quantity'] + $quantity;
+                        $this->productService->update(["id" => Arr::get($product, "id"), "quantity" => Arr::get($product, "quantity")],Arr::get($product, "company_id"));
+                    }
+                }
+
                 $sale->products()->detach();
                 $sale->status()->detach();
             }
@@ -246,6 +256,14 @@ class SaleService
 
             if ($saleId) {
                 $sale = $this->repository->find($saleId);
+                $products = $sale->products;
+                foreach ($products as $product) {
+                    if (Arr::get($product, "control_quantity")) {
+                        $quantity = $product->pivot->quantity;
+                        $product['quantity'] = $product['quantity'] + $quantity;
+                        $this->productService->update(["id" => Arr::get($product, "id"), "quantity" => Arr::get($product, "quantity")],Arr::get($product, "company_id"));
+                    }
+                }
                 $sale->products()->detach();
                 $sale->status()->detach();
             }
@@ -363,8 +381,6 @@ class SaleService
         $responseProducts['message'] = '';
         $responseProducts['total'] = $amountTotal;
         
-        $saleId = Arr::get($request, "id", false);
-        
         foreach ($products as $product) {
 
             if (!$this->productService->checkCompany($product, false, $companyId)) {
@@ -389,7 +405,7 @@ class SaleService
                 $productDB = $this->productService->find($product);
                 $quantityProdDB = Arr::get($productDB, "quantity");
 
-                if (Arr::get($productDB, "control_quantity") && !$saleId) {
+                if (Arr::get($productDB, "control_quantity") ) {
                     if ((int) $quantityProdDB < (int) $quantity) {
                         $responseProducts['message'] = "Um dos produtos não possui a quantia em estoque solicitada. Tente novamente com uma quantia válida";
                         $responseProducts['status'] = false;
