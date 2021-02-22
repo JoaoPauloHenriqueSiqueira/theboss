@@ -156,6 +156,8 @@
 @endsection
 
 <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+<script src="https://js.pusher.com/5.0/pusher.min.js"></script>
+
 <script>
     $(document).ready(function() {
         M.updateTextFields();
@@ -170,6 +172,13 @@
         }
 
         $('#modal').modal('open');
+    }
+
+    function playSound() {
+      const audio = new Audio(
+        "<?= config('app.s3Url') ?>notification/percussion-sound-614.mp3"
+      );
+      audio.play();
     }
 
     function closeModal() {

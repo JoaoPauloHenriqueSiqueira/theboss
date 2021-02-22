@@ -45,6 +45,8 @@ class CheckActiveCompanyRole
             return redirect()->route('active', [$user]);
         }
 
+        session(['company' => Auth::user()->company_id]);
+
         return $next($request);
     }
 }
