@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('bar_code')->nullable(true);
-            $table->float('sale_value')->unsigned()->nullable(false)->default(0);
+            $table->float('sale_value',10,2)->unsigned()->nullable(false)->default(0);
             $table->integer('company_id')->unsigned();
             $table->float('cost_value')->unsigned()->nullable(false)->default(0);
             $table->boolean('control_quantity')->unsigned()->nullable(true)->default('1');
