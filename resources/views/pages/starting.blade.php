@@ -15,16 +15,16 @@
     <title>The boss</title>
 
     <!-- favicon -->
-    <link src="{{ secure_asset(asset('img/favicon.ico')) }}" rel="icon">
+    <link src="{{secure_asset('img/favicon.ico')}}" rel="icon">
 
-    <link href="{{ secure_asset(asset('css/bootstrap.min.css')) }}" rel="stylesheet" type="text/css">
-    <link href="{{ secure_asset(asset('css/font-awesome.min.css')) }}" rel="stylesheet" type="text/css">
-    <link href="{{ secure_asset(asset('css/normalize.css')) }}" rel="stylesheet" type="text/css">
-    <link href="{{ secure_asset(asset('css/owl.carousel.min.css')) }}" rel="stylesheet" type="text/css">
-    <link href="{{ secure_asset(asset('css/owl.transitions.css')) }}" rel="stylesheet" type="text/css">
-    <link href="{{ secure_asset(asset('css/magnific-popup.css')) }}" rel="stylesheet" type="text/css">
-    <link href="{{ secure_asset(asset('css/style.css')) }}" rel="stylesheet" type="text/css">
-    <link href="{{ secure_asset(asset('css/responsive.css')) }}" rel="stylesheet" type="text/css">
+    <link href="{{ secure_asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ secure_asset('css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ secure_asset('css/normalize.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ secure_asset('css/owl.carousel.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ secure_asset('css/owl.transitions.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ secure_asset('css/magnific-popup.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ secure_asset('css/style.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ secure_asset('css/responsive.css') }}" rel="stylesheet" type="text/css">
 
 
 
@@ -65,7 +65,7 @@
                             <div class="navbar-header">
                                 <a class="navbar-brand" href="">
                                     <span>
-                                        <img class="logo" src="{{secure_asset(asset('img/logo-text.png'))}}" alt="">
+                                        <img class="logo" src="{{secure_asset('img/logo-text.png')}}" alt="">
                                     </span>
                                 </a>
                                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -115,7 +115,7 @@
 
                                         <!-- intro image -->
                                         <!-- <div class="col-md-6 col-sm-12 intro-img">
-                                            <img src="{{secure_asset(asset('img/slider/1.png'))}}" alt="">
+                                            <img src="{{secure_asset('img/slider/1.png')}}" alt="">
                                         </div> -->
 
                                         <!-- intro text -->
@@ -142,7 +142,7 @@
 
                                         <!-- intro image -->
                                         <!-- <div class="col-md-6 col-md-push-6 col-sm-12 intro-img">
-                                            <img src="{{secure_asset(asset('img/slider/2.pn'))}}g" alt="">
+                                            <img src="{{secure_asset('img/slider/2.pn')}}g" alt="">
                                         </div> -->
 
                                         <!-- intro text -->
@@ -172,11 +172,11 @@
 
                 <!-- Slider left right button -->
                 <!-- <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-                <img src="{{secure_asset(asset('img/left-arrow.'))}}png" alt="">
+                <img src="{{secure_asset('img/left-arrow.')}}png" alt="">
             </a>
 
             <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-                <img src="{{secure_asset(asset('img/right-arrow'))}}.png" alt="">
+                <img src="{{secure_asset('img/right-arrow')}}.png" alt="">
             </a> -->
 
             </div>
@@ -262,27 +262,27 @@
     <!-- Footer area ends -->
 
     <!-- Latest jQuery -->
-    <script src="{{ secure_asset(asset('js/jquery.min.js')) }}"></script>
+    <script src="{{ secure_asset('js/jquery.min.js') }}"></script>
     <!-- Bootstrap js-->
-    <script src="{{ secure_asset(asset('js/start/bootstrap.min.js')) }}"></script>
+    <script src="{{ secure_asset('js/start/bootstrap.min.js') }}"></script>
 
     <!-- Owl Carousel js -->
-    <script src="{{ secure_asset(asset('js/start/owl.carousel.min.js')) }}"></script>
+    <script src="{{ secure_asset('js/start/owl.carousel.min.js') }}"></script>
 
     <!-- Mixitup js -->
-    <script src="{{ secure_asset(asset('js/start/jquery.mixitup.js')) }}"></script>
+    <script src="{{ secure_asset('js/start/jquery.mixitup.js') }}"></script>
 
     <!-- Magnific popup js -->
-    <script src="{{ secure_asset(asset('js/start/jquery.magnific-popup.min.js')) }}"></script>
+    <script src="{{ secure_asset('js/start/jquery.magnific-popup.min.js') }}"></script>
 
     <!-- Waypoint js -->
-    <script src="{{ secure_asset(asset('js/start/jquery.waypoints.min.js')) }}"></script>
+    <script src="{{ secure_asset('js/start/jquery.waypoints.min.js') }}"></script>
 
     <!-- Ajax Mailchimp js -->
-    <script src="{{ secure_asset(asset('js/start/jquery.ajaxchimp.min.js')) }}"></script>
+    <script src="{{ secure_asset('js/start/jquery.ajaxchimp.min.js') }}"></script>
 
     <!-- Main js-->
-    <script src="{{ secure_asset(asset('js/start/main_script.js')) }}"></script>
+    <script src="{{ secure_asset('js/start/main_script.js') }}"></script>
 
 </body>
 
