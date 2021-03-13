@@ -1,13 +1,6 @@
 @extends('layouts.contentLayoutMaster')
 
 
-{{-- page title --}}
-@section('title','Categorias')
-
-{{-- page content --}}
-
-
-
 @section('content')
 
 <style>

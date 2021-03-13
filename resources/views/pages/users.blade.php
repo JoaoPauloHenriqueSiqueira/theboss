@@ -1,10 +1,5 @@
 @extends('layouts.contentLayoutMaster')
 
-{{-- page title --}}
-@section('title','Usuários')
-
-
-
 @section('content')
 
 

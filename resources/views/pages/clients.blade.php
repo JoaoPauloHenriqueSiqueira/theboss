@@ -1,9 +1,6 @@
 @extends('layouts.contentLayoutMaster')
 
 
-{{-- page title --}}
-@section('title','Clientes')
-
 {{-- page content --}}
 @section('content')
 

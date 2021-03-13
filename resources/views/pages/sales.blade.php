@@ -1,8 +1,5 @@
 @extends('layouts.contentLayoutMaster')
 
-{{-- page title --}}
-@section('title',"Atendimentos: $sale_date_format")
-
 @section('content')
 <ul class="collapsible " data-collapsible=" accordion">
     <li class="active">

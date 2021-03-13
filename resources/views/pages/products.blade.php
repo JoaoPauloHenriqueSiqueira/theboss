@@ -1,10 +1,5 @@
 @extends('layouts.contentLayoutMaster')
 
-{{-- page title --}}
-
-
-@section('title','Produtos/Serviços')
-
 @section('content')
 <ul class="collapsible " data-collapsible=" accordion">
     <li>
@@ -139,16 +134,6 @@
                     @endforeach
                     @endif
                 </span>
-                 <span class="span-body">
-                        @if(count($data->providers) > 0)
-                        <span class="green-text">Fornecedor(es):
-                        </span></br>
-                        @foreach ($data->providers as $provider)
-                        {{$provider->name}}</br>
-                        @endforeach
-                        @endif
-                </span>
-
                 <span class="span-body ">
                         @if(count($data->sizes) > 0)
                         <span class="green-text">Tamanho(s):
@@ -296,18 +281,6 @@
                         @endforeach
                     </select>
                     <label class="active" for="categories">Categorias</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <select class="select2 browser-default" id="providers" name="providers[]" multiple>
-                        @foreach ($providers as $provider)
-                        <option value="{{$provider->id}}">
-                            {{$provider->name}}
-                        </option>
-                        @endforeach
-                    </select>
-                    <label class="active" for="categories">Fornecedores</label>
                 </div>
             </div>
 
