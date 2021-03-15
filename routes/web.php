@@ -50,13 +50,15 @@ Route::group(['middleware' => 'auth'], function () {
         });
 
         Route::group(['prefix' => 'products'], function () {
-
             Route::get('/', 'ProductController@index')->name('products');
             Route::get('/search', 'ProductController@index')->name('search_products');
             Route::post('/', 'ProductController@createOrUpdate')->name('make_product');
             Route::delete('/', 'ProductController@delete')->name('delete_products');
             Route::delete('/photo', 'ProductController@deletePhoto')->name('delete_product_photo');
             Route::post('/photo', 'ProductController@getPhotos')->name('get_product_photos');
+
+            Route::get('/sizes', 'ProductController@getSizes')->name('get_product_sizes');
+
         });
 
         Route::group(['prefix' => 'users'], function () {

@@ -66,6 +66,11 @@ class ProductController extends Controller
         }
     }
 
+    public function getSizes(Request $request)
+    {
+        return $this->service->getSizes($request);
+    }
+
     public function getList(Request $request)
     {
         return $this->service->listApi($request);

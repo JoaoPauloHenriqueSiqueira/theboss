@@ -41,18 +41,18 @@
                                 </div>
                             </td>
                             <td>
-                                <input placeholder="Procurar" id="sale_date_search_start" name="start" type="date" class="validate" value="{{Arr::get($search,'start')}}" >
+                                <input placeholder="Procurar" id="sale_date_search_start" name="start" type="date" class="validate" value="{{Arr::get($search,'start')}}">
                                 <label for="procurar_data_venda_inicial">De</label>
                             </td>
                             <td>
-                                <input placeholder="Procurar" id="sale_date_search_end" name="end" type="date" class="validate" value="{{Arr::get($search,'end')}}" >
+                                <input placeholder="Procurar" id="sale_date_search_end" name="end" type="date" class="validate" value="{{Arr::get($search,'end')}}">
                                 <label for="procurar_data_venda_final">Até</label>
                             </td>
                             <td>
                                 <button class="btn waves-effect waves-light" type="submit">
-                                <i class="material-icons white-text">
-                                    search
-                                </i>
+                                    <i class="material-icons white-text">
+                                        search
+                                    </i>
                                 </button>
                             </td>
                             <td>
@@ -232,8 +232,8 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <select class="select2 browser-default" id="status" name="statuses" >
-                        <option value=""  selected>Sem status</option>
+                    <select class="select2 browser-default" id="status" name="statuses">
+                        <option value="" selected>Sem status</option>
                         @foreach ($statuses as $status)
                         <option value="{{$status->id}}">
                             {{$status->name}}
@@ -258,7 +258,7 @@
             </div>
 
             <div class="row">
-                <div class="input-field col m6 s7">
+                <div class="input-field col m6 s6">
                     <select class="select2 browser-default" onchange="controlQuantity()" id="product_selected">
                         <option value="select" disabled selected>Selecione o produto</option>
                         @foreach ($products as $product)
@@ -271,26 +271,21 @@
                 </div>
 
                 <div class="input-field col m4 s3">
+                    <select id="sizes" class="select2 browser-default">
+                        <option value="" selected>Tamanho</option>
+                    </select>
+                    <label class="active" for="product_id">Tamanho</label>
+                </div>
+
+                <div class="input-field col m2 s3">
                     <input id="quantity" placeholder="Quantidade" type="number" min="0" oninput="validity.valid||(value='');" value="1" class="validate">
                     <label class="active">Quantidade</label>
                 </div>
             </div>
 
             <div class="row">
-                <div class="input-field col m6 s7">
-                    <select id="sizes" class="select2 browser-default">
-                        <option value="" selected>Tamanho</option>
-                        @foreach ($sizes as $size)
-                        <option value="{{$size->id}}">
-                            {{$size->name}}
-                        </option>
-                        @endforeach
-                    </select>
-                    <label class="active" for="product_id">Tamanho</label>
-                </div>
-
-                <div class="input-field col m2 s2">
-                    <a class="btn-floating blue  btn tooltipped " data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Adicionar produto" onclick="addSale()">
+                <div class="input-field col m12 s12">
+                    <a class="btn-floating center blue  btn tooltipped " data-background-color="red lighten-3" data-position="right" data-delay="50" data-tooltip="Adicionar produto" onclick="addSale()">
                         <i class="large material-icons">add</i>
                     </a>
                 </div>
@@ -378,11 +373,9 @@
             thousands: '.',
             decimal: ','
         });
-
-    
     }
 
-    
+
     function validProductAdd() {
         $product = $("#product_selected").val();
         $quantity = $("#quantity").val();
@@ -401,21 +394,22 @@
     }
 
     function addSale() {
+
+        $size = $("#sizes").val();
+        $sizeLabel = $("#sizes option:selected").text().trim();
+
+        if ($size == "") {
+            $sizeLabel = "";
+        }
         controlQuantity();
         validProductAdd();
+
         $product = $("#product_selected").val();
- 
         $quantity = $("#quantity").val();
         $saleValue = $("#product_selected").find(':selected').data('value');
         $saleValueNumber = $("#product_selected").find(':selected').data('value-number');
         $name = $("#product_selected").find(':selected').data('name');
 
-        $size = $("#sizes").val();
-        $sizeLabel = $("#sizes option:selected").text().trim();
-
-        if($size == ""){
-            $sizeLabel = "";
-        }
 
         if ($product && $quantity) {
             let $element = createSaleRow($product, $quantity, $saleValueNumber, $name, $size, $sizeLabel);
@@ -425,10 +419,15 @@
             $("#tableProducts").removeClass('hide');
             $("#quantity").val('1');
         }
+
+       
     }
 
     function createSaleRow($product, $quantity, $saleValue, $name, $size, $sizeLabel) {
-        let $value  = $saleValue.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+        let $value = $saleValue.toLocaleString('pt-br', {
+            style: 'currency',
+            currency: 'BRL'
+        });
         return $(`<tr id="rowproduct${$product}">
                             <td>
                                 <input type="hidden"  name="size${$product}"  value="${$size}">
@@ -587,7 +586,7 @@
         products.forEach(element => {
             let sizeId = element.pivot.size_id;
             let labelSize = $(`#sizes option[value=${sizeId}]`).text().trim();
-            let newRow = createSaleRow(element.id, element.pivot.quantity, element.pivot.sale_value, element.name,element.pivot.size_id,labelSize);
+            let newRow = createSaleRow(element.id, element.pivot.quantity, element.pivot.sale_value, element.name, element.pivot.size_id, labelSize);
             $("#sale_form").append(newRow);
             this.selectProduct(true, element.id);
             $("#tableProducts").removeClass('hide');
@@ -660,7 +659,45 @@
                 html: "Sem estoque pra esse produto"
             }, 5000);
         }
+
+        getSizes($product);
     }
+
+    function getSizes($product) {
+        $("#sizes").empty();
+        $('#sizes').find('option:first').prop('disabled', false);
+        $('#sizes').find('option:first').prop('selected', true);
+        $('#sizes').change();
+        $('#sizes').formSelect();
+
+        let sizeDefault = `<option value="">Tamanho</option>`;
+        $("#sizes").append(sizeDefault); 
+
+        if ($product) {
+            $('#sizes').find('option:first').prop('selected', true);
+            $(`#sizes option`).prop('disabled', true);
+
+            let $url = "<?= URL::route('get_product_sizes') ?>";
+            $.ajax({
+                type: 'GET',
+                url: $url,
+                data: {
+                    "id": $product
+                },
+                success: function(data) {
+                    data.forEach(element => {
+                        let size = `<option value="${element.id}">${element.name}</option>`;
+                        $("#sizes").append(size);
+                    });
+
+                    $('#sizes').change();
+                    $('#sizes').formSelect();
+                },
+                error: function(data) {}
+            });
+        }
+    }
+
 
     function deleteSale() {
         let id = $("#deleteInput").val();

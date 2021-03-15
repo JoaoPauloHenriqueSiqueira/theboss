@@ -41,6 +41,12 @@ class ProductService
         return $this->repository->orderBy('name')->get();
     }
 
+    public function getSizes($request)
+    {
+        $id = Arr::get($request, 'id');
+        return $this->repository->find($id)->sizes;
+    }
+
     /**
      * Get repository
      */
