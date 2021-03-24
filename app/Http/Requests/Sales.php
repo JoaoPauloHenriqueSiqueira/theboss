@@ -27,8 +27,7 @@ class Sales extends FormRequest
     {
         $valid = [
             'products' => 'required|array',
-            'products.*.id' => 'exists:products,id',
-            'statuses' => 'exists:statuses,id',
+            'products.*.id' => 'exists:products,id'
         ];
 
         $client = is_null($this->request->get('client_id'));

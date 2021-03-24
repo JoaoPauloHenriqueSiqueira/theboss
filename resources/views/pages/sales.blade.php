@@ -120,6 +120,7 @@
                     {{ $data->amount_total ==  "" ? '-' : $data->amount_total_value }}
                 </span></br>
                 <span class="span-body center">
+                    <h5 class="purple white-text">Produtos</h5>
                     @if(count($data->products) > 0)
                     <table class="bordered center">
                         <thead>

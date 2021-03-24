@@ -28,31 +28,39 @@
     <li class="home">
       <a class="tooltipped" href="{{ URL::route('home') }}" data-position='right' data-delay='50' data-tooltip="Início">Início</a>
     </li>
-    <li class="sales">
-      <a class="tooltipped" href="{{ URL::route('sales') }}" data-position='right' data-delay='50' data-tooltip="Lista todos os Atendimentos">Atendimentos</a>
-    </li>
-    <li class="users">
-      <a class="tooltipped" href="{{ URL::route('users') }}" data-position='right' data-delay='50' data-tooltip="Lista todos os Usuários que terão acesso ao sistema">Usuários</a>
-    </li>
-    <li class="clients search_clients">
-      <a class="tooltipped" href="{{ URL::route('clients') }}" data-position='right' data-delay='50' data-tooltip="Lista todos os Clientes">Clientes</a>
-    </li>
+    <li class="bold"><a class="collapsible-header waves-effect waves gradient-45deg-indigo-purple white-text" tabindex="0"> <i class="material-icons white-text">store</i>Meu Negócio</a>
+              <div class="collapsible-body" style="display: block;">
+                <ul>
+                <li class="sales">
+                  <a class="tooltipped" href="{{ URL::route('sales') }}" data-position='right' data-delay='50' data-tooltip="Lista todos os Atendimentos">Atendimentos</a>
+                </li>
+                <li class="users">
+                  <a class="tooltipped" href="{{ URL::route('users') }}" data-position='right' data-delay='50' data-tooltip="Lista todos os Usuários que terão acesso ao sistema">Usuários</a>
+                </li>
+                <li class="clients search_clients">
+                  <a class="tooltipped" href="{{ URL::route('clients') }}" data-position='right' data-delay='50' data-tooltip="Lista todos os Clientes">Clientes</a>
+                </li>
 
-    <li class="products search_products">
-      <a class="tooltipped" href="{{ URL::route('products') }}" data-position='right' data-delay='50' data-tooltip="Lista todos os Produtos/Serviços">Produtos/Serviços</a>
-    </li>
+                <li class="products search_products">
+                  <a class="tooltipped" href="{{ URL::route('products') }}" data-position='right' data-delay='50' data-tooltip="Lista todos os Produtos/Serviços">Produtos/Serviços</a>
+                </li>
 
-    <li class="sizes search_sizes">
-      <a class="tooltipped" href="{{ URL::route('sizes') }}" data-position='right' data-delay='50' data-tooltip="Lista todos os Tamanhos de Produtos">Tamanhos de Produtos</a>
-    </li>
+                <li class="sizes search_sizes">
+                  <a class="tooltipped" href="{{ URL::route('sizes') }}" data-position='right' data-delay='50' data-tooltip="Lista todos os Tamanhos de Produtos">Tamanhos de Produtos</a>
+                </li>
 
-    <li class="categories search_categories">
-      <a class="tooltipped" href="{{ URL::route('categories') }}" data-position='right' data-delay='50' data-tooltip="Lista todas Categorias de Produtos/Serviços">Categorias</a>
-    </li>
+                <li class="categories search_categories">
+                  <a class="tooltipped" href="{{ URL::route('categories') }}" data-position='right' data-delay='50' data-tooltip="Lista todas Categorias de Produtos/Serviços">Categorias</a>
+                </li>
 
-    <li class="providers search_status">
-      <a class="tooltipped" href="{{ URL::route('status') }}" data-position='right' data-delay='50' data-tooltip="Lista todos Status de Atendimento">Status</a>
-    </li>
+                <li class="status search_status">
+                  <a class="tooltipped" href="{{ URL::route('status') }}" data-position='right' data-delay='50' data-tooltip="Lista todos Status de Atendimento">Status</a>
+                </li>
+                </ul>
+              </div>
+            </li>
+
+    
 
   </ul>
   <div class="navigation-background"></div>

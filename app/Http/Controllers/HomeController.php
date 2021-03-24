@@ -7,18 +7,19 @@ use App\Library\Format;
 use App\Services\ClientService;
 use App\Services\CompanyService;
 use App\Services\SaleService;
+use App\Services\SizeService;
+use App\Services\StatusService;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     protected $clientService;
     protected $saleService;
-    protected $userService;
-    protected $taskService;
     protected $companyService;
+    protected $sizeService;
+    protected $statusService;
     protected $carbon;
 
     /**
@@ -30,11 +31,15 @@ class HomeController extends Controller
         ClientService $clientService,
         SaleService $saleService,
         CompanyService $companyService,
+        SizeService $sizeService,
+        StatusService $statusService,
         Carbon $carbon
     ) {
         $this->clientService = $clientService;
         $this->saleService = $saleService;
+        $this->sizeService = $sizeService;
         $this->companyService = $companyService;
+        $this->statusService = $statusService;
         $this->carbon = $carbon;
     }
 
@@ -60,8 +65,17 @@ class HomeController extends Controller
 
             $metrics['flows'] = 3;
 
+
+            $sales = $this->saleService->getSalesByStatus();
+            $sizes = $this->sizeService->list();
+            $statuses = $this->statusService->list();
+
             return view('pages.home', [
-                "metrics" => $metrics
+                "metrics" => $metrics,
+                "datas" => $sales,
+                "sizes" => $sizes,
+                'statuses' => $statuses
+
             ]);
         } catch (Exception $e) {
             return $e->getMessage();

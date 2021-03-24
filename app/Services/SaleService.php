@@ -216,6 +216,19 @@ class SaleService
         }
     }
 
+    public function getSalesByStatus()
+    {
+        $list =  $this->repository->doesntHave('status')->orderBy('date_sale', 'DESC')->paginate(10);
+
+        foreach($list as $sale){
+            foreach($sale->products as $product){
+                $product['product_sale_value'] = Format::moneyWithoutSymbol($product['pivot']['sale_value']);
+            }
+        }
+
+        return $list;
+    }
+
     public function listClientApi($request)
     {
         $clientId = $this->clientService->findClientPasswordMail($request);
