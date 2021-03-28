@@ -118,6 +118,11 @@ class SaleController extends Controller
         }
     }
 
+    public function updateStatus(Request $request)
+    {
+       return $this->saleService->updateStatus($request);
+    }
+
     public function createOrUpdateAPI(Sales $request)
     {
         try {

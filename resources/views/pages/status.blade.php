@@ -89,7 +89,7 @@
 
 
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large green  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Criar Status" onclick="openModal()">
+    <a class="btn-floating btn-large  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Criar Status" onclick="openModal()">
         <i class="large material-icons">add</i>
     </a>
 </div>
@@ -126,21 +126,18 @@
                 <div class="input-field col s12">
                     <input id="name" placeholder="Nome" pattern=".{1,}" title="1 letras no mínimo" name="name" type="text" class="validate" required value="{{ old('name') }}">
                     <label for="disabled">Nome</label>
-                    <input id="color" placeholder="Cor" name="color" type="color" value="{{ old('color') }}">
                 </div>
             </div>
 
-            
-    </div>
-
-    <div class="modal-footer">
-        <button class="modal-action waves-effect waves-green btn-flat " type="submit">Salvar</button>
+            <div class="row">
+                <div class=" s12 right">
+                    <button class="btn-small waves-effect" type="submit">Salvar</button>
+                    <a href="#!" class="modal-action modal-close  btn-small red waves-effect waves-red  ">Fechar</a>
+                </div>
+            </div>
         </form>
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Fechar</a>
     </div>
 </div>
-
-
 
 @if( method_exists($datas,'links') )
 <br>

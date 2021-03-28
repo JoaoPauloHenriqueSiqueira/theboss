@@ -84,115 +84,127 @@
             </div>
         </div>
     </div>
-
     <div class="row">
-        <h5 class="center">Atendimentos 'Sem status'</h5>
-        <ul class="collapsible collection" id="list" data-collapsible="accordion">
-            @foreach ($datas as $data)
-            <li id="{{$data->id}}">
-                <div class="collapsible-header">
-                    <i class="material-icons green-text">
-                        schedule
-                    </i>
-                    {{$data->date_sale}}
-                    <div class="input-field col s7">
-                        <select class="select2 browser-default" id="status{{$data->id}}" name="statuses">
-                            <option value="" selected>Sem status</option>
-                            @foreach ($statuses as $status)
-                            <option value="{{$status->id}}">
-                                {{$status->name}}
-                            </option>
-                            @endforeach
-                        </select>
+        <h5 class="center purple white-text">Atendimentos 'Sem status'</h5>
+        @if(count($datas) == 0)
+        <br>
+        <h6 class="center">Tudo feito por aqui =)</h6>
+        <br>
+        @endif
+
+        <form method="POST" action="{{ route('updateStatus') }}">
+            <ul class="collapsible collection" id="list" data-collapsible="accordion">
+                @foreach ($datas as $data)
+                <li id="{{$data->id}}">
+                    <div class="collapsible-header">
+                        <i class="material-icons green-text">
+                            schedule
+                        </i>
+                        {{$data->date_sale}}
+                        <div class="input-field col s7">
+                            <select class="select2 browser-default" name="{{$data->id}}">
+                                <option value="" selected>Sem status</option>
+                                @foreach ($statuses as $status)
+                                <option value="{{$status->id}}">
+                                    {{$status->name}}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="collapsible-body white">
-                    <div class="row ">
-                        <span class="span-body">
-                            <span class="green-text">Usuário:</span>
-                            {{ $data->user->name }}
-                        </span></br>
-                        @if($data->client != "")
-                        <span class="span-body">
-                            <span class="green-text">Cliente:</span>
-                            {{ $data->client->name }}
-                        </span></br>
-                        <span class="span-body">
-                            <span class="green-text">Endereço:</span>
-                            {{ $data->client->address }}
-                        </span><br>
-                        <span class="span-body">
-                            <span class="green-text">Telefone contato:</span>
-                            {{ $data->client->cell_phone  }}
-                        </span>
-                        @endif
-                        <span class="span-body ">
-                            @if(count($data->status) > 0)
-                            <span class="green-text">Status:
+                    <div class="collapsible-body white">
+                        <div class="row ">
+                            <span class="span-body">
+                                <span class="green-text">Usuário:</span>
+                                {{ $data->user->name }}
                             </span></br>
-                            @foreach ($data->status as $status)
-                            {{$status->name}}</br>
-                            @endforeach
+                            @if($data->client != "")
+                            <span class="span-body">
+                                <span class="green-text">Cliente:</span>
+                                {{ $data->client->name }}
+                            </span></br>
+                            <span class="span-body">
+                                <span class="green-text">Endereço:</span>
+                                {{ $data->client->address }}
+                            </span><br>
+                            <span class="span-body">
+                                <span class="green-text">Telefone contato:</span>
+                                {{ $data->client->cell_phone  }}
+                            </span>
                             @endif
-                        </span><br>
-                        <span class="span-body">
-                            <span class="green-text">Valor Venda:</span>
-                            {{ $data->amount_total ==  "" ? '-' : $data->amount_total_value }}
-                        </span></br>
-                        <span class="span-body center">
-                            <h5 class="purple white-text">Produtos</h5>
-                            @if(count($data->products) > 0)
-                            <table class="bordered center">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Produto</th>
-                                        <th>Valor</th>
-                                        <th>Tamanho</th>
-                                        <th>Qtde</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($data->products as $product)
-                                    <tr>
-                                        <td>
-                                            <input placeholder="Id" type="text" readonly disabled value="{{$product->id}}">
-                                            <label for="id">Id</label>
-                                        </td>
-                                        <td>
-                                            <input placeholder="Nome" type="text" readonly disabled value="{{$product->name}}">
-                                            <label for="name">Nome</label>
-                                        </td>
-                                        <td>
-                                            <input placeholder="Valor" type="text" readonly value="{{$product->product_sale_value}}" readonly>
-                                            <label for="value">Valor</label>
-                                        </td>
-                                        <td>
-                                            <select class="browser-default" disabled>
-                                                <option disabled selected>Tamanho</option>
-                                                @foreach ($sizes as $size)
-                                                <option value="{{$size->id}}" {{$size->id == $product->pivot->size_id  ? 'selected' : '' }}>
-                                                    {{$size->name}}
-                                                </option>
-                                                @endforeach
-                                            </select>
-                                            <label class="active" for="sizes">Tamanho</label>
-                                        </td>
-                                        <td>
-                                            <input placeholder="Qtde" type="text" value="{{$product->pivot->quantity}}" readonly>
-                                            <label for="qtde">Qtde</label>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            @endif
-                        </span>
-                    </div></br>
+                            <span class="span-body ">
+                                @if(count($data->status) > 0)
+                                <span class="green-text">Status:
+                                </span></br>
+                                @foreach ($data->status as $status)
+                                {{$status->name}}</br>
+                                @endforeach
+                                @endif
+                            </span><br>
+                            <span class="span-body">
+                                <span class="green-text">Valor Venda:</span>
+                                {{ $data->amount_total ==  "" ? '-' : $data->amount_total_value }}
+                            </span></br>
+                            <span class="span-body center">
+                                <h5 class="purple white-text">Produtos</h5>
+                                @if(count($data->products) > 0)
+                                <table class="bordered center">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Produto</th>
+                                            <th>Valor</th>
+                                            <th>Tamanho</th>
+                                            <th>Qtde</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($data->products as $product)
+                                        <tr>
+                                            <td>
+                                                <input placeholder="Id" type="text" readonly disabled value="{{$product->id}}">
+                                                <label for="id">Id</label>
+                                            </td>
+                                            <td>
+                                                <input placeholder="Nome" type="text" readonly disabled value="{{$product->name}}">
+                                                <label for="name">Nome</label>
+                                            </td>
+                                            <td>
+                                                <input placeholder="Valor" type="text" readonly value="{{$product->product_sale_value}}" readonly>
+                                                <label for="value">Valor</label>
+                                            </td>
+                                            <td>
+                                                <select class="browser-default" disabled>
+                                                    <option disabled selected>Tamanho</option>
+                                                    @foreach ($sizes as $size)
+                                                    <option value="{{$size->id}}" {{$size->id == $product->pivot->size_id  ? 'selected' : '' }}>
+                                                        {{$size->name}}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
+                                                <label class="active" for="sizes">Tamanho</label>
+                                            </td>
+                                            <td>
+                                                <input placeholder="Qtde" type="text" value="{{$product->pivot->quantity}}" readonly>
+                                                <label for="qtde">Qtde</label>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                @endif
+                            </span>
+                        </div></br>
+                    </div>
+                </li>
+                @endforeach
+            </ul>
+            <div class="row">
+                <div class="s12 center">
+                    <button class="btn-small waves-effect" <?php if (count($datas) == '0'){ ?> disabled <?php   } ?> type="submit">Salvar todos</button>
                 </div>
-            </li>
-            @endforeach
-        </ul>
+            </div>
+        </form>
     </div>
     @if( method_exists($datas,'links') )
     <br>
@@ -200,6 +212,7 @@
         <h1 class="center" style="display:block">{{$datas->links('vendor.pagination.materializecss')}}</h1>
     </div>
     @endif
+
 </div>
 
 

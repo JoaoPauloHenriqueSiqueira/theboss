@@ -135,14 +135,14 @@
                     @endif
                 </span>
                 <span class="span-body ">
-                        @if(count($data->sizes) > 0)
-                        <span class="green-text">Tamanho(s):
-                        </span></br>
-                        @foreach ($data->sizes as $size)
-                            {{$size->name}}</br>
-                        @endforeach
-                        @endif
-                </span> 
+                    @if(count($data->sizes) > 0)
+                    <span class="green-text">Tamanho(s):
+                    </span></br>
+                    @foreach ($data->sizes as $size)
+                    {{$size->name}}</br>
+                    @endforeach
+                    @endif
+                </span>
             </div>
             <hr>
             <div class="row center">
@@ -164,7 +164,7 @@
 </ul>
 
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large green  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Criar produto" onclick="openModal()">
+    <a class="btn-floating btn-large  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Criar produto" onclick="openModal()">
         <i class="large material-icons">add</i>
     </a>
 </div>
@@ -244,7 +244,7 @@
 <div id="modal" class="modal bottom-sheet">
     <div class="modal-content">
         <h4 id="product" class="center red-text">Novo Produto</h4>
-        <form class="col s12" method="POST"  action="{{ URL::route('make_product') }}" id="formProduct" enctype="multipart/form-data">
+        <form class="col s12" method="POST" action="{{ URL::route('make_product') }}" id="formProduct" enctype="multipart/form-data">
             <input type="hidden" id="old">
             <div class="row">
                 <div class="input-field col s12">
@@ -254,7 +254,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="description" placeholder="Descrição" name="description" pattern=".{1,}" title="1 letra no mínimo" type="text" class="validate" value="{{ old('description') }}" >
+                    <input id="description" placeholder="Descrição" name="description" pattern=".{1,}" title="1 letra no mínimo" type="text" class="validate" value="{{ old('description') }}">
                     <label for="disabled">Descrição*</label>
                 </div>
             </div>
@@ -304,16 +304,6 @@
                 </div>
             </div>
 
-            <!-- <div class="row">
-                <p>
-                    <label>
-
-                        <input type="checkbox" placeholder="Notificar próximos atendimentos" id="notifiable" name="notify" checked onclick="notifyParam()">
-                        <span for="notifiable">Notificar próximos atendimentos</span>
-                    </label>
-                </p>
-            </div> -->
-
             <div class="row " id="notify_param">
                 <div class="input-field col s12">
                     <input id="days_notify" placeholder="Dias para notificação de atendimento" name="days_notify" value="30" min="1" oninput="validity.valid||(value='');" type="number" value="{{ old('days_notify') }}" class="validate">
@@ -351,12 +341,15 @@
                     <label for="disabled">Valor de custo*</label>
                 </div>
             </div>
-    </div>
 
-    <div class="modal-footer">
-        <button class="modal-action waves-effect waves-green btn-flat " type="submit">Salvar</button>
+            <div class="row">
+                <div class=" s12 right">
+                    <button class="btn-small waves-effect" type="submit">Salvar</button>
+                    <a href="#!" class="modal-action modal-close  btn-small red waves-effect waves-red  ">Fechar</a>
+                </div>
+            </div>
+            <br>
         </form>
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Fechar</a>
     </div>
 </div>
 

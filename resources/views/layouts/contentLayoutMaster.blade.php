@@ -43,7 +43,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
     #modalDelete,
     #modalDeletePhoto {
-      max-height: 50%;
+      max-height: 25%;
     }
 
     #modal {

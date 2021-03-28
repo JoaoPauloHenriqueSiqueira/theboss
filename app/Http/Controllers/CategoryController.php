@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Category;
-use App\Http\Requests\Clients;
 use App\Services\CategoryService;
 use App\Services\ClientService;
 use Exception;

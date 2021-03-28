@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/search', 'SaleController@search');
             Route::post('/', 'SaleController@createOrUpdate')->name('make_sale');
             Route::delete('/', 'SaleController@delete')->name('delete_sales');;
+            Route::post('/update/status', 'SaleController@updateStatus')->name('updateStatus');;
         });
 
         Route::group(['prefix' => 'clients'], function () {
@@ -81,13 +82,6 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/search', 'StatusController@index')->name('search_status');
             Route::post('/', 'StatusController@createOrUpdate')->name('add_status');
             Route::delete('/', 'StatusController@delete')->name('delete_status');;
-        });
-
-        Route::group(['prefix' => 'providers'], function () {
-            Route::get('/', 'ProviderController@index')->name('providers');
-            Route::get('/search', 'ProviderController@index')->name('search_providers');
-            Route::post('/', 'ProviderController@createOrUpdate')->name('add_providers');
-            Route::delete('/', 'ProviderController@delete')->name('delete_providers');;
         });
 
         Route::group(['prefix' => 'sizes'], function () {

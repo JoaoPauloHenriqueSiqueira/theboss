@@ -104,8 +104,8 @@ class SaleService
             return $query->whereBetween('date_sale', [$start, $finish])->where($filterColumns)->orderBy('date_sale', 'DESC');
         })->paginate(10);
 
-        foreach($list as $sale){
-            foreach($sale->products as $product){
+        foreach ($list as $sale) {
+            foreach ($sale->products as $product) {
                 $product['product_sale_value'] = Format::moneyWithoutSymbol($product['pivot']['sale_value']);
             }
         }
@@ -141,7 +141,7 @@ class SaleService
     private function makeParamsFilter($request)
     {
         $companyId = $request->header('Company');
-        
+
         if (!$companyId) {
             $companyId = Auth::user()->company_id;
         }
@@ -156,10 +156,37 @@ class SaleService
         return  $filterColumns;
     }
 
-   
     public function find($taskId)
     {
         return $this->repository->find($taskId)->toArray();
+    }
+
+    public function updateStatus($request)
+    {
+
+        $response = true;
+        foreach ($request->all() as $k => $v) {
+            
+            if (!$this->checkCompany($k) || !$v || !$this->statusService->checkCompany($v)){
+                continue;
+            }
+
+            $saleFind = $this->repository->find($k);
+            $saleFind->status()->detach();
+
+            $companyId = Auth::user()->company_id;
+            $response = $this->addStatus($v, $saleFind, $companyId);
+
+            if(!$response){
+                break;
+            }
+        }
+
+        if ($response) {
+            return redirect()->back()->with('message', 'Registro criado/atualizado!');
+        }
+
+        return redirect()->back()->with('message', 'Ocorreu algum erro');
     }
 
     public function save($request)
@@ -180,7 +207,7 @@ class SaleService
                     if (Arr::get($product, "control_quantity")) {
                         $quantity = $product->pivot->quantity;
                         $product['quantity'] = $product['quantity'] + $quantity;
-                        $this->productService->update(["id" => Arr::get($product, "id"), "quantity" => Arr::get($product, "quantity")],Arr::get($product, "company_id"));
+                        $this->productService->update(["id" => Arr::get($product, "id"), "quantity" => Arr::get($product, "quantity")], Arr::get($product, "company_id"));
                     }
                 }
 
@@ -216,12 +243,14 @@ class SaleService
         }
     }
 
-    public function getSalesByStatus()
+    public function getSalesByStatus($request)
     {
-        $list =  $this->repository->doesntHave('status')->orderBy('date_sale', 'DESC')->paginate(10);
+        $filterColumns = $this->makeParamsFilter($request);
 
-        foreach($list as $sale){
-            foreach($sale->products as $product){
+        $list =  $this->repository->doesntHave('status')->where($filterColumns)->orderBy('date_sale', 'DESC')->paginate(5);
+
+        foreach ($list as $sale) {
+            foreach ($sale->products as $product) {
                 $product['product_sale_value'] = Format::moneyWithoutSymbol($product['pivot']['sale_value']);
             }
         }
@@ -232,8 +261,8 @@ class SaleService
     public function listClientApi($request)
     {
         $clientId = $this->clientService->findClientPasswordMail($request);
-       
-        if(!$clientId){
+
+        if (!$clientId) {
             return false;
         }
 
@@ -274,7 +303,7 @@ class SaleService
                     if (Arr::get($product, "control_quantity")) {
                         $quantity = $product->pivot->quantity;
                         $product['quantity'] = $product['quantity'] + $quantity;
-                        $this->productService->update(["id" => Arr::get($product, "id"), "quantity" => Arr::get($product, "quantity")],Arr::get($product, "company_id"));
+                        $this->productService->update(["id" => Arr::get($product, "id"), "quantity" => Arr::get($product, "quantity")], Arr::get($product, "company_id"));
                     }
                 }
                 $sale->products()->detach();
@@ -298,7 +327,7 @@ class SaleService
 
             $amountTotal = Arr::get($saleProducts, 'total');
             $response =  $this->repository->updateOrCreate(["id" => Arr::get($response, "id")], ['amount_total' => $amountTotal]);
-            
+
             $sale = $this->repository->find(Arr::get($response, "id"));
             broadcast(new NewMessage($sale, $companyId))->toOthers();
 
@@ -323,7 +352,7 @@ class SaleService
         if (!$userId) {
             $userId = Auth::user()->id;
         }
-        
+
         unset($request['amount_total']);
         $request['date_sale'] = $this->carbon->parse(Arr::get($request, "sale_date") . Arr::get($request, "sale_time"));
         $request['company_id'] = $companyId;
@@ -363,7 +392,7 @@ class SaleService
     {
         $arrStatus = [];
         if ($statuses) {
-            
+
             if (!$this->statusService->checkCompany($statuses, $companyId)) {
                 return false;
             }
@@ -393,7 +422,7 @@ class SaleService
         $responseProducts['status'] = true;
         $responseProducts['message'] = '';
         $responseProducts['total'] = $amountTotal;
-        
+
         foreach ($products as $product) {
 
             if (!$this->productService->checkCompany($product, false, $companyId)) {
@@ -418,7 +447,7 @@ class SaleService
                 $productDB = $this->productService->find($product);
                 $quantityProdDB = Arr::get($productDB, "quantity");
 
-                if (Arr::get($productDB, "control_quantity") ) {
+                if (Arr::get($productDB, "control_quantity")) {
                     if ((int) $quantityProdDB < (int) $quantity) {
                         $responseProducts['message'] = "Um dos produtos não possui a quantia em estoque solicitada. Tente novamente com uma quantia válida";
                         $responseProducts['status'] = false;
@@ -436,7 +465,7 @@ class SaleService
                 $newProduct["sale_id"] = $response->id;
                 $newProduct["quantity"] = $quantity;
 
-                if($size && $size > 0){
+                if ($size && $size > 0) {
                     $newProduct["size_id"] = $size;
                 }
 
@@ -475,7 +504,7 @@ class SaleService
         if (!$this->checkCompany($saleId)) {
             return response('Sem permissão para essa empresa', 422);
         }
-        
+
         $msg = "Removido com sucesso";
 
         $sale = $this->repository->find($saleId);
@@ -484,7 +513,7 @@ class SaleService
             if (Arr::get($product, "control_quantity")) {
                 $quantity = $product->pivot->quantity;
                 $product['quantity'] = $product['quantity'] + $quantity;
-                $this->productService->update(["id" => Arr::get($product, "id"), "quantity" => Arr::get($product, "quantity")],Arr::get($product, "company_id"));
+                $this->productService->update(["id" => Arr::get($product, "id"), "quantity" => Arr::get($product, "quantity")], Arr::get($product, "company_id"));
                 $msg .= " e estoque de produtos estornado";
             }
         }
@@ -502,7 +531,6 @@ class SaleService
         if ($saleId) {
             $companyId = Auth::user()->company_id;
             $companySale = $this->repository->find($saleId);
-
             if ($companyId != Arr::get($companySale, "company_id")) {
                 return false;
             }

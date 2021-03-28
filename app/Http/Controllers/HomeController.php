@@ -12,6 +12,7 @@ use App\Services\StatusService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -48,7 +49,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             $metrics = [];
@@ -66,7 +67,7 @@ class HomeController extends Controller
             $metrics['flows'] = 3;
 
 
-            $sales = $this->saleService->getSalesByStatus();
+            $sales = $this->saleService->getSalesByStatus($request);
             $sizes = $this->sizeService->list();
             $statuses = $this->statusService->list();
 
@@ -118,6 +119,7 @@ class HomeController extends Controller
 
         return $metric;
     }
+    
 
     private function metricSalesMonth($date, $lastDate, $isMonth)
     {
@@ -142,9 +144,9 @@ class HomeController extends Controller
         $search1 = $this->saleService->searchDate($date, $isMonth);
         $costTotal1 = 0;
         $saleTotal1 = 0;
-        
-        foreach($search1  as $s1){
-            foreach($s1->products as $p1){
+
+        foreach ($search1  as $s1) {
+            foreach ($s1->products as $p1) {
                 $costTotal1 +=  str_replace(",", '.', $p1->cost_value);
                 $saleTotal1 += str_replace(",", '.', $p1->sale_value);
             }
@@ -162,7 +164,7 @@ class HomeController extends Controller
                 $saleTotal2 += str_replace(",", '.', $p2->sale_value);
             }
         }
-        
+
         $profit2 = $saleTotal2 - $costTotal2;
 
 
@@ -181,9 +183,8 @@ class HomeController extends Controller
     public function porcentagem($parcial, $total)
     {
 
-        if($total == 0){
+        if ($total == 0) {
             return number_format((($parcial - $total)) * 100, 0);
-     
         }
         return number_format((($parcial - $total) / $total) * 100, 0);
     }

@@ -191,7 +191,7 @@
 </ul>
 
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large green  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Novo atendimento" onclick="openModal()">
+    <a class="btn-floating btn-large   btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Novo atendimento" onclick="openModal()">
         <i class="large material-icons">add</i>
     </a>
 </div>
@@ -218,8 +218,8 @@
 
 <!-- Modal Structure -->
 <div id="modal" class="modal bottom-sheet">
-    <form class="col s12" method="POST" action="{{ URL::route('make_sale') }}" id="formSale">
-        <div class="modal-content">
+    <div class="modal-content">
+        <form class="col s12" method="POST" action="{{ URL::route('make_sale') }}" id="formSale">
             <div class="row">
                 <div class="input-field col m6 s6">
                     <input id="sale_date" name="sale_date" type="date" class="validate">
@@ -300,9 +300,11 @@
             </div>
 
             <div class="row">
-                <table id="tableProducts" class="table-responsive bordered hide centered">
+                <h5 class="purple white-text center">Produtos</h5>
+                <table id="tableProducts" class="bordered center">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Produto</th>
                             <th>Valor</th>
                             <th>Tamanho</th>
@@ -315,15 +317,18 @@
                         </tbody>
                     </form>
                 </table>
-
             </div>
-        </div>
+            <br>
 
-        <div class="modal-footer">
-            <button class="modal-action waves-blue btn-flat" type="submit">Salvar</button>
-            <a href="#!" onclick="closeSaleModal()" class="modal-action modal-close waves-red btn-flat ">Fechar</a>
-        </div>
-    </form>
+            <div class="row">
+                <div class="s12 right">
+                    <button class="btn-small waves-effect" type="submit">Salvar</button>
+                    <a href="#!" class="modal-action modal-close  btn-small red waves-effect waves-red  ">Fechar</a>
+                </div>
+            </div>
+            <br>
+        </form>
+    </div>
 </div>
 
 @if( method_exists($datas,'links') )
@@ -420,8 +425,6 @@
             $("#tableProducts").removeClass('hide');
             $("#quantity").val('1');
         }
-
-       
     }
 
     function createSaleRow($product, $quantity, $saleValue, $name, $size, $sizeLabel) {
@@ -430,6 +433,10 @@
             currency: 'BRL'
         });
         return $(`<tr id="rowproduct${$product}">
+                            <td>
+                                <input placeholder="ID"  type="text" readonly value="${$product}" readonly class="validate">
+                                <label for="value">ID</label>
+                            </td>
                             <td>
                                 <input type="hidden"  name="size${$product}"  value="${$size}">
                                 <input type="hidden"  name="products[]"  value="${$product}">
@@ -672,7 +679,7 @@
         $('#sizes').formSelect();
 
         let sizeDefault = `<option value="">Tamanho</option>`;
-        $("#sizes").append(sizeDefault); 
+        $("#sizes").append(sizeDefault);
 
         if ($product) {
             $('#sizes').find('option:first').prop('selected', true);

@@ -35,7 +35,7 @@
                 </thead>
 
                 <tbody>
-                    <form class="col s12"  action="{{ URL::route('search_clients') }}">
+                    <form class="col s12" action="{{ URL::route('search_clients') }}">
                         <tr>
                             <td>
                                 <input placeholder="Procurar" id="search_name" name="search_name" type="text" class="validate" value="{{Arr::get($search,'search_name')}}">
@@ -114,10 +114,6 @@
                     <span class="green-text">CNPJ/CPF</span>
                     {{ $data->cpf_cnpj ==  "" ? '-' : $data->cpf_cnpj }}
                 </span></br>
-                <span class="span-body">
-                    <span class="green-text">Permite notificar futuros atendimentos?</span>
-                    {{ $data->notifiable ==  1 ? 'Sim' : 'Não' }}
-                </span>
             </div>
             <hr>
             <div class="row center">
@@ -140,7 +136,7 @@
 
 
 <div class="fixed-action-btn">
-    <a class="btn-floating btn-large green  btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Criar Cliente" onclick="openModal()">
+    <a class="btn-floating btn-large   btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Criar Cliente" onclick="openModal()">
         <i class="large material-icons">add</i>
     </a>
 </div>
@@ -188,15 +184,6 @@
             </div>
 
             <div class="row">
-                <p>
-                    <label>
-                        <input type="checkbox" id="notifiable" name="notify" checked>
-                        <span> Notificar próximos atendimentos</span>
-                    </label>
-                </p>
-            </div>
-
-            <div class="row">
                 <div class="input-field col s12">
                     <input id="cell_phone" value="{{ old('cell_phone') }}" placeholder="Celular" pattern=".{15,17}" title="11 dígitos requeridos" name="cell_phone" type="text" class="validate">
                     <label for="disabled">Celular</label>
@@ -224,12 +211,14 @@
                 </div>
             </div>
 
-    </div>
-
-    <div class="modal-footer">
-        <button class="modal-action waves-effect waves-green btn-flat " type="submit">Salvar</button>
+            <div class="row">
+                <div class=" s12 right">
+                    <button class="btn-small waves-effect" type="submit">Salvar</button>
+                    <a href="#!" class="modal-action modal-close  btn-small red waves-effect waves-red  ">Fechar</a>
+                </div>
+            </div>
+            <br>
         </form>
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Fechar</a>
     </div>
 </div>
 
