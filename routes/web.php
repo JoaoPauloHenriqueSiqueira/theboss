@@ -12,14 +12,13 @@ use App\Http\Controllers\LanguageController;
 |
  */
 
+Route::get('/', function () {
+    return response('Hello World', 200)
+        ->header('Content-Type', 'text/plain');
+});
 
 Auth::routes();
 
-Route::get("/healthcheck", function () {
-    return response()->json(["response" => 200]);
-});
-
-Route::get('/', 'PageController@home');
 Route::post('/contact', 'ClientController@search')->name('contact');
 
 Route::group(['middleware' => 'auth'], function () {
