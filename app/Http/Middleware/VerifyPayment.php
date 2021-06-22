@@ -25,23 +25,23 @@ class VerifyPayment
      */
     public function handle($request, Closure $next)
     {
-        $company = $this->companyService->findCompany(Auth::user()->company_id);
-        $lastPayment = collect($company->payments)->sortByDesc('created_at')->first();
+        // $company = $this->companyService->findCompany(Auth::user()->company_id);
+        // $lastPayment = collect($company->payments)->sortByDesc('created_at')->first();
 
-        $paymentDate = $company->created_at;
+        // $paymentDate = $company->created_at;
 
-        if(!empty($lastPayment)){
-            if($lastPayment->paid){
-                $paymentDate = $lastPayment->created_at;
-            }            
-        }
+        // if(!empty($lastPayment)){
+        //     if($lastPayment->paid){
+        //         $paymentDate = $lastPayment->created_at;
+        //     }            
+        // }
 
-        $hoje = Carbon::now();
-        $nextPayment = Carbon::parse($paymentDate);
+        // $hoje = Carbon::now();
+        // $nextPayment = Carbon::parse($paymentDate);
 
-        if($nextPayment->diffInMonths($hoje) >= 1){
-            return redirect()->route('payment');
-        }
+        // if($nextPayment->diffInMonths($hoje) >= 1){
+        //     return redirect()->route('payment');
+        // }
 
         return $next($request);
     }
