@@ -26,8 +26,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/logout', 'AuthController@logout')->name('logout');
 
     Route::post('/active', 'HomeController@activePost')->name('active_post');
+    Route::get('/payment', 'HomeController@payment')->name('payment');
+    Route::post('/create-preference', 'HomeController@createPayment')->name('create-preference');
 
-    Route::group(['prefix' => 'admin', 'middleware' => 'check_active_company'], function () {
+    Route::group(['prefix' => 'admin', 'middleware' => ['check_active_company','check_payment']], function () {
 
         Route::get('/', 'HomeController@index')->name('home');
 

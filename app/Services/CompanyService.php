@@ -32,15 +32,14 @@ class CompanyService
         return $this->repository->paginate(6);
     }
 
-    /**
-     * Procura por usuário
-     *
-     * @param [type] $UserId
-     * @return void
-     */
     public function find($userId)
     {
         return $this->repository->find($userId)->toArray();
+    }
+
+    public function findCompany($id)
+    {
+        return $this->repository->find($id);
     }
 
     public function isApi()

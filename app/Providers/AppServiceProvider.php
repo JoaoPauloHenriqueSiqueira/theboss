@@ -68,6 +68,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Contracts\SizeRepositoryInterface',
             'App\Repositories\SizeRepository'
         );
+
+        $this->app->bind(
+            'App\Repositories\Contracts\PaymentCompanyRepositoryInterface',
+            'App\Repositories\PaymentCompanyRepository'
+        );
     }
 
     /**

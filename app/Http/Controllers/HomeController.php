@@ -83,6 +83,43 @@ class HomeController extends Controller
         }
     }
 
+    // public function payment(Request $request)
+    // {
+    //     try {
+    //         return view('pages.payment');
+    //     } catch (Exception $e) {
+    //         return $e->getMessage();
+    //     }
+    // }
+
+    // public function createPayment(Request $request)
+    // {
+    //     $mercadoPago = new MercadoPago();
+    //     $preference = new MercadoPago\Preference();
+
+    //     $item = new MercadoPago\Item();
+    //     $item->title = "Mensalidade TheBoss";
+    //     $item->quantity = 1;
+    //     $item->unit_price = 150;
+
+    //     $preference->items = array($item);
+
+    //     $preference->back_urls = array(
+    //         "success" => "http://localhost:8080/feedback",
+    //         "failure" => "http://localhost:8080/feedback", 
+    //         "pending" => "http://localhost:8080/feedback"
+    //     );
+        
+    //     $preference->auto_return = "approved"; 
+
+    //     $preference->save();
+
+    //     $response = array(
+    //         'id' => $preference->id,
+    //     ); 
+    //     echo json_encode($response);
+    // }
+
     public function active()
     {
         try {

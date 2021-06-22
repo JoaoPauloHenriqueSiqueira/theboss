@@ -67,7 +67,6 @@ class CategoryService
         $start = $dateFilter->copy()->startOfDay()->startOfMonth();
         $finish = $dateFilter->copy()->endOfDay()->endOfMonth();
 
-
         $filterColumns = ['company_id' => Auth::user()->company_id];
         $list = $this->repository->scopeQuery(function ($query) use ($filterColumns, $start, $finish) {
             return $query->whereBetween('created_at', [$start, $finish])->where($filterColumns);

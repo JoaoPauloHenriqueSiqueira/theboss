@@ -49,3 +49,4 @@ class CheckCompanyApiToken
             ->header('Access-Control-Max-Age', '1000');
     }
 }
+
