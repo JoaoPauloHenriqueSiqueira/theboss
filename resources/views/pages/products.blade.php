@@ -304,7 +304,16 @@
                 </div>
             </div>
 
-            <div class="row " id="notify_param">
+            <div class="row">
+                <p>
+                    <label>
+                        <input type="checkbox" id="notifiable" name="notify" checked onclick="notifyParam()">
+                        <span> Notificar cliente?</span>
+                    </label>
+                </p>
+            </div>
+
+            <div class="row" id="notify_param">
                 <div class="input-field col s12">
                     <input id="days_notify" placeholder="Dias para notificação de atendimento" name="days_notify" value="30" min="1" oninput="validity.valid||(value='');" type="number" value="{{ old('days_notify') }}" class="validate">
                     <label for="disabled">Dias para notificação de atendimento</label>
@@ -321,10 +330,26 @@
                 </p>
             </div>
 
-            <div class="row " id="quantity_param">
+            <div class="row" id="quantity_param">
                 <div class="input-field col s12">
                     <input id="quantity" placeholder="Quantidade em estoque" name="quantity" type="number" min="0" oninput="validity.valid||(value='');" value="{{ old('quantity') }}" class="validate">
                     <label for="disabled">Quantidade em estoque</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <p>
+                    <label>
+                        <input type="checkbox" id="control_duration" name="control_duration" checked onclick="quantityDuration()">
+                        <span> Controlar tempo?</span>
+                    </label>
+                </p>
+            </div>
+
+            <div class="row" id="duration">
+                <div class="input-field col s12">
+                    <input id="duration" placeholder="Tempo de duração (minutos)" name="duration" type="number" min="0" oninput="validity.valid||(value='');" value="{{ old('duration') }}" class="validate">
+                    <label for="disabled">Tempo de duração (minutos)</label>
                 </div>
             </div>
 
@@ -408,6 +433,14 @@
 
 
     function quantityParam() {
+        if ($("#control_quantity").is(":checked")) {
+            $("#quantity_param").show();
+        } else {
+            $("#quantity_param").hide();
+        }
+    }
+
+    function quantityDuration() {
         if ($("#control_quantity").is(":checked")) {
             $("#quantity_param").show();
         } else {
@@ -579,6 +612,7 @@
 
         $("#idProduct").append(product['id']);
         $("#product").html("Editar Produto");
+
         $("#name").val(product['name']);
         $("#description").val(product['description']);
         $("#bar_code").val(product['bar_code']);
@@ -589,6 +623,7 @@
 
 
         notifiable = product['notifiable'];
+
         if (notifiable) {
             $("#notifiable").prop('checked', true);
         } else {
