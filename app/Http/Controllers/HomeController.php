@@ -70,12 +70,14 @@ class HomeController extends Controller
             $sales = $this->saleService->getSalesByStatus($request);
             $sizes = $this->sizeService->list();
             $statuses = $this->statusService->list();
+            $company = $this->companyService->findCompany(Auth::user()->company_id);
 
             return view('pages.home', [
                 "metrics" => $metrics,
                 "datas" => $sales,
                 "sizes" => $sizes,
-                'statuses' => $statuses
+                'statuses' => $statuses,
+                "company" => $company
 
             ]);
         } catch (Exception $e) {
@@ -83,6 +85,10 @@ class HomeController extends Controller
         }
     }
 
+    public function updateCompany(Request $request)
+    {
+       return $this->companyService->updateConfigs($request);
+    }
     // public function payment(Request $request)
     // {
     //     try {

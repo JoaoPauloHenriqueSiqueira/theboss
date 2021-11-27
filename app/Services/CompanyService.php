@@ -48,6 +48,30 @@ class CompanyService
         return $company->is_api;
     }
 
+
+    public function updateConfigs($request)
+    {
+        $viewCalendar = 0;
+        if ($request->has('view_calendar')) {
+            $viewCalendar = 1;
+        }
+        $request['view_calendar'] = $viewCalendar;
+
+        $controlSaleStatus = 0;
+        if ($request->has('control_sale_status')) {
+            $controlSaleStatus = 1;
+        }
+        $request['control_sale_status'] = $controlSaleStatus;
+
+        $response = $this->repository->update($request->all(),Auth::user()->company_id);
+        
+        if ($response) {
+            return redirect()->back()->with('message', 'Registro criado/atualizado!');
+        }
+
+        return redirect()->back()->with('message', 'Ocorreu algum erro');
+    }
+
     public function active($request)
     {
         $company = $this->repository->find(Auth::user()->company_id);

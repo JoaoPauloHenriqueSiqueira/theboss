@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class Company extends Model
 {
     protected $collection = 'companies';
-    protected $fillable = ['name', 'cnpj', 'active', 'phone','email','is_api', 'sale_value'];
+    protected $fillable = ['name', 'cnpj', 'active', 'phone','email','is_api', 'sale_value', 'view_calendar','control_sale_status','status_id'];
 
     public function token()
     {

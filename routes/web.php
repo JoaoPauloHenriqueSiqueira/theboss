@@ -51,6 +51,12 @@ Route::group(['middleware' => 'auth'], function () {
             Route::delete('/', 'ClientController@delete')->name('delete_clients');;
         });
 
+        Route::group(['prefix' => 'company'], function () {
+            Route::post('/update', 'HomeController@updateCompany')->name('updateCompany');;
+        });
+
+
+
         Route::group(['prefix' => 'products'], function () {
             Route::get('/', 'ProductController@index')->name('products');
             Route::get('/search', 'ProductController@index')->name('search_products');
