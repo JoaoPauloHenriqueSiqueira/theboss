@@ -6,6 +6,7 @@ use App\Http\Requests\Sales;
 use App\Http\Requests\SalesAPI;
 use App\Library\Format;
 use App\Services\ClientService;
+use App\Services\CompanyService;
 use App\Services\ProductService;
 use App\Services\SaleService;
 use App\Services\SizeService;
@@ -22,7 +23,7 @@ class SaleController extends Controller
     protected $clientService;
     protected $saleService;
     protected $sizeService;
-
+    protected $companyService;
 
     /**
      * Construct function
@@ -34,13 +35,15 @@ class SaleController extends Controller
         ClientService $clientService,
         SaleService $saleService,
         StatusService $statusService,
-        SizeService $sizeService
+        SizeService $sizeService,
+        CompanyService $companyService
     ) {
         $this->productService = $productService;
         $this->clientService = $clientService;
         $this->saleService = $saleService;
         $this->statusService = $statusService;
         $this->sizeService = $sizeService;
+        $this->companyService = $companyService;
     }
 
     /**
@@ -78,7 +81,16 @@ class SaleController extends Controller
 
             $sizes = $this->sizeService->list();
 
-            return view('pages.sales', [
+            $company = $this->companyService->findCompany(Auth::user()->company_id);
+
+            $viewCalendar = $company->view_calendar;
+
+            $page = 'pages.sales';
+            if($viewCalendar){
+                $page = 'pages.sales-calendar';
+            }
+
+            return view($page, [
                 "search" => $search,
                 "start" => $saleDate->format('Y-m-d'),
                 "end" => $saleDateEnd->format('Y-m-d'),
@@ -91,7 +103,8 @@ class SaleController extends Controller
                 "statuses" => $statuses,
                 "products" => $products,
                 "sizes" => $sizes,
-                'pageConfigs' => $pageConfigs
+                'pageConfigs' => $pageConfigs,
+                "view_calendar" => $viewCalendar
             ], ['breadcrumbs' => []]);
         } catch (Exception $e) {
             return $e->getMessage();

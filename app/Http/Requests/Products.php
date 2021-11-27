@@ -90,6 +90,7 @@ class Products extends FormRequest
     {
         $notifiable = 0;
         $controlQuant = 0;
+        $controlTime = 0;
         $calcNotifyUser = 0;
 
         if ($this->request->has('notify')) {
@@ -100,10 +101,15 @@ class Products extends FormRequest
             $controlQuant = 1;
         }
 
+        if ($this->request->has('control_time')) {
+            $controlTime = 1;
+        }
+
         $this->merge([
             'notifiable' => $notifiable,
             'calc_notify_user' => $calcNotifyUser,
-            'control_quantity' => $controlQuant
+            'control_quantity' => $controlQuant,
+            'control_time' => $controlTime,
         ]);
     }
 }

@@ -15,7 +15,8 @@ class Products extends Model
         'description',
         'name', 'bar_code', 'cost_value',
         'sale_value', 'quantity', 'notifiable',
-        'days_notify', 'control_quantity','is_active'
+        'days_notify', 'control_quantity','is_active',
+        'control_time', 'duration'
     ];
 
     public function company()

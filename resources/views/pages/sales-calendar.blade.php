@@ -1,4 +1,6 @@
 @extends('layouts.contentLayoutMaster')
+                    
+<script src="app-calendar.js"></script>
 
 @section('content')
 <ul class="collapsible " data-collapsible=" accordion">
@@ -191,6 +193,7 @@
     </li>
     @endforeach
 </ul>
+
 
 <div class="fixed-action-btn">
     <a class="btn-floating btn-large   btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Novo atendimento" onclick="openModal()">

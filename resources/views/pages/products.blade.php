@@ -340,13 +340,13 @@
             <div class="row">
                 <p>
                     <label>
-                        <input type="checkbox" id="control_duration" name="control_duration" checked onclick="quantityDuration()">
+                        <input type="checkbox" id="control_time" name="control_time" checked onclick="quantityDuration()">
                         <span> Controlar tempo?</span>
                     </label>
                 </p>
             </div>
 
-            <div class="row" id="duration">
+            <div class="row" id="duration_param">
                 <div class="input-field col s12">
                     <input id="duration" placeholder="Tempo de duração (minutos)" name="duration" type="number" min="0" oninput="validity.valid||(value='');" value="{{ old('duration') }}" class="validate">
                     <label for="disabled">Tempo de duração (minutos)</label>
@@ -424,13 +424,21 @@
             $("#notify_param").hide();
         }
 
+        $control_time = "<?= old('control_time') ?>";
+        if ($control_time == "on") {
+            $("#control_time").prop('checked', true);
+            $("#quantity_param").show();
+        } else {
+            $("#control_time").prop('checked', false);
+            $("#quantity_param").hide();
+        }
+
         $old = "<?= old('name') ?>";
         if ($old != "") {
             $("#old").val(1);
             openModal();
         }
     });
-
 
     function quantityParam() {
         if ($("#control_quantity").is(":checked")) {
@@ -441,10 +449,10 @@
     }
 
     function quantityDuration() {
-        if ($("#control_quantity").is(":checked")) {
-            $("#quantity_param").show();
+        if ($("#control_time").is(":checked")) {
+            $("#duration_param").show();
         } else {
-            $("#quantity_param").hide();
+            $("#duration_param").hide();
         }
     }
 
@@ -620,6 +628,7 @@
         $("#sale_value").val(product['sale_value']);
         $("#days_notify").val(product['days_notify']);
         $("#quantity").val(product['quantity']);
+        $("#duration").val(product['duration']);
 
 
         notifiable = product['notifiable'];
@@ -635,6 +644,13 @@
             $("#control_quantity").prop('checked', true);
         } else {
             $("#control_quantity").prop('checked', false);
+        }
+
+        controlTime = product['control_time'];
+        if (controlTime) {
+            $("#control_time").prop('checked', true);
+        } else {
+            $("#control_time").prop('checked', false);
         }
 
         quantityParam();
