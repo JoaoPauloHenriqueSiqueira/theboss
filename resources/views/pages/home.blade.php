@@ -108,7 +108,7 @@
                             <i class="material-icons green-text">
                                 schedule
                             </i>
-                            {{$data->date_sale}}
+                            {{$data->date_sale}} - {{ $data->user->name }}
                             <div class="input-field col s7">
                                 <select class="select2 browser-default" name="{{$data->id}}">
                                     <option value="" selected>Sem status</option>

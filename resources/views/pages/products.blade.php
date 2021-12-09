@@ -532,6 +532,7 @@
         $("#days_notify").val('');
         $("#foto").val('');
         $("#foto2").val('');
+        $("#duration").val('');
 
         cleanCategoryField();
         cleanProviderField();
