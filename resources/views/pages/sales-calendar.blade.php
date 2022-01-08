@@ -1,6 +1,5 @@
 @extends('layouts.contentLayoutMaster')
-                    
-<script src="app-calendar.js"></script>
+<link href="{{ asset('css/main.css') }}" rel="stylesheet" type="text/css">
 
 @section('content')
 <ul class="collapsible " data-collapsible=" accordion">
@@ -72,128 +71,7 @@
 
 <h5>Total: <span class="right">{{$total_sales}}</span></h5>
 
-
-<ul class="collapsible collection" id="list" data-collapsible="accordion">
-    @foreach ($datas as $data)
-    <li id="{{$data->id}}">
-        <div class="collapsible-header">
-            <i class="material-icons green-text">
-                schedule
-            </i>
-            {{$data->date_sale}}
-
-            <div class="second-content">
-                <i class="material-icons green-text">
-                    attach_money
-                </i>
-                {{$data->amount_total_value}}
-            </div>
-
-        </div>
-        <div class="collapsible-body white">
-            <div class="row ">
-                <span class="span-body">
-                    <span class="green-text">Usuário:</span>
-                    {{ $data->user->name }}
-                </span></br>
-                @if($data->client != "")
-                <span class="span-body">
-                    <span class="green-text">Cliente:</span>
-                    {{ $data->client->name }}
-                </span></br>
-                <span class="span-body">
-                    <span class="green-text">Endereço:</span>
-                    {{ $data->client->address }}
-                </span><br>
-                <span class="span-body">
-                    <span class="green-text">Telefone contato:</span>
-                    {{ $data->client->cell_phone  }}
-                </span>
-                @endif
-                <span class="span-body ">
-                    @if(count($data->status) > 0)
-                    <span class="green-text">Status:
-                    </span></br>
-                    @foreach ($data->status as $status)
-                    {{$status->name}}</br>
-                    @endforeach
-                    @endif
-                </span><br>
-                <span class="span-body">
-                    <span class="green-text">Valor Venda:</span>
-                    {{ $data->amount_total ==  "" ? '-' : $data->amount_total_value }}
-                </span></br>
-                <span class="span-body center">
-                    <h5 class="purple white-text">Produtos</h5>
-                    @if(count($data->products) > 0)
-                    <table class="bordered center">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Produto</th>
-                                <th>Valor</th>
-                                <th>Tamanho</th>
-                                <th>Qtde</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data->products as $product)
-                            <tr>
-                                <td>
-                                    <input placeholder="Id" type="text" readonly disabled value="{{$product->id}}">
-                                    <label for="id">Id</label>
-                                </td>
-                                <td>
-                                    <input placeholder="Nome" type="text" readonly disabled value="{{$product->name}}">
-                                    <label for="name">Nome</label>
-                                </td>
-                                <td>
-                                    <input placeholder="Valor" type="text" readonly value="{{$product->product_sale_value}}" readonly>
-                                    <label for="value">Valor</label>
-                                </td>
-                                <td>
-                                    <select class="browser-default" disabled>
-                                        <option disabled selected>Tamanho</option>
-                                        @foreach ($sizes as $size)
-                                        <option value="{{$size->id}}" {{$size->id == $product->pivot->size_id  ? 'selected' : '' }}>
-                                            {{$size->name}}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                    <label class="active" for="sizes">Tamanho</label>
-                                </td>
-                                <td>
-                                    <input placeholder="Qtde" type="text" value="{{$product->pivot->quantity}}" readonly>
-                                    <label for="qtde">Qtde</label>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    @endif
-                </span>
-            </div></br>
-
-            <hr>
-            <div class="row center">
-                <a class="btn-small tooltipped" onclick="editSale('{{$data->sale_date_format}}','{{$data->sale_time_format}}',{{$data}},{{$data->products}})" data-position='left' data-delay='50' data-tooltip="Editar Atendimento">
-                    <i class="material-icons white-text">
-                        edit
-                    </i>
-                </a>
-                <a class="btn-small tooltipped red" onclick="askDelete({{$data->id}})" data-position='right' data-delay='50' data-tooltip="Deletar atendimento">
-                    <i class="material-icons white-text">
-                        clear
-                    </i>
-                </a>
-            </div>
-
-
-        </div>
-    </li>
-    @endforeach
-</ul>
-
+<div id='calendar' style="background:white"></div>
 
 <div class="fixed-action-btn">
     <a class="btn-floating btn-large   btn tooltipped pulse" data-background-color="red lighten-3" data-position="left" data-delay="50" data-tooltip="Novo atendimento" onclick="openModal()">
@@ -354,6 +232,28 @@
 
 <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
 <script src="{{ asset('js/materialize.js') }}"></script>
+<script src="{{ asset('js/scripts/main.js') }}"></script>
+<script src="{{ asset('js/scripts/pt-br.js') }}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'timeGridDay',
+            editable: true,
+            locale: 'pt-br',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: <?= $datas; ?>,
+            eventClick: function(info) {
+            }
+        });
+        calendar.render();
+    });
+</script>
 
 <script>
     $(document).ready(function() {

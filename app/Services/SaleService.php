@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
 use App\Events\NewMessage;
+use App\Transformers\EventTransformer;
 use App\Transformers\SaleTransformer;
 
 class SaleService
@@ -90,6 +91,11 @@ class SaleService
         return $list->get();
     }
 
+    public function eventTransform($events)
+    {
+        return (new EventTransformer)->transform($events);
+    }
+
     public function searchBetweenDates($request, $dateStartFilter, $dateEndFilter)
     {
         $dateStartFilter = $this->carbon->parse($dateStartFilter);
@@ -104,6 +110,27 @@ class SaleService
             return $query->whereBetween('date_sale', [$start, $finish])->where($filterColumns)->orderBy('date_sale', 'DESC');
         })->paginate(10);
 
+        foreach ($list as $sale) {
+            foreach ($sale->products as $product) {
+                $product['product_sale_value'] = Format::moneyWithoutSymbol($product['pivot']['sale_value']);
+            }
+        }
+
+        return $list;
+    }
+
+    public function searchBetweenDatesWithoutPaginate($request, $dateStartFilter, $dateEndFilter)
+    {
+        $dateStartFilter = $this->carbon->parse($dateStartFilter);
+        $dateEndFilter = $this->carbon->parse($dateEndFilter);
+
+        $start = $dateStartFilter->copy()->startOfDay()->startOfDay();
+        $finish = $dateEndFilter->copy()->endOfDay()->endOfDay();
+
+        $filterColumns = $this->makeParamsFilter($request);
+        $list = $this->repository->scopeQuery(function ($query) use ($filterColumns, $start, $finish) {
+            return $query->where($filterColumns)->orderBy('date_sale', 'DESC');
+        });
         foreach ($list as $sale) {
             foreach ($sale->products as $product) {
                 $product['product_sale_value'] = Format::moneyWithoutSymbol($product['pivot']['sale_value']);

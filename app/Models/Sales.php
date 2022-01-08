@@ -11,7 +11,7 @@ class Sales extends Model
     protected $collection = 'sales';
     protected $fillable = [
         'client_id', 'company_id', 'date_sale',
-        'time_sale', 'user', 'amount_total', 
+        'time_sale', 'user', 'amount_total',
         'company_id', 'user_id'
     ];
 
@@ -45,12 +45,21 @@ class Sales extends Model
             ->withPivot('sale_id')
             ->withPivot('product_id')
             ->withPivot('size_id');
-
     }
 
     public function getDateSaleAttribute($date)
     {
         return Carbon::parse($date)->format('d/m/Y H:i');
+    }
+
+    public function getDateSaleNormalAttribute()
+    {
+        return $this->attributes['date_sale'];
+    }
+
+    public function getDateSaleNormalFinishAttribute($duration)
+    {
+        return Carbon::parse($this->attributes['date_sale'])->addMinutes($duration)->format('Y-m-d h:i:s');
     }
 
     public function getSaleDateFormatAttribute()
@@ -67,5 +76,11 @@ class Sales extends Model
     {
         return  Format::money($this->attributes['amount_total']);
     }
+
+    public function getTitleAttribute($client)
+    {
+       return $client->name . ' - ' . $client->cell_phone;
+    }
+
 
 }

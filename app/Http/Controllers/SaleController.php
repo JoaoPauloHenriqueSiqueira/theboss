@@ -88,14 +88,16 @@ class SaleController extends Controller
             $page = 'pages.sales';
             if($viewCalendar){
                 $page = 'pages.sales-calendar';
+                $sales = $this->saleService->searchBetweenDatesWithoutPaginate($request, $saleDate, $saleDateEnd);
+                $sales = $this->saleService->eventTransform($sales->get());
             }
+            
 
             return view($page, [
                 "search" => $search,
                 "start" => $saleDate->format('Y-m-d'),
                 "end" => $saleDateEnd->format('Y-m-d'),
                 "sale_date_format" => $saleTitle,
-
                 "datas" => $sales,
                 "company"=> Auth::user()->company_id,
                 "total_sales" => Format::money($sales->sum('amount_total')),
