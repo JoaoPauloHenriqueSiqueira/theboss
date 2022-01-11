@@ -131,6 +131,7 @@ class SaleService
         $list = $this->repository->scopeQuery(function ($query) use ($filterColumns, $start, $finish) {
             return $query->where($filterColumns)->orderBy('date_sale', 'DESC');
         });
+        
         foreach ($list as $sale) {
             foreach ($sale->products as $product) {
                 $product['product_sale_value'] = Format::moneyWithoutSymbol($product['pivot']['sale_value']);

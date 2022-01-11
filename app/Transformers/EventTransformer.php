@@ -8,7 +8,7 @@ class EventTransformer extends TransformerAbstract
 {
     public function transform($events)
     {
-        foreach ($events as $event) {
+        foreach ($events as &$event) {
             $event->title = $event->client->name . ' - ' . $event->client->cell_phone;
             $event->start = $event->getDateSaleNormalAttribute();
             $products =  $event->products;
@@ -22,7 +22,8 @@ class EventTransformer extends TransformerAbstract
 
             $event->end = $event->getDateSaleNormalFinishAttribute($duration);
         }
+        
 
-        return $events->get();
+        return $events;
     }
 }

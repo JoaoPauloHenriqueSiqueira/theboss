@@ -247,7 +247,7 @@
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
-            events: <?= $datas; ?>,
+            events: <?= $datas->get(); ?>,
             eventClick: function(info) {
             }
         });

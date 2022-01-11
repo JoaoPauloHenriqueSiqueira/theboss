@@ -141,6 +141,7 @@ class ClientService
             if (!$this->checkCompany($clientId)) {
                 return response('Sem permissão para essa empresa', 422);
             }
+            
             $request['company_id'] = Auth::user()->company_id;
             $response = $this->repository->updateOrCreate(["id" => Arr::get($request, "id")], $request->all());
 
